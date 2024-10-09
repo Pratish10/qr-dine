@@ -1,10 +1,20 @@
 import React from "react";
 import { ThemeProvider } from "./theme-provider";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
-export const Providers = ({ children }: { children: React.ReactNode }) => {
+export const Providers = async ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const session = await auth();
+
   return (
-    <ThemeProvider attribute="class" defaultTheme="light">
-      {children}
-    </ThemeProvider>
+    <SessionProvider session={session}>
+      <ThemeProvider attribute="class" defaultTheme="light">
+        {children}
+      </ThemeProvider>
+    </SessionProvider>
   );
 };

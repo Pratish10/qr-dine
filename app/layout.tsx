@@ -1,20 +1,11 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import { Providers } from "./providers";
+import "@/app/globals.css";
+import { Poppins } from "next/font/google";
+import { Providers } from "@/app/providers";
 import NextTopLoader from "nextjs-toploader";
-import { Navbar } from "@/components/Navbar";
+import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,9 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${poppins.className} antialiased`}>
         <NextTopLoader
           color="#fe7e8b"
           initialPosition={0.08}
@@ -41,8 +30,8 @@ export default function RootLayout({
           shadow="0 0 10px #fe7e8b,0 0 5px #fe7e8b"
         />
         <Providers>
-          <Navbar />
           {children}
+          <Toaster closeButton richColors position="top-center" />
         </Providers>
       </body>
     </html>
