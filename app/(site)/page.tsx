@@ -3,7 +3,7 @@ import { Landing } from '@/components/Landing'
 
 export default function Auth(): JSX.Element {
     return (
-        <main className="container">
+        <main>
             <Landing />
             <Footer />
         </main>

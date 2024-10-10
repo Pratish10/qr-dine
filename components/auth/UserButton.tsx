@@ -10,6 +10,8 @@ import {
 import { DialogBox } from '@/components/DialogBox'
 import React, { useState } from 'react'
 import { signOut } from 'next-auth/react'
+import Link from 'next/link'
+import APP_PATHS from '@/config/path.config'
 
 interface User {
     id: string
@@ -41,6 +43,9 @@ export const UserButton = ({ user }: UserButtonType): React.JSX.Element => {
                     </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
+                    <Link href={APP_PATHS.PROFILE}>
+                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem
                         onClick={() => {
                             setShowDialog(true)

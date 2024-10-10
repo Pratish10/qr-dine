@@ -8,7 +8,7 @@ export default function DashboardLayout({
     return (
         <div className="min-h-screen">
             <Navbar />
-            <div>{children}</div>
+            <div className="container">{children}</div>
         </div>
     )
 }

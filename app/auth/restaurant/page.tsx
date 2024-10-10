@@ -6,7 +6,7 @@ const Restaurant = async (): Promise<JSX.Element> => {
     const user = await useCurrentSession()
 
     return (
-        <div className="h-screen" style={{ height: 'calc(100vh - 4rem)' }}>
+        <div className="h-screen">
             <div className="md:hidden">
                 <Image
                     src="/examples/authentication-light.png"
@@ -23,10 +23,7 @@ const Restaurant = async (): Promise<JSX.Element> => {
                     className="hidden dark:block"
                 />
             </div>
-            <div
-                className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0"
-                style={{ height: 'calc(100vh - 4rem)' }}
-            >
+            <div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
                 <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
                     <div className="absolute inset-0 bg-zinc-900" />
                     <div className="relative z-20 flex items-center text-lg font-medium">

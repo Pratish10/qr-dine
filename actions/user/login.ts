@@ -18,6 +18,7 @@ import { type ServerActionReturnType } from '@/types/api.types'
 import { ErrorHandler } from '@/lib/error'
 import { SuccessResponse } from '@/lib/success'
 import { isRedirectError } from 'next/dist/client/components/redirect'
+import { getRestaurantsByUserId } from '@/lib/restaurant/restaurant'
 
 export const login = withServerActionAsyncCatcher<
     LoginUserType,
@@ -114,7 +115,22 @@ export const login = withServerActionAsyncCatcher<
         })
     } catch (error) {
         if (isRedirectError(error)) {
-            throw new ErrorHandler('Redirect Error!', 'BAD_REQUEST')
+            // Handle redirect error, but also check for restaurants
+            const restaurants = await getRestaurantsByUserId(existingUser?.id)
+
+            if (restaurants == null || restaurants.length === 0) {
+                return new SuccessResponse('SuccessFull Login!', 200, {
+                    redirectError: true,
+                    hasRestaurants: false,
+                    redirectTo: APP_PATHS.RESTAURANT,
+                }).serialize()
+            }
+
+            return new SuccessResponse('SuccessFull Login!', 200, {
+                redirectError: true,
+                hasRestaurants: true,
+                redirectTo: APP_PATHS.DASHBOARD,
+            }).serialize()
         }
         if (error instanceof AuthError) {
             if (error.type === 'CredentialsSignin') {

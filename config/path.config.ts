@@ -6,6 +6,7 @@ const APP_PATHS = {
     RESET_PASSWORD: '/auth/reset-password',
     NEW_PASSWORD: '/auth/new-password',
     NEW_VERIFICATION: '/auth/new-verification',
-    RESTAURANT: '/restaurant',
+    RESTAURANT: '/auth/restaurant',
+    PROFILE: '/profile',
 }
 export default APP_PATHS

@@ -57,3 +57,34 @@ export const getRestaurantByRestaurantId = (
         return null
     }
 }
+
+export const getRestaurantsByUserId = async (
+    userId: string
+): Promise<Array<{
+    id: string
+    restaurantId: string
+    fullName: string
+    branchName: string
+    address: string
+    pinCode: string
+    city: string
+    state: string
+    country: string
+    userId: string
+}> | null> => {
+    try {
+        const restaurants = await prisma.restaurant.findMany({
+            where: {
+                userId,
+            },
+        })
+
+        if (restaurants.length > 0) {
+            return restaurants
+        } else {
+            return null
+        }
+    } catch {
+        return null
+    }
+}

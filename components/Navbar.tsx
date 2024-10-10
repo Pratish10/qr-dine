@@ -9,7 +9,7 @@ import { useCurrentSession } from '@/hooks/useCurrentSession'
 export const Navbar = async (): Promise<React.JSX.Element> => {
     const user = await useCurrentSession()
     return (
-        <nav className="border-b-2 h-16">
+        <nav className="flex items-center border-b-2 h-16">
             <div className="container flex items-center justify-between h-full">
                 <Link href="/">Food Ordering System or logo here</Link>
                 <div className="flex items-center justify-between space-x-4">
@@ -25,7 +25,7 @@ export const Navbar = async (): Promise<React.JSX.Element> => {
                         </React.Fragment>
                     ) : (
                         <UserButton
-                            // @ts-expect-error using ts-ignore beacuse of the isTwoEnabled property
+                            // @ts-expect-error using ts-ignore because of the isTwoEnabled property
                             user={user}
                         />
                     )}

@@ -30,6 +30,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import APP_PATHS from '@/config/path.config'
 import { type ServerActionReturnType } from '@/types/api.types'
+import { toast } from 'sonner'
 
 export const LoginForm = (): React.JSX.Element => {
     const router = useRouter()
@@ -69,14 +70,14 @@ export const LoginForm = (): React.JSX.Element => {
                             res.data.twoFactor
                         ) {
                             setShowTwoFactor(true)
-                        }
-                        setSuccess(res.message)
-                    } else {
-                        if (res.message === 'Redirect Error!') {
-                            router.push(APP_PATHS.DASHBOARD)
+                            setSuccess(res.message)
                         } else {
-                            setError(res.message)
+                            toast.success(res.message)
+                            // @ts-expect-error - Ignore TypeScript error for using 'in' on res.data
+                            router.push(res.data.redirectTo as string)
                         }
+                    } else {
+                        setError(res.message)
                     }
                 })
                 .catch(() => {
