@@ -19,6 +19,7 @@ rules:
     - error
     - endOfLine: auto
   react/react-in-jsx-scope: off
+  no-console: error
 
 overrides:
   - files: ["components/ui/**/*"]

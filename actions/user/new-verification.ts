@@ -4,8 +4,8 @@ import prisma from '@/db'
 import { withServerActionAsyncCatcher } from '@/lib/async-catch'
 import { ErrorHandler } from '@/lib/error'
 import { SuccessResponse } from '@/lib/success'
-import { getUserByEmail } from '@/lib/user'
-import { getVerificationTokenByToken } from '@/lib/verification-token'
+import { getUserByEmail } from '@/lib/auth/user'
+import { getVerificationTokenByToken } from '@/lib/auth/verification-token'
 import { type ServerActionReturnType } from '@/types/api.types'
 
 export const newVerification = withServerActionAsyncCatcher<

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client'
 
 import { useSearchParams } from 'next/navigation'
@@ -16,8 +17,8 @@ export const NewVerificationForm = (): JSX.Element => {
 
     const token = searchParams.get('token') ?? ''
     const onSubmit = useCallback(() => {
-        if ((success ?? error) != null) return
-        if (token === '') {
+        if (success ?? error) return
+        if (!token) {
             setError('Token Missing!')
         }
 
@@ -48,9 +49,9 @@ export const NewVerificationForm = (): JSX.Element => {
             toHome={APP_PATHS.HOME}
         >
             <div className="flex items-center justify-center w-full">
-                {success == null && error == null && <div>Loading...</div>}
+                {!success && !error && <div>Loading...</div>}
                 <FormSuccess message={success} />
-                {success == null && <FormError message={error} />}
+                {!success && <FormError message={error} />}
             </div>
         </AuthCard>
     )

@@ -33,3 +33,40 @@ export const ResetSchema = z.object({
         message: 'Email is required',
     }),
 })
+
+export const RestaurantSchema = z.object({
+    fullName: z.string().min(1, {
+        message: 'Restaurant Name is required',
+    }),
+    branchName: z
+        .string()
+        .min(1, {
+            message: 'Restaurant Branch Name is required',
+        })
+        .regex(
+            // eslint-disable-next-line no-useless-escape
+            /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9!@#$%^&*()_+={}\[\]:;"'<>,.?~`-]*$/,
+            {
+                message:
+                    'Branch Name must contain letters, numbers, and can include special characters',
+            }
+        ),
+    address: z.string().min(1, {
+        message: 'Restaurant Address is required',
+    }),
+    pinCode: z.string().min(1, {
+        message: 'PinCode is Required',
+    }),
+    city: z.string().min(1, {
+        message: 'City is Required',
+    }),
+    state: z.string().min(1, {
+        message: 'State is Required',
+    }),
+    country: z.string().min(1, {
+        message: 'Country is Required',
+    }),
+    userId: z.string().min(1, {
+        message: 'UserId is Required',
+    }),
+})

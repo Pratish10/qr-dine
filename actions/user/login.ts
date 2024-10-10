@@ -1,13 +1,16 @@
 'use server'
 import { signIn } from '@/auth'
 import { AuthError } from 'next-auth'
-import { generateTwoFactorToken, generateVerificationToken } from '@/lib/token'
+import {
+    generateTwoFactorToken,
+    generateVerificationToken,
+} from '@/lib/auth/token'
 import { sendTwoFactorTokenEmail, sendVerificationEmail } from '@/lib/mail'
 import { type LoginUserType } from '@/schemas/types'
 import { LoginUserSchema } from '@/schemas/schema'
-import { getUserByEmail } from '@/lib/user'
-import { getTwoFacTokenByEmail } from '@/lib/two-factor-token'
-import { getTwoFactorConfirmationByUserId } from '@/lib/two-factor-confirmation'
+import { getUserByEmail } from '@/lib/auth/user'
+import { getTwoFacTokenByEmail } from '@/lib/auth/two-factor-token'
+import { getTwoFactorConfirmationByUserId } from '@/lib/auth/two-factor-confirmation'
 import APP_PATHS from '@/config/path.config'
 import prisma from '@/db'
 import { withServerActionAsyncCatcher } from '@/lib/async-catch'

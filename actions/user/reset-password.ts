@@ -1,12 +1,12 @@
 'use server'
 
-import { generatePasswordResetToken } from '@/lib/token'
+import { generatePasswordResetToken } from '@/lib/auth/token'
 import { sendPasswordResetEmail } from '@/lib/mail'
 import { withServerActionAsyncCatcher } from '@/lib/async-catch'
 import { type ResetSchemaType } from '@/schemas/types'
 import { type ServerActionReturnType } from '@/types/api.types'
 import { ResetSchema } from '@/schemas/schema'
-import { getUserByEmail } from '@/lib/user'
+import { getUserByEmail } from '@/lib/auth/user'
 import { SuccessResponse } from '@/lib/success'
 import { ErrorHandler } from '@/lib/error'
 

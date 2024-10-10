@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
 import prisma from '@/db'
-import { getVerificationTokenByEmail } from '@/lib/verification-token'
-import { getPasswordResetTokenByEmail } from '@/lib/password-reset-token'
+import { getVerificationTokenByEmail } from '@/lib/auth/verification-token'
+import { getPasswordResetTokenByEmail } from '@/lib/auth/password-reset-token'
 import crypto from 'crypto'
-import { getTwoFacTokenByEmail } from '@/lib/two-factor-token'
+import { getTwoFacTokenByEmail } from '@/lib/auth/two-factor-token'
 
 export const generateVerificationToken = async (
     email: string

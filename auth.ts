@@ -3,8 +3,8 @@
 import NextAuth from 'next-auth'
 import authConfig from '@/auth.config'
 import prisma from '@/db'
-import { getUserById } from '@/lib/user'
-import { getTwoFactorConfirmationByUserId } from '@/lib/two-factor-confirmation'
+import { getUserById } from '@/lib/auth/user'
+import { getTwoFactorConfirmationByUserId } from '@/lib/auth/two-factor-confirmation'
 import APP_PATHS from '@/config/path.config'
 
 export const {

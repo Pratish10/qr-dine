@@ -191,7 +191,11 @@ export const LoginForm = (): React.JSX.Element => {
                                                 size="sm"
                                                 asChild
                                             >
-                                                <Link href="/auth/reset-password">
+                                                <Link
+                                                    href={
+                                                        APP_PATHS.RESET_PASSWORD
+                                                    }
+                                                >
                                                     Forgot Password?
                                                 </Link>
                                             </Button>
