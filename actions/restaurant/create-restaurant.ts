@@ -1,3 +1,4 @@
+'use server'
 import prisma from '@/db'
 import { withServerActionAsyncCatcher } from '@/lib/async-catch'
 import { getUserById } from '@/lib/auth/user'

@@ -185,20 +185,23 @@ export const LoginForm = (): React.JSX.Element => {
                                                 />
                                             </FormControl>
                                             <FormMessage />
-                                            <Button
-                                                className="flex justify-end px-0 font-normal w-full"
-                                                variant="link"
-                                                size="sm"
-                                                asChild
-                                            >
-                                                <Link
-                                                    href={
-                                                        APP_PATHS.RESET_PASSWORD
-                                                    }
+                                            <div className="flex justify-end">
+                                                <Button
+                                                    className="px-0 font-normal bg-transparent"
+                                                    variant="link"
+                                                    size="sm"
+                                                    asChild
                                                 >
-                                                    Forgot Password?
-                                                </Link>
-                                            </Button>
+                                                    <Link
+                                                        href={
+                                                            APP_PATHS.RESET_PASSWORD
+                                                        }
+                                                        className="text-right"
+                                                    >
+                                                        Forgot Password?
+                                                    </Link>
+                                                </Button>
+                                            </div>
                                         </FormItem>
                                     )}
                                 />
