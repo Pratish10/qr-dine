@@ -42,6 +42,7 @@ model User {
   accounts              Account[]
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  restaurants           Restaurant[]
 }
 
 model verificationToken {
@@ -78,4 +79,20 @@ model TwoFactorConfirmation {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model Restaurant {
+  id           String @id @default(cuid())
+  restaurantId String @unique
+  fullName     String
+  branchName   String @unique
+
+  address String
+  pinCode String
+  city    String
+  state   String
+  country String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

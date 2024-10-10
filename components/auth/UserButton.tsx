@@ -20,7 +20,7 @@ type User = {
 };
 
 interface UserButtonType {
-  user: User | null;
+  user: User | undefined;
 }
 
 export const UserButton = ({ user }: UserButtonType) => {

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ThemeSelect } from "./theme-select";
 import { Button } from "@/components/ui/button";
 import APP_PATHS from "@/config/path.config";
-import { UserButton } from "./auth/UserButton";
+import { UserButton } from "@/components/auth/UserButton";
 import React from "react";
 import { useCurrentSession } from "@/hooks/useCurrentSession";
 
@@ -14,7 +14,7 @@ export const Navbar = async () => {
         <Link href="/">Food Ordering System or logo here</Link>
         <div className="flex items-center justify-between space-x-4">
           <ThemeSelect />
-          {user === null ? (
+          {!user ? (
             <React.Fragment>
               <Link href={APP_PATHS.LOGIN}>
                 <Button>Login</Button>
