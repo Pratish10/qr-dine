@@ -1,12 +1,12 @@
-import { z } from "zod";
+import { type z } from 'zod'
 import {
-  LoginUserSchema,
-  RegisterUserSchema,
-  NewPasswordSchema,
-  ResetSchema,
-} from "./schema";
+    type LoginUserSchema,
+    type RegisterUserSchema,
+    type NewPasswordSchema,
+    type ResetSchema,
+} from './schema'
 
-export type RegisterUserType = z.infer<typeof RegisterUserSchema>;
-export type LoginUserType = z.infer<typeof LoginUserSchema>;
-export type NewPasswordType = z.infer<typeof NewPasswordSchema>;
-export type ResetSchemaType = z.infer<typeof ResetSchema>;
+export type RegisterUserType = z.infer<typeof RegisterUserSchema>
+export type LoginUserType = z.infer<typeof LoginUserSchema>
+export type NewPasswordType = z.infer<typeof NewPasswordSchema>
+export type ResetSchemaType = z.infer<typeof ResetSchema>

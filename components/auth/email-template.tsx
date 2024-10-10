@@ -1,9 +1,9 @@
 interface EmailTemplateProps {
-  confirmLink: string;
+    confirmLink: string
 }
 
-export const EmailTemplate = ({ confirmLink }: EmailTemplateProps) =>
-  `<div style="font-family: Arial, sans-serif; color: #333;">
+export const EmailTemplate = ({ confirmLink }: EmailTemplateProps): string =>
+    `<div style="font-family: Arial, sans-serif; color: #333;">
     <h3>Welcome to Food-Ordering-System!</h3>
     <p>
       We're excited to have you on board. To get started, please confirm your email by clicking the link below:
@@ -16,10 +16,12 @@ export const EmailTemplate = ({ confirmLink }: EmailTemplateProps) =>
     </p>
     <p>Thank you for joining us!</p>
     <p>Best regards,<br />The Food-Ordering-System Team</p>
-  </div>`;
+  </div>`
 
-export const PasswordResetEmail = ({ confirmLink }: EmailTemplateProps) =>
-  `<div style="font-family: Arial, sans-serif; color: #333;">
+export const PasswordResetEmail = ({
+    confirmLink,
+}: EmailTemplateProps): string =>
+    `<div style="font-family: Arial, sans-serif; color: #333;">
       <h3>Password Reset Request</h3>
       <p>
         We received a request to reset your password for your account at Food-Ordering-System. You can reset your password by clicking the link below:
@@ -32,10 +34,14 @@ export const PasswordResetEmail = ({ confirmLink }: EmailTemplateProps) =>
       </p>
       <p>If you have any issues, feel free to contact our support team.</p>
       <p>Best regards,<br />The Food-Ordering-System Team</p>
-    </div>`;
+    </div>`
 
-export const SendTwoFactorMailTemplate = ({ token }: { token: string }) =>
-  `<div style="font-family: Arial, sans-serif; color: #333;">
+export const SendTwoFactorMailTemplate = ({
+    token,
+}: {
+    token: string
+}): string =>
+    `<div style="font-family: Arial, sans-serif; color: #333;">
         <h3>Your Two-Factor Authentication Code</h3>
         <p>
           As part of our commitment to keeping your account secure, please use the following code to complete your login process:
@@ -47,4 +53,4 @@ export const SendTwoFactorMailTemplate = ({ token }: { token: string }) =>
           <strong>Note:</strong> This code will expire in 5 minutes. If you did not request this code, please secure your account immediately.
         </p>
         <p>Stay safe,<br />The Food-Ordering-System Team</p>
-      </div>`;
+      </div>`

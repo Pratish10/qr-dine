@@ -1,7 +1,7 @@
-import { NewVerificationForm } from "@/components/auth/new-verification";
+import { NewVerificationForm } from '@/components/auth/new-verification'
 
-const NewVerification = () => {
-  return <NewVerificationForm />;
-};
+const NewVerification = (): JSX.Element => {
+    return <NewVerificationForm />
+}
 
-export default NewVerification;
+export default NewVerification

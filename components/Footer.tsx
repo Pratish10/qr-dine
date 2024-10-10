@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
-export const Footer = () => {
-  return <div>Footer</div>;
-};
+export const Footer = (): React.JSX.Element => {
+    return <div>Footer</div>
+}

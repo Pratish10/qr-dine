@@ -1,6 +1,6 @@
-import { LoginForm } from "@/components/auth/login-form";
+import { LoginForm } from '@/components/auth/login-form'
 
-const Login = () => {
-  return <LoginForm />;
-};
-export default Login;
+const Login = (): JSX.Element => {
+    return <LoginForm />
+}
+export default Login

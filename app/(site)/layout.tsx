@@ -1,14 +1,14 @@
-import { Navbar } from "@/components/Navbar";
+import { Navbar } from '@/components/Navbar'
 
 export default function DashboardLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <div>
-      <Navbar />
-      {children}
-    </div>
-  );
+    children: React.ReactNode
+}>): JSX.Element {
+    return (
+        <div>
+            <Navbar />
+            {children}
+        </div>
+    )
 }
