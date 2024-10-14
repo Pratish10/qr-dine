@@ -1,5 +1,51 @@
-# .prettierrc or .prettierrc.yaml
+# .prettierrc.yaml
+
+# Add trailing commas wherever valid in ES5 (objects, arrays, etc.)
 trailingComma: "es5"
-tabWidth: 2
+
+# Specify the number of spaces per indentation-level
+tabWidth: 4
+
+# Use semicolons at the ends of statements (false to omit them)
 semi: true
+
+# Use single quotes instead of double quotes
 singleQuote: true
+
+# Specify the line length where Prettier will try to wrap code
+# It attempts to break lines exceeding this width
+printWidth: 150
+
+# Indent lines with tabs instead of spaces (false to use spaces)
+useTabs: true
+
+# Control spacing between brackets in object literals
+# true => { foo: bar } / false => {foo: bar}
+bracketSpacing: true
+
+# Use single quotes in JSX attributes instead of double quotes
+jsxSingleQuote: true
+
+# Include parentheses around a sole arrow function parameter
+# "always" => (x) => x / "avoid" => x => x
+arrowParens: "avoid"
+
+# Set end-of-line characters. Use "lf" for Linux/macOS, "crlf" for Windows, or "auto" to adapt to the OS
+endOfLine: "auto"
+
+# Control how Prettier handles line wrapping in Markdown files
+# "always" => Wrap prose if it exceeds the printWidth
+# "never" => Do not wrap prose
+# "preserve" => Respect the input line breaks
+proseWrap: "always"
+
+# Determines how whitespace is handled in HTML files
+# "css" => Follow the default CSS display property behavior
+# "strict" => Strictly preserve whitespace
+# "ignore" => Ignore whitespace entirely
+htmlWhitespaceSensitivity: "css"
+
+# Control formatting of embedded code in HTML, Markdown, and other languages
+# "auto" => Automatically format embedded languages
+# "off" => Disable formatting for embedded languages
+embeddedLanguageFormatting: "auto"

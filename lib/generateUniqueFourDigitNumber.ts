@@ -1,12 +1,12 @@
-const generatedNumbers = new Set<string>()
+const generatedNumbers = new Set<string>();
 
 export function generateUniqueFourDigitNumber(): string {
-    let number: string
+	let number: string;
 
-    do {
-        number = Math.floor(1000 + Math.random() * 9000).toString()
-    } while (generatedNumbers.has(number))
+	do {
+		number = Math.floor(1000 + Math.random() * 9000).toString();
+	} while (generatedNumbers.has(number));
 
-    generatedNumbers.add(number)
-    return number
+	generatedNumbers.add(number);
+	return number;
 }

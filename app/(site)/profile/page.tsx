@@ -1,7 +1,9 @@
-import React from 'react'
+import { useCurrentSession } from '@/hooks/useCurrentSession';
+import React from 'react';
 
-const Profile = (): React.JSX.Element => {
-    return <div>Profile</div>
-}
+const Profile = async (): Promise<React.JSX.Element> => {
+	const user = await useCurrentSession();
+	return <div>{JSON.stringify(user)}</div>;
+};
 
-export default Profile
+export default Profile;

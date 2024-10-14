@@ -1,14 +1,16 @@
-import { Navbar } from '@/components/Navbar'
+import { AppBar } from '@/components/AppBar';
+import { Navbar } from '@/components/Navbar';
 
 export default function DashboardLayout({
-    children,
+	children,
 }: Readonly<{
-    children: React.ReactNode
+	children: React.ReactNode;
 }>): JSX.Element {
-    return (
-        <div className="min-h-screen">
-            <Navbar />
-            <div className="container">{children}</div>
-        </div>
-    )
+	return (
+		<div className='h-screen'>
+			<Navbar />
+			<AppBar />
+			<div className='container'>{children}</div>
+		</div>
+	);
 }
