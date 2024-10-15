@@ -1,14 +1,17 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { DialogBox } from '@/components/DialogBox';
 import React, { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import APP_PATHS from '@/config/path.config';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { LogOut, Moon, Sun, User } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
-interface User {
+interface UserSession {
 	id: string;
 	name: string;
 	email: string;
@@ -17,11 +20,12 @@ interface User {
 }
 
 interface UserButtonType {
-	user: User | undefined;
+	user: UserSession | undefined;
 }
 
 export const UserButton = ({ user }: UserButtonType): React.JSX.Element => {
 	const [showDialog, setShowDialog] = useState<boolean>(false);
+	const { setTheme, theme } = useTheme();
 
 	const avatarFallBack = (user?.name ?? 'Unknown')
 		.split(' ')
@@ -32,20 +36,48 @@ export const UserButton = ({ user }: UserButtonType): React.JSX.Element => {
 		<React.Fragment>
 			<DropdownMenu>
 				<DropdownMenuTrigger>
-					<Avatar className='border border-black'>
-						<AvatarImage src={user?.image ?? ''} />
-						<AvatarFallback>{avatarFallBack}</AvatarFallback>
-					</Avatar>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Avatar className='border border-black'>
+									<AvatarImage src={user?.image ?? ''} />
+									<AvatarFallback>{avatarFallBack}</AvatarFallback>
+								</Avatar>
+							</TooltipTrigger>
+							<TooltipContent>{user?.name}</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
 					<Link href={APP_PATHS.PROFILE}>
-						<DropdownMenuItem>Profile</DropdownMenuItem>
+						<DropdownMenuItem>
+							<User size={20} className='mr-2' />
+							Profile
+						</DropdownMenuItem>
 					</Link>
+
+					<DropdownMenuItem
+						onClick={() => {
+							setTheme(theme === 'light' ? 'dark' : 'light');
+						}}
+					>
+						{' '}
+						<Sun className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 mr-2' size={20} />
+						<Moon
+							className='absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 mr-2'
+							size={20}
+						/>
+						{theme === 'light' ? 'Dark Theme' : 'Light Theme'}
+					</DropdownMenuItem>
+
+					<DropdownMenuSeparator />
+
 					<DropdownMenuItem
 						onClick={() => {
 							setShowDialog(true);
 						}}
 					>
+						<LogOut size={20} className='mr-2' />
 						Logout
 					</DropdownMenuItem>
 				</DropdownMenuContent>

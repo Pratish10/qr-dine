@@ -8,7 +8,6 @@ import { LoginUserSchema } from '@/schemas/schema';
 import { type LoginUserType } from '@/schemas/types';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@/components/ui/input-otp';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import React, { useState, useTransition } from 'react';
 import { FormError } from '@/components/form-error';
@@ -19,6 +18,8 @@ import Link from 'next/link';
 import APP_PATHS from '@/config/path.config';
 import { type ServerActionReturnType } from '@/types/api.types';
 import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
+import FormInputField from '../SharedComponent/form-input-field';
 
 export const LoginForm = (): React.JSX.Element => {
 	const router = useRouter();
@@ -121,44 +122,41 @@ export const LoginForm = (): React.JSX.Element => {
 						)}
 						{!showTwoFactor && (
 							<React.Fragment>
-								<FormField
-									control={form.control}
+								<FormInputField<LoginUserType>
 									name='email'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Email</FormLabel>
-											<FormControl>
-												<Input {...field} placeholder='example@example.com' type='email' disabled={isPending} />
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								<FormField
+									label='Email'
+									placeholder='example@example.com'
 									control={form.control}
-									name='password'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Password</FormLabel>
-											<FormControl>
-												<Input {...field} placeholder='******' type='password' disabled={isPending} />
-											</FormControl>
-											<FormMessage />
-											<div className='flex justify-end'>
-												<Button className='px-0 font-normal bg-transparent' variant='link' size='sm' asChild>
-													<Link href={APP_PATHS.RESET_PASSWORD} className='text-right'>
-														Forgot Password?
-													</Link>
-												</Button>
-											</div>
-										</FormItem>
-									)}
+									disabled={isPending}
 								/>
+								<FormInputField<LoginUserType>
+									name='password'
+									label='Password'
+									placeholder='******'
+									control={form.control}
+									disabled={isPending}
+								/>
+								<div className='flex justify-end'>
+									<Button className='px-0 font-normal bg-transparent' variant='link' size='sm' asChild>
+										<Link href={APP_PATHS.RESET_PASSWORD} className='text-right'>
+											Forgot Password?
+										</Link>
+									</Button>
+								</div>
 							</React.Fragment>
 						)}
 					</div>
 					<Button type='submit' className='w-full' disabled={isPending}>
-						{showTwoFactor ? 'Confirm' : 'Login'}
+						{isPending ? (
+							<span className='flex items-center'>
+								<Loader2 className='mr-2 h-4 w-4 animate-spin' />
+								Please wait
+							</span>
+						) : showTwoFactor ? (
+							'Confirm'
+						) : (
+							'Login'
+						)}
 					</Button>
 				</form>
 			</Form>

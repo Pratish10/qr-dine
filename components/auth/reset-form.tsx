@@ -6,14 +6,14 @@ import { useState, useTransition } from 'react';
 
 import { ResetSchema } from '@/schemas/schema';
 import { type ResetSchemaType } from '@/schemas/types';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { resetPassword } from '@/actions/user/reset-password';
 import { AuthCard } from './auth-card';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
 import APP_PATHS from '@/config/path.config';
+import FormInputField from '../SharedComponent/form-input-field';
 
 export const ResetForm = (): JSX.Element => {
 	const [error, setError] = useState<string | undefined>('');
@@ -44,14 +44,7 @@ export const ResetForm = (): JSX.Element => {
 	};
 
 	return (
-		<AuthCard
-			headerLabel=''
-			cardTitle='Reset Password'
-			backButtonLabel='Back to Login Page'
-			backButtonTo={APP_PATHS.LOGIN}
-			HomeLabel='Back To Home'
-			toHome={APP_PATHS.HOME}
-		>
+		<AuthCard headerLabel='' cardTitle='Reset Password' backButtonLabel='Back' backButtonTo={APP_PATHS.HOME}>
 			<Form {...form}>
 				<form
 					// eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -61,18 +54,12 @@ export const ResetForm = (): JSX.Element => {
 					<div className='space-y-4'>
 						<FormError message={error} />
 						<FormSuccess message={success} />
-						<FormField
-							control={form.control}
+						<FormInputField<ResetSchemaType>
 							name='email'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Email</FormLabel>
-									<FormControl>
-										<Input {...field} placeholder='example@example.com' type='email' disabled={isPending} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+							label='Email'
+							placeholder='example@example.com'
+							control={form.control}
+							disabled={isPending}
 						/>
 					</div>
 					<Button type='submit' className='w-full' disabled={isPending}>

@@ -65,7 +65,21 @@ export const RestaurantSchema = z.object({
 	country: z.string().min(1, {
 		message: 'Country is Required',
 	}),
+
+	// Payment fields
+	cardNumber: z.string().min(16, 'Card number must be 16 digits').max(16, 'Card number must be 16 digits'),
+	expiryDate: z.string().min(5, 'Expiry date format should be MM/YY'),
+	cvv: z.string().min(3, 'CVV must be 3 digits').max(3, 'CVV must be 3 digits'),
+	accountName: z.string().min(1, 'Account name is required'),
+
 	userId: z.string().min(1, {
 		message: 'UserId is Required',
 	}),
+});
+
+export const ProfileSchema = z.object({
+	name: z.string().min(1, {
+		message: 'Name is required',
+	}),
+	isTwoFactorEnabled: z.boolean().optional(),
 });

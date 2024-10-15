@@ -11,8 +11,8 @@ interface AuthCardProps {
 	isSocialbutton?: boolean;
 	backButtonLabel: string;
 	backButtonTo: string;
-	HomeLabel: string;
-	toHome: string;
+	HomeLabel?: string;
+	toHome?: string;
 }
 
 export const AuthCard = ({
@@ -60,7 +60,7 @@ export const AuthCard = ({
 						<Link href={backButtonTo}>{backButtonLabel}</Link>
 					</Button>
 					<Button variant='link' size='sm' asChild>
-						<Link href={toHome}>{HomeLabel}</Link>
+						<Link href={toHome ?? ''}>{HomeLabel ?? ''}</Link>
 					</Button>
 				</CardFooter>
 			</Card>

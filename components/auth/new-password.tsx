@@ -8,14 +8,14 @@ import { useSearchParams } from 'next/navigation';
 
 import { NewPasswordSchema } from '@/schemas/schema';
 import { type NewPasswordType } from '@/schemas/types';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { newPassword } from '@/actions/user/new-password';
 import { AuthCard } from './auth-card';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
 import APP_PATHS from '@/config/path.config';
+import FormInputField from '../SharedComponent/form-input-field';
 
 export const NewPasswordForm = (): JSX.Element => {
 	const [error, setError] = useState<string | undefined>('');
@@ -61,18 +61,12 @@ export const NewPasswordForm = (): JSX.Element => {
 					<div className='space-y-4'>
 						<FormError message={error} />
 						<FormSuccess message={success} />
-						<FormField
-							control={form.control}
+						<FormInputField<NewPasswordType>
 							name='password'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>New Password</FormLabel>
-									<FormControl>
-										<Input {...field} placeholder='******' type='password' disabled={isPending} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+							label='New Password'
+							placeholder='******'
+							control={form.control}
+							disabled={isPending}
 						/>
 					</div>
 					<Button type='submit' className='w-full' disabled={isPending}>

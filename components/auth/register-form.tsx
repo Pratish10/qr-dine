@@ -6,8 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterUserSchema } from '@/schemas/schema';
 import { type RegisterUserType } from '@/schemas/types';
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useState, useTransition } from 'react';
 import { register } from '@/actions/user/register';
@@ -15,6 +14,8 @@ import { AuthCard } from './auth-card';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
 import APP_PATHS from '@/config/path.config';
+import { Loader2 } from 'lucide-react';
+import FormInputField from '../SharedComponent/form-input-field';
 
 export const RegisterForm = (): JSX.Element => {
 	const [error, setError] = useState<string | undefined>('');
@@ -65,48 +66,37 @@ export const RegisterForm = (): JSX.Element => {
 					<div className='space-y-4'>
 						<FormError message={error} />
 						<FormSuccess message={success} />
-						<FormField
-							control={form.control}
+						<FormInputField<RegisterUserType>
 							name='name'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Name</FormLabel>
-									<FormControl>
-										<Input {...field} placeholder='Username' disabled={isPending} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
+							label='Name'
+							placeholder='John Doe'
 							control={form.control}
+							disabled={isPending}
+						/>
+						<FormInputField<RegisterUserType>
 							name='email'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Email</FormLabel>
-									<FormControl>
-										<Input {...field} placeholder='example@example.com' type='email' disabled={isPending} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
+							label='Email'
+							placeholder='example@example.com'
 							control={form.control}
+							disabled={isPending}
+						/>
+						<FormInputField<RegisterUserType>
 							name='password'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Password</FormLabel>
-									<FormControl>
-										<Input {...field} placeholder='******' type='password' disabled={isPending} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+							label='Password'
+							placeholder='******'
+							control={form.control}
+							disabled={isPending}
 						/>
 					</div>
 					<Button type='submit' className='w-full' disabled={isPending}>
-						Register
+						{isPending ? (
+							<span className='flex items-center'>
+								<Loader2 className='mr-2 h-4 w-4 animate-spin' />
+								Please wait
+							</span>
+						) : (
+							'Register'
+						)}
 					</Button>
 				</form>
 			</Form>

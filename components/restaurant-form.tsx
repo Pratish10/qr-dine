@@ -7,13 +7,13 @@ import { useForm } from 'react-hook-form';
 import { FormError } from './form-error';
 import { FormSuccess } from './form-success';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { createRestaurant } from '@/actions/restaurant/create-restaurant';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import APP_PATHS from '@/config/path.config';
+import FormInputField from '@/components/SharedComponent/form-input-field';
 
 interface User {
 	id: string;
@@ -27,42 +27,11 @@ interface UserButtonType {
 	user?: User;
 }
 
-// Reusable form field component for cleaner code
-const FormInputField = ({
-	name,
-	label,
-	placeholder,
-	type = 'text',
-	control,
-	disabled,
-}: {
-	name: keyof RestaurantSchemaType;
-	label: string;
-	placeholder: string;
-	type?: string;
-	control: any;
-	disabled: boolean;
-}): React.JSX.Element => (
-	<FormField
-		control={control}
-		name={name}
-		render={({ field }) => (
-			<FormItem>
-				<FormLabel>{label}</FormLabel>
-				<FormControl>
-					<Input {...field} placeholder={placeholder} type={type} disabled={disabled} />
-				</FormControl>
-				<FormMessage />
-			</FormItem>
-		)}
-	/>
-);
-
 export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 	const router = useRouter();
+	const [step, setStep] = useState(1);
 	const [error, setError] = useState<string | undefined>('');
 	const [success, setSuccess] = useState<string | undefined>('');
-
 	const [isPending, startTransition] = useTransition();
 
 	const form = useForm<RestaurantSchemaType>({
@@ -76,13 +45,17 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 			country: '',
 			state: '',
 			userId: user?.id,
+			// Payment default values
+			cardNumber: '',
+			expiryDate: '',
+			cvv: '',
+			accountName: '',
 		},
 	});
 
 	const submitHandler = (values: RestaurantSchemaType): void => {
 		setError('');
 		setSuccess('');
-
 		startTransition(() => {
 			void createRestaurant(values).then(res => {
 				if (res.status) {
@@ -95,6 +68,16 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 		});
 	};
 
+	const handleNext = (): void => {
+		if (step === 1) {
+			setStep(2);
+		}
+	};
+
+	const handlePrevious = (): void => {
+		if (step === 2) setStep(1);
+	};
+
 	return (
 		<Form {...form}>
 			<form
@@ -102,79 +85,131 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 				onSubmit={form.handleSubmit(submitHandler)}
 				className='space-y-4'
 			>
-				{/* Feedback messages */}
 				<FormError message={error} />
 				<FormSuccess message={success} />
 
-				{/* Form fields */}
-				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-					{/* Restaurant Name and Branch Name */}
-					<FormInputField
-						name='fullName'
-						label='Restaurant Name'
-						placeholder='Restaurant Name'
-						control={form.control}
-						disabled={isPending}
-					/>
-					<FormInputField name='branchName' label='Branch Name' placeholder='Branch Name' control={form.control} disabled={isPending} />
-				</div>
+				{step === 1 && (
+					<>
+						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+							<FormInputField<RestaurantSchemaType>
+								name='fullName'
+								label='Restaurant Name'
+								placeholder='Restaurant Name'
+								control={form.control}
+								disabled={isPending}
+							/>
+							<FormInputField
+								name='branchName'
+								label='Branch Name'
+								placeholder='Branch Name'
+								control={form.control}
+								disabled={isPending}
+							/>
+						</div>
+						<FormField
+							control={form.control}
+							name='address'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Restaurant Address</FormLabel>
+									<FormControl>
+										<Textarea
+											{...field}
+											placeholder='Address'
+											className='w-full p-2 border rounded-md disabled:opacity-50'
+											rows={4}
+											disabled={isPending}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+							<FormInputField<RestaurantSchemaType>
+								name='pinCode'
+								label='Pin Code'
+								placeholder='Pin Code'
+								type='number'
+								control={form.control}
+								disabled={isPending}
+							/>
+							<FormInputField<RestaurantSchemaType>
+								name='city'
+								label='City'
+								placeholder='City'
+								control={form.control}
+								disabled={isPending}
+							/>
+						</div>
+						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+							<FormInputField<RestaurantSchemaType>
+								name='state'
+								label='State'
+								placeholder='State'
+								control={form.control}
+								disabled={isPending}
+							/>
+							<FormInputField<RestaurantSchemaType>
+								name='country'
+								label='Country'
+								placeholder='Country'
+								control={form.control}
+								disabled={isPending}
+							/>
+						</div>
 
-				{/* Restaurant Address (text area) */}
-				<FormField
-					control={form.control}
-					name='address'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Restaurant Address</FormLabel>
-							<FormControl>
-								<Textarea
-									{...field}
-									placeholder='Address'
-									className='w-full p-2 border rounded-md disabled:opacity-50'
-									rows={4}
-									disabled={isPending}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+						{/* Next Button */}
+						<div className='flex justify-end'>
+							<Button type='button' onClick={handleNext} className='w-1/2' disabled={isPending}>
+								Next
+							</Button>
+						</div>
+					</>
+				)}
 
-				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-					{/* Pin Code and City */}
-					<FormInputField
-						name='pinCode'
-						label='Pin Code'
-						placeholder='Pin Code'
-						type='number'
-						control={form.control}
-						disabled={isPending}
-					/>
-					<FormInputField name='city' label='City' placeholder='City' control={form.control} disabled={isPending} />
-				</div>
+				{step === 2 && (
+					<>
+						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+							<FormInputField<RestaurantSchemaType>
+								name='cardNumber'
+								label='Card Number'
+								placeholder='Card Number'
+								type='number'
+								control={form.control}
+								disabled={isPending}
+							/>
+							<FormInputField name='expiryDate' label='Expiry Date' placeholder='MM/YY' control={form.control} disabled={isPending} />
+						</div>
+						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+							<FormInputField<RestaurantSchemaType>
+								name='cvv'
+								label='CVV'
+								placeholder='CVV'
+								type='number'
+								control={form.control}
+								disabled={isPending}
+							/>
+							<FormInputField<RestaurantSchemaType>
+								name='accountName'
+								label='Account Name'
+								placeholder='Account Name'
+								control={form.control}
+								disabled={isPending}
+							/>
+						</div>
 
-				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-					{/* State and Country */}
-					<FormInputField name='state' label='State' placeholder='State' control={form.control} disabled={isPending} />
-					<FormInputField name='country' label='Country' placeholder='Country' control={form.control} disabled={isPending} />
-				</div>
-
-				{/* Submit button */}
-				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-					<Button
-						variant='destructive'
-						onClick={() => {
-							form.reset();
-						}}
-						className='w-full'
-						disabled={isPending}
-					>
-						Clear
-					</Button>
-					<Button type='submit' className='w-full' disabled={isPending}>
-						Register
-					</Button>
-				</div>
+						{/* Previous and Submit buttons */}
+						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+							<Button type='button' onClick={handlePrevious} className='w-full' disabled={isPending}>
+								Previous
+							</Button>
+							<Button type='submit' className='w-full' disabled={isPending}>
+								Submit
+							</Button>
+						</div>
+					</>
+				)}
 			</form>
 		</Form>
 	);
