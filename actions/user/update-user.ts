@@ -2,7 +2,7 @@
 'use server';
 
 import prisma from '@/db';
-import { useCurrentSession } from '@/hooks/useCurrentSession';
+import { getCurrentUser } from '@/hooks/getCurrentUser';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { getUserById } from '@/lib/auth/user';
 import { ErrorHandler } from '@/lib/error';
@@ -12,7 +12,7 @@ import { type ProfileSchemaType } from '@/schemas/types';
 import { type ServerActionReturnType } from '@/types/api.types';
 
 export const updateUser = withServerActionAsyncCatcher<ProfileSchemaType, ServerActionReturnType>(async values => {
-	const user = await useCurrentSession();
+	const user = await getCurrentUser();
 
 	if (user?.id === undefined || !user) {
 		throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');

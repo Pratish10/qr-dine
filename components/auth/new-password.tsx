@@ -67,6 +67,7 @@ export const NewPasswordForm = (): JSX.Element => {
 							placeholder='******'
 							control={form.control}
 							disabled={isPending}
+							type='password'
 						/>
 					</div>
 					<Button type='submit' className='w-full' disabled={isPending}>

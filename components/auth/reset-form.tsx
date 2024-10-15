@@ -60,6 +60,7 @@ export const ResetForm = (): JSX.Element => {
 							placeholder='example@example.com'
 							control={form.control}
 							disabled={isPending}
+							type='email'
 						/>
 					</div>
 					<Button type='submit' className='w-full' disabled={isPending}>

@@ -31,7 +31,7 @@ export const createRestaurant = withServerActionAsyncCatcher<RestaurantSchemaTyp
 		throw new ErrorHandler('Restaurant with same Branch Name already exists!', 'BAD_REQUEST');
 	}
 
-	const restaurantId = generateUniqueFourDigitNumber();
+	const restaurantId = `R-${generateUniqueFourDigitNumber()}`;
 
 	try {
 		await prisma.restaurant.create({

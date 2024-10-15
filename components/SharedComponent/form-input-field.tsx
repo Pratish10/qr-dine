@@ -9,9 +9,10 @@ interface FormInputFieldProps<T extends FieldValues> {
 	placeholder: string;
 	control: Control<T>;
 	disabled: boolean;
+	type: string;
 }
 
-const FormInputField = <T extends FieldValues>({ name, label, placeholder, control, disabled }: FormInputFieldProps<T>): React.JSX.Element => (
+const FormInputField = <T extends FieldValues>({ name, label, placeholder, control, disabled, type }: FormInputFieldProps<T>): React.JSX.Element => (
 	<FormField
 		control={control}
 		name={name}
@@ -19,7 +20,7 @@ const FormInputField = <T extends FieldValues>({ name, label, placeholder, contr
 			<FormItem>
 				<FormLabel>{label}</FormLabel>
 				<FormControl>
-					<Input {...field} placeholder={placeholder} type={name} disabled={disabled} />
+					<Input {...field} placeholder={placeholder} type={type} disabled={disabled} />
 				</FormControl>
 				<FormMessage />
 			</FormItem>

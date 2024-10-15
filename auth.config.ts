@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import bcryptjs from 'bcryptjs';
 
-import { LoginUserSchema } from '@/schemas/schema';
-import { getUserByEmail } from '@/lib/auth/user';
-import { type NextAuthConfig } from 'next-auth';
+import type { NextAuthConfig } from 'next-auth';
+import { LoginUserSchema } from './schemas/schema';
+import { getUserByEmail } from './lib/auth/user';
 
 export default {
 	providers: [
@@ -26,7 +27,7 @@ export default {
 
 					const user = await getUserByEmail(email);
 
-					if (user?.encryptedPassword == null) return null;
+					if (!user?.encryptedPassword) return null;
 
 					const passwordMatch = await bcryptjs.compare(password, user.encryptedPassword);
 

@@ -14,22 +14,14 @@ import { Loader2 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { Switch } from '@/components/ui/switch';
 import { updateUser } from '@/actions/user/update-user';
-import Link from 'next/link';
-import APP_PATHS from '@/config/path.config';
 
 export const ProfileForm = (): JSX.Element => {
 	const [isPending, startTransition] = useTransition();
 	const [editForm, setEditForm] = useState<boolean>(false);
-	const { update } = useSession();
+	const { update, data } = useSession();
+	console.log(data);
 
-	const user = {
-		name: '',
-		email: '',
-		image: '',
-		isTwoFactorEnabled: false,
-	};
-
-	const avatarFallBack = (user?.name ?? 'Unknown')
+	const avatarFallBack = (data?.user?.name ?? 'Unknown')
 		.split(' ')
 		.map(word => word.charAt(0).toUpperCase())
 		.join('');
@@ -37,8 +29,8 @@ export const ProfileForm = (): JSX.Element => {
 	const form = useForm<ProfileSchemaType>({
 		resolver: zodResolver(ProfileSchema),
 		defaultValues: {
-			name: user?.name ?? undefined,
-			isTwoFactorEnabled: user?.isTwoFactorEnabled ?? undefined,
+			name: data?.user?.name ?? undefined,
+			isTwoFactorEnabled: data?.user?.isTwoFactorEnabled ?? undefined,
 		},
 	});
 
@@ -68,7 +60,7 @@ export const ProfileForm = (): JSX.Element => {
 						setEditForm(!editForm);
 					}}
 					variant='outline'
-					className='px-4 py-2 mx-5 border border-black'
+					className='py-2 border border-black'
 					disabled={isPending}
 				>
 					{isPending ? (
@@ -90,12 +82,12 @@ export const ProfileForm = (): JSX.Element => {
 					<div className='col-span-3 sm:col-span-1 border rounded-md p-4 flex flex-col items-center justify-center relative group'>
 						<div className='flex flex-col items-center'>
 							<Avatar className='border border-black w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-36 xl:h-36 sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'>
-								<AvatarImage src={user?.image ?? ''} />
+								<AvatarImage src={data?.user?.image ?? ''} />
 								<AvatarFallback>{avatarFallBack}</AvatarFallback>
 							</Avatar>
 							<div className='mt-2 text-center'>
-								<p className='font-bold'>{user?.name ?? 'Unknown'}</p>
-								<p className='text-sm text-gray-500'>{user?.email ?? 'Unknown'}</p>
+								<p className='font-bold'>{data?.user?.name ?? 'Unknown'}</p>
+								<p className='text-sm text-gray-500'>{data?.user?.email ?? 'Unknown'}</p>
 							</div>
 						</div>
 					</div>
@@ -137,11 +129,11 @@ export const ProfileForm = (): JSX.Element => {
 								)}
 							/>
 						</div>
-						<div className='flex justify-start mt-4'>
+						{/* <div className='flex justify-start mt-4'>
 							<Button className='px-0 font-normal bg-transparent' variant='link' size='sm' asChild>
 								<Link href={APP_PATHS.RESET_PASSWORD}>Forgot Password?</Link>
 							</Button>
-						</div>
+						</div> */}
 						<div className='flex justify-end my-10'>
 							<Button type='submit' disabled={isPending || !editForm}>
 								{isPending ? (

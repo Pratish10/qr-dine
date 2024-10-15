@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { AppBar } from '@/components/AppBar';
 import { Navbar } from '@/components/Navbar';
-import { useCurrentSession } from '@/hooks/useCurrentSession';
+import { getCurrentUser } from '@/hooks/getCurrentUser';
 
 export default async function DashboardLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>): Promise<JSX.Element> {
-	const user = await useCurrentSession();
+	const user = await getCurrentUser();
 
 	return (
 		<div className='h-screen'>

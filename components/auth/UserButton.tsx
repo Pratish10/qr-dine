@@ -4,30 +4,19 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { DialogBox } from '@/components/DialogBox';
 import React, { useState } from 'react';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import APP_PATHS from '@/config/path.config';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { LogOut, Moon, Sun, User } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
-interface UserSession {
-	id: string;
-	name: string;
-	email: string;
-	image: string | null;
-	isTwoFactorEnabled: boolean;
-}
-
-interface UserButtonType {
-	user: UserSession | undefined;
-}
-
-export const UserButton = ({ user }: UserButtonType): React.JSX.Element => {
+export const UserButton = (): React.JSX.Element => {
+	const { data } = useSession();
 	const [showDialog, setShowDialog] = useState<boolean>(false);
 	const { setTheme, theme } = useTheme();
 
-	const avatarFallBack = (user?.name ?? 'Unknown')
+	const avatarFallBack = (data?.user?.name ?? 'Unknown')
 		.split(' ')
 		.map(word => word.charAt(0).toUpperCase())
 		.join('');
@@ -40,11 +29,11 @@ export const UserButton = ({ user }: UserButtonType): React.JSX.Element => {
 						<Tooltip>
 							<TooltipTrigger asChild>
 								<Avatar className='border border-black'>
-									<AvatarImage src={user?.image ?? ''} />
+									<AvatarImage src={data?.user?.image ?? ''} />
 									<AvatarFallback>{avatarFallBack}</AvatarFallback>
 								</Avatar>
 							</TooltipTrigger>
-							<TooltipContent>{user?.name}</TooltipContent>
+							<TooltipContent>{data?.user?.name}</TooltipContent>
 						</Tooltip>
 					</TooltipProvider>
 				</DropdownMenuTrigger>

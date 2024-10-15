@@ -1,7 +1,7 @@
 import { ProfileForm } from '@/components/auth/profile-form';
 
-const Profile = async (): Promise<React.JSX.Element> => {
-	return <div>profile</div>;
+const Profile = (): React.JSX.Element => {
+	return <ProfileForm />;
 };
 
 export default Profile;

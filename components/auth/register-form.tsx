@@ -72,6 +72,7 @@ export const RegisterForm = (): JSX.Element => {
 							placeholder='John Doe'
 							control={form.control}
 							disabled={isPending}
+							type='name'
 						/>
 						<FormInputField<RegisterUserType>
 							name='email'
@@ -79,6 +80,7 @@ export const RegisterForm = (): JSX.Element => {
 							placeholder='example@example.com'
 							control={form.control}
 							disabled={isPending}
+							type='email'
 						/>
 						<FormInputField<RegisterUserType>
 							name='password'
@@ -86,6 +88,7 @@ export const RegisterForm = (): JSX.Element => {
 							placeholder='******'
 							control={form.control}
 							disabled={isPending}
+							type='password'
 						/>
 					</div>
 					<Button type='submit' className='w-full' disabled={isPending}>

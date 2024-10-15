@@ -4,8 +4,8 @@ import { type RestaurantSchemaType } from '@/schemas/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormError } from './form-error';
-import { FormSuccess } from './form-success';
+import { FormError } from '../form-error';
+import { FormSuccess } from '../form-success';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -14,20 +14,10 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import APP_PATHS from '@/config/path.config';
 import FormInputField from '@/components/SharedComponent/form-input-field';
+import { useSession } from 'next-auth/react';
 
-interface User {
-	id: string;
-	name: string;
-	email: string;
-	image: string | null;
-	isTwoFactorEnabled: boolean;
-}
-
-interface UserButtonType {
-	user?: User;
-}
-
-export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
+export const RestaurantForm = (): React.JSX.Element => {
+	const { data } = useSession();
 	const router = useRouter();
 	const [step, setStep] = useState(1);
 	const [error, setError] = useState<string | undefined>('');
@@ -44,7 +34,7 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 			city: '',
 			country: '',
 			state: '',
-			userId: user?.id,
+			userId: data?.user?.id ?? undefined,
 			// Payment default values
 			cardNumber: '',
 			expiryDate: '',
@@ -97,6 +87,7 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 								placeholder='Restaurant Name'
 								control={form.control}
 								disabled={isPending}
+								type='text'
 							/>
 							<FormInputField
 								name='branchName'
@@ -104,6 +95,7 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 								placeholder='Branch Name'
 								control={form.control}
 								disabled={isPending}
+								type='text'
 							/>
 						</div>
 						<FormField
@@ -130,9 +122,9 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 								name='pinCode'
 								label='Pin Code'
 								placeholder='Pin Code'
-								type='number'
 								control={form.control}
 								disabled={isPending}
+								type='number'
 							/>
 							<FormInputField<RestaurantSchemaType>
 								name='city'
@@ -140,6 +132,7 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 								placeholder='City'
 								control={form.control}
 								disabled={isPending}
+								type='text'
 							/>
 						</div>
 						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
@@ -149,6 +142,7 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 								placeholder='State'
 								control={form.control}
 								disabled={isPending}
+								type='text'
 							/>
 							<FormInputField<RestaurantSchemaType>
 								name='country'
@@ -156,6 +150,7 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 								placeholder='Country'
 								control={form.control}
 								disabled={isPending}
+								type='text'
 							/>
 						</div>
 
@@ -175,20 +170,27 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 								name='cardNumber'
 								label='Card Number'
 								placeholder='Card Number'
-								type='number'
 								control={form.control}
 								disabled={isPending}
+								type='number'
 							/>
-							<FormInputField name='expiryDate' label='Expiry Date' placeholder='MM/YY' control={form.control} disabled={isPending} />
+							<FormInputField
+								name='expiryDate'
+								label='Expiry Date'
+								placeholder='MM/YY'
+								control={form.control}
+								disabled={isPending}
+								type='number'
+							/>
 						</div>
 						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
 							<FormInputField<RestaurantSchemaType>
 								name='cvv'
 								label='CVV'
 								placeholder='CVV'
-								type='number'
 								control={form.control}
 								disabled={isPending}
+								type='number'
 							/>
 							<FormInputField<RestaurantSchemaType>
 								name='accountName'
@@ -196,6 +198,7 @@ export const RestaurantForm = ({ user }: UserButtonType): React.JSX.Element => {
 								placeholder='Account Name'
 								control={form.control}
 								disabled={isPending}
+								type='text'
 							/>
 						</div>
 

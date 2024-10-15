@@ -1,16 +1,11 @@
 'use client';
-import { ChevronLeft, ChevronRight, LayoutDashboard, Salad, User } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
 import clsx from 'clsx';
 import { SidebarItems } from './side-bar';
-import APP_PATHS from '@/config/path.config';
-
-export const menuOptions = [
-	{ id: 1, name: 'Dashboard', Component: LayoutDashboard, href: APP_PATHS.DASHBOARD },
-	{ id: 3, name: 'Profile', Component: User, href: APP_PATHS.PROFILE },
-];
+import { sideBarOptions } from '@/config/sideBar.config';
 
 const useMediaQuery = (query: string): boolean => {
 	const [matches, setMatches] = useState<boolean>(false);
@@ -63,7 +58,7 @@ export const AppBar = (): React.JSX.Element => {
 					stiffness: 200,
 					damping: 20,
 				}}
-				className='fixed left-0 top-0 z-[999] hidden h-full flex-col border-r border-primary/10 bg-background dark:bg-background 2xl:flex'
+				className='fixed left-0 top-0 z-[99] hidden h-full flex-col border-r border-primary/10 bg-white dark:bg-neutral-950 2xl:flex'
 			>
 				<div className='flex h-full flex-col gap-4'>
 					<div
@@ -79,7 +74,7 @@ export const AppBar = (): React.JSX.Element => {
 						</Button>
 					</div>
 					<div className='flex flex-col gap-6 p-2'>
-						<SidebarItems items={menuOptions} isCollapsed={isCollapsed} />
+						<SidebarItems items={sideBarOptions} isCollapsed={isCollapsed} />
 					</div>
 				</div>
 			</motion.nav>
@@ -91,7 +86,7 @@ export const AppBar = (): React.JSX.Element => {
 				className='fixed bottom-0 left-0 right-0 z-[999] 2xl:hidden'
 			>
 				<div className='flex items-center justify-around border-t border-primary/10 bg-background p-4 shadow-xl'>
-					<SidebarItems items={menuOptions} isCollapsed={!isMediumToXL} />
+					<SidebarItems items={sideBarOptions} isCollapsed={!isMediumToXL} />
 				</div>
 			</motion.nav>
 		</>

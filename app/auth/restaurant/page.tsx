@@ -1,10 +1,7 @@
-import { RestaurantForm } from '@/components/restaurant-form';
-import { useCurrentSession } from '@/hooks/useCurrentSession';
+import { RestaurantForm } from '@/components/auth/restaurant-form';
 import Image from 'next/image';
 
-const Restaurant = async (): Promise<JSX.Element> => {
-	const user = await useCurrentSession();
-
+const Restaurant = (): JSX.Element => {
 	return (
 		<div className='h-screen'>
 			<div className='md:hidden'>
@@ -30,8 +27,7 @@ const Restaurant = async (): Promise<JSX.Element> => {
 						<div className='flex flex-col space-y-2 text-center'>
 							<h1 className='text-2xl font-semibold tracking-tight'>Register Restaurant</h1>
 						</div>
-						{/* @ts-expect-error using ts-ignore beacuse of the isTwoEnabled property */}
-						<RestaurantForm user={user} />
+						<RestaurantForm />
 					</div>
 				</div>
 			</div>

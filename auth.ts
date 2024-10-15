@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-
 import NextAuth from 'next-auth';
 import authConfig from '@/auth.config';
-import prisma from '@/db';
-import { getUserById } from '@/lib/auth/user';
-import { getTwoFactorConfirmationByUserId } from '@/lib/auth/two-factor-confirmation';
-import APP_PATHS from '@/config/path.config';
+import prisma from './db';
+import { getUserById } from './lib/auth/user';
+import { getTwoFactorConfirmationByUserId } from './lib/auth/two-factor-confirmation';
+import { PrismaAdapter } from '@auth/prisma-adapter';
 
 export const {
 	handlers: { GET, POST },
@@ -14,7 +13,8 @@ export const {
 	signOut,
 } = NextAuth({
 	pages: {
-		signIn: APP_PATHS.HOME,
+		signIn: '/auth/login',
+		error: '/auth/error',
 	},
 	events: {
 		async linkAccount({ user }) {
@@ -28,7 +28,11 @@ export const {
 		async signIn({ user, account }) {
 			if (account?.provider !== 'credentials') return true;
 
-			const existingUser = await getUserById(user.id ?? '');
+			if (!user.id) {
+				return false;
+			}
+
+			const existingUser = await getUserById(user.id);
 
 			if (existingUser?.emailVerified === null) return false;
 
@@ -53,9 +57,9 @@ export const {
 				session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
 			}
 
-			//   if (token.role && session.user) {
-			//     session.user.role = token.role
-			//   }
+			// if (token.role && session.user) {
+			// 	session.user.role = token.role as UserRole;
+			// }
 
 			if (session.user) {
 				session.user.name = token.name;
@@ -71,11 +75,11 @@ export const {
 
 			token.name = existingUser.name;
 			token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
-			//   token.role = existingUser.role
+			// token.role = existingUser.role;
 			return token;
 		},
 	},
-	//   secret: process.env.AUTH_SECRET,
+	adapter: PrismaAdapter(prisma),
 	session: { strategy: 'jwt' },
 	...authConfig,
 });

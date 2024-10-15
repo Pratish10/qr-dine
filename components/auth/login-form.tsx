@@ -128,6 +128,7 @@ export const LoginForm = (): React.JSX.Element => {
 									placeholder='example@example.com'
 									control={form.control}
 									disabled={isPending}
+									type='email'
 								/>
 								<FormInputField<LoginUserType>
 									name='password'
@@ -135,6 +136,7 @@ export const LoginForm = (): React.JSX.Element => {
 									placeholder='******'
 									control={form.control}
 									disabled={isPending}
+									type='password'
 								/>
 								<div className='flex justify-end'>
 									<Button className='px-0 font-normal bg-transparent' variant='link' size='sm' asChild>

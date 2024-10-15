@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button';
 import APP_PATHS from '@/config/path.config';
 import { UserButton } from '@/components/auth/UserButton';
 import React from 'react';
-import { useCurrentSession } from '@/hooks/useCurrentSession';
+import { getCurrentUser } from '@/hooks/getCurrentUser';
 
 export const Navbar = async (): Promise<React.JSX.Element> => {
-	const user = await useCurrentSession();
+	const user = await getCurrentUser();
 	return (
 		<nav className='flex items-center border-b-2 h-16'>
 			<div className='container flex items-center justify-between h-full'>
@@ -24,10 +24,7 @@ export const Navbar = async (): Promise<React.JSX.Element> => {
 							</Link>
 						</React.Fragment>
 					) : (
-						<UserButton
-							// @ts-expect-error using ts-ignore because of the isTwoEnabled property
-							user={user}
-						/>
+						<UserButton />
 					)}
 				</div>
 			</div>
