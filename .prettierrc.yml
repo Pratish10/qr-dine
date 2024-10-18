@@ -28,7 +28,7 @@ jsxSingleQuote: true
 
 # Include parentheses around a sole arrow function parameter
 # "always" => (x) => x / "avoid" => x => x
-arrowParens: "avoid"
+arrowParens: "always"
 
 # Set end-of-line characters. Use "lf" for Linux/macOS, "crlf" for Windows, or "auto" to adapt to the OS
 endOfLine: "auto"

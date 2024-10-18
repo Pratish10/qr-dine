@@ -11,7 +11,7 @@ import { ProfileSchema } from '@/schemas/schema';
 import { type ProfileSchemaType } from '@/schemas/types';
 import { type ServerActionReturnType } from '@/types/api.types';
 
-export const updateUser = withServerActionAsyncCatcher<ProfileSchemaType, ServerActionReturnType>(async values => {
+export const updateUser = withServerActionAsyncCatcher<ProfileSchemaType, ServerActionReturnType>(async (values) => {
 	const user = await getCurrentUser();
 
 	if (user?.id === undefined || !user) {

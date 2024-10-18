@@ -19,7 +19,6 @@ import { useSession } from 'next-auth/react';
 export const RestaurantForm = (): React.JSX.Element => {
 	const { data } = useSession();
 	const router = useRouter();
-	const [step, setStep] = useState(1);
 	const [error, setError] = useState<string | undefined>('');
 	const [success, setSuccess] = useState<string | undefined>('');
 	const [isPending, startTransition] = useTransition();
@@ -35,11 +34,8 @@ export const RestaurantForm = (): React.JSX.Element => {
 			country: '',
 			state: '',
 			userId: data?.user?.id ?? undefined,
-			// Payment default values
-			cardNumber: '',
-			expiryDate: '',
-			cvv: '',
-			accountName: '',
+			upiID: '',
+			clientName: '',
 		},
 	});
 
@@ -47,7 +43,7 @@ export const RestaurantForm = (): React.JSX.Element => {
 		setError('');
 		setSuccess('');
 		startTransition(() => {
-			void createRestaurant(values).then(res => {
+			void createRestaurant(values).then((res) => {
 				if (res.status) {
 					toast.success(res.message);
 					router.push(APP_PATHS.DASHBOARD);
@@ -56,16 +52,6 @@ export const RestaurantForm = (): React.JSX.Element => {
 				}
 			});
 		});
-	};
-
-	const handleNext = (): void => {
-		if (step === 1) {
-			setStep(2);
-		}
-	};
-
-	const handlePrevious = (): void => {
-		if (step === 2) setStep(1);
 	};
 
 	return (
@@ -78,141 +64,105 @@ export const RestaurantForm = (): React.JSX.Element => {
 				<FormError message={error} />
 				<FormSuccess message={success} />
 
-				{step === 1 && (
-					<>
-						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-							<FormInputField<RestaurantSchemaType>
-								name='fullName'
-								label='Restaurant Name'
-								placeholder='Restaurant Name'
-								control={form.control}
-								disabled={isPending}
-								type='text'
-							/>
-							<FormInputField
-								name='branchName'
-								label='Branch Name'
-								placeholder='Branch Name'
-								control={form.control}
-								disabled={isPending}
-								type='text'
-							/>
-						</div>
-						<FormField
+				<>
+					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+						<FormInputField<RestaurantSchemaType>
+							name='fullName'
+							label='Restaurant Name'
+							placeholder='Restaurant Name'
 							control={form.control}
-							name='address'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Restaurant Address</FormLabel>
-									<FormControl>
-										<Textarea
-											{...field}
-											placeholder='Address'
-											className='w-full p-2 border rounded-md disabled:opacity-50'
-											rows={4}
-											disabled={isPending}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+							disabled={isPending}
+							type='text'
 						/>
-						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-							<FormInputField<RestaurantSchemaType>
-								name='pinCode'
-								label='Pin Code'
-								placeholder='Pin Code'
-								control={form.control}
-								disabled={isPending}
-								type='number'
-							/>
-							<FormInputField<RestaurantSchemaType>
-								name='city'
-								label='City'
-								placeholder='City'
-								control={form.control}
-								disabled={isPending}
-								type='text'
-							/>
-						</div>
-						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-							<FormInputField<RestaurantSchemaType>
-								name='state'
-								label='State'
-								placeholder='State'
-								control={form.control}
-								disabled={isPending}
-								type='text'
-							/>
-							<FormInputField<RestaurantSchemaType>
-								name='country'
-								label='Country'
-								placeholder='Country'
-								control={form.control}
-								disabled={isPending}
-								type='text'
-							/>
-						</div>
+						<FormInputField
+							name='branchName'
+							label='Branch Name'
+							placeholder='Branch Name'
+							control={form.control}
+							disabled={isPending}
+							type='text'
+						/>
+					</div>
+					<FormField
+						control={form.control}
+						name='address'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Restaurant Address</FormLabel>
+								<FormControl>
+									<Textarea
+										{...field}
+										placeholder='Address'
+										className='w-full p-2 border rounded-md disabled:opacity-50'
+										rows={4}
+										disabled={isPending}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+						<FormInputField<RestaurantSchemaType>
+							name='clientName'
+							label='Name'
+							placeholder='Enter your name'
+							control={form.control}
+							disabled={isPending}
+							type='text'
+						/>
+						<FormInputField<RestaurantSchemaType>
+							name='upiID'
+							label='UPI ID'
+							placeholder='Enter your upi id'
+							control={form.control}
+							disabled={isPending}
+							type='text'
+						/>
+					</div>
+					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+						<FormInputField<RestaurantSchemaType>
+							name='pinCode'
+							label='Pin Code'
+							placeholder='Pin Code'
+							control={form.control}
+							disabled={isPending}
+							type='number'
+						/>
+						<FormInputField<RestaurantSchemaType>
+							name='city'
+							label='City'
+							placeholder='City'
+							control={form.control}
+							disabled={isPending}
+							type='text'
+						/>
+					</div>
+					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+						<FormInputField<RestaurantSchemaType>
+							name='state'
+							label='State'
+							placeholder='State'
+							control={form.control}
+							disabled={isPending}
+							type='text'
+						/>
+						<FormInputField<RestaurantSchemaType>
+							name='country'
+							label='Country'
+							placeholder='Country'
+							control={form.control}
+							disabled={isPending}
+							type='text'
+						/>
+					</div>
 
-						{/* Next Button */}
-						<div className='flex justify-end'>
-							<Button type='button' onClick={handleNext} className='w-1/2' disabled={isPending}>
-								Next
-							</Button>
-						</div>
-					</>
-				)}
-
-				{step === 2 && (
-					<>
-						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-							<FormInputField<RestaurantSchemaType>
-								name='cardNumber'
-								label='Card Number'
-								placeholder='Card Number'
-								control={form.control}
-								disabled={isPending}
-								type='number'
-							/>
-							<FormInputField
-								name='expiryDate'
-								label='Expiry Date'
-								placeholder='MM/YY'
-								control={form.control}
-								disabled={isPending}
-								type='number'
-							/>
-						</div>
-						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-							<FormInputField<RestaurantSchemaType>
-								name='cvv'
-								label='CVV'
-								placeholder='CVV'
-								control={form.control}
-								disabled={isPending}
-								type='number'
-							/>
-							<FormInputField<RestaurantSchemaType>
-								name='accountName'
-								label='Account Name'
-								placeholder='Account Name'
-								control={form.control}
-								disabled={isPending}
-								type='text'
-							/>
-						</div>
-
-						{/* Previous and Submit buttons */}
-						<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-							<Button type='button' onClick={handlePrevious} className='w-full' disabled={isPending}>
-								Previous
-							</Button>
-							<Button type='submit' className='w-full' disabled={isPending}>
-								Submit
-							</Button>
-						</div>
-					</>
-				)}
+					<div className='flex justify-end'>
+						<Button type='submit' disabled={isPending}>
+							Submit
+						</Button>
+					</div>
+				</>
 			</form>
 		</Form>
 	);

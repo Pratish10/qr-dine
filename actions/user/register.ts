@@ -11,7 +11,7 @@ import prisma from '@/db';
 import { ErrorHandler } from '@/lib/error';
 import { SuccessResponse } from '@/lib/success';
 
-export const register = withServerActionAsyncCatcher<RegisterUserType, ServerActionReturnType>(async values => {
+export const register = withServerActionAsyncCatcher<RegisterUserType, ServerActionReturnType>(async (values) => {
 	const validatedFields = RegisterUserSchema.safeParse(values);
 
 	if (!validatedFields.success) {

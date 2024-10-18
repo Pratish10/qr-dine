@@ -41,6 +41,10 @@ export async function GET(): Promise<NextResponse<ServerActionReturnType>> {
 				createdAt: true,
 				updatedAt: true,
 				userId: true,
+				ClientName: true,
+			},
+			orderBy: {
+				updatedAt: 'asc',
 			},
 		});
 

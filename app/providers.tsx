@@ -1,19 +1,18 @@
+'use client';
 import React from 'react';
 import { ThemeProvider } from './theme-provider';
-import { SessionProvider } from 'next-auth/react';
-import { auth } from '@/auth';
 import { QueryProvider } from './query-provider';
+import { RecoilRoot } from 'recoil';
+import { EdgeStoreProvider } from '@/lib/edgestore';
 
-export const Providers = async ({ children }: { children: React.ReactNode }): Promise<React.JSX.Element> => {
-	const session = await auth();
-
+export const Providers = ({ children }: { children: React.ReactNode }): React.JSX.Element => {
 	return (
-		<QueryProvider>
-			<SessionProvider session={session}>
+		<RecoilRoot>
+			<QueryProvider>
 				<ThemeProvider attribute='class' defaultTheme='light'>
-					{children}
+					<EdgeStoreProvider>{children}</EdgeStoreProvider>
 				</ThemeProvider>
-			</SessionProvider>
-		</QueryProvider>
+			</QueryProvider>
+		</RecoilRoot>
 	);
 };

@@ -6,6 +6,7 @@ import {
 	type ResetSchema,
 	type RestaurantSchema,
 	type ProfileSchema,
+	type AddMenuSchema,
 } from './schema';
 
 export type RegisterUserType = z.infer<typeof RegisterUserSchema>;
@@ -14,3 +15,4 @@ export type NewPasswordType = z.infer<typeof NewPasswordSchema>;
 export type ResetSchemaType = z.infer<typeof ResetSchema>;
 export type RestaurantSchemaType = z.infer<typeof RestaurantSchema>;
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
+export type AddMenuSchemaType = z.infer<typeof AddMenuSchema>;

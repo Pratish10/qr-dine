@@ -50,7 +50,7 @@ export const getRestaurantByRestaurantId = (
 > | null => {
 	try {
 		const restaurant = prisma.restaurant.findUnique({
-			where: { restaurantId },
+			where: { id: restaurantId },
 		});
 		return restaurant;
 	} catch {

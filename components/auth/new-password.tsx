@@ -38,7 +38,7 @@ export const NewPasswordForm = (): JSX.Element => {
 		setSuccess('');
 
 		startTransition(() => {
-			void newPassword({ values, token }).then(res => {
+			void newPassword({ values, token }).then((res) => {
 				if (res.status) {
 					setSuccess(res.message);
 				} else {

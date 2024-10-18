@@ -17,7 +17,7 @@ import { SuccessResponse } from '@/lib/success';
 import { isRedirectError } from 'next/dist/client/components/redirect';
 import { getRestaurantsByUserId } from '@/lib/restaurant/restaurant';
 
-export const login = withServerActionAsyncCatcher<LoginUserType, ServerActionReturnType>(async values => {
+export const login = withServerActionAsyncCatcher<LoginUserType, ServerActionReturnType>(async (values) => {
 	const validatedFields = LoginUserSchema.safeParse(values);
 
 	if (!validatedFields.success) {

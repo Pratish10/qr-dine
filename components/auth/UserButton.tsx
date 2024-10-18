@@ -18,7 +18,7 @@ export const UserButton = (): React.JSX.Element => {
 
 	const avatarFallBack = (data?.user?.name ?? 'Unknown')
 		.split(' ')
-		.map(word => word.charAt(0).toUpperCase())
+		.map((word) => word.charAt(0).toUpperCase())
 		.join('');
 
 	return (

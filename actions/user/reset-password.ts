@@ -10,7 +10,7 @@ import { getUserByEmail } from '@/lib/auth/user';
 import { SuccessResponse } from '@/lib/success';
 import { ErrorHandler } from '@/lib/error';
 
-export const resetPassword = withServerActionAsyncCatcher<ResetSchemaType, ServerActionReturnType>(async data => {
+export const resetPassword = withServerActionAsyncCatcher<ResetSchemaType, ServerActionReturnType>(async (data) => {
 	const validatedFields = ResetSchema.safeParse(data);
 
 	if (!validatedFields.success) {

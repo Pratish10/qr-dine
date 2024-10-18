@@ -10,14 +10,14 @@ import { RestaurantSchema } from '@/schemas/schema';
 import { type RestaurantSchemaType } from '@/schemas/types';
 import { type ServerActionReturnType } from '@/types/api.types';
 
-export const createRestaurant = withServerActionAsyncCatcher<RestaurantSchemaType, ServerActionReturnType>(async values => {
+export const createRestaurant = withServerActionAsyncCatcher<RestaurantSchemaType, ServerActionReturnType>(async (values) => {
 	const validatedFields = RestaurantSchema.safeParse(values);
 
 	if (!validatedFields.success) {
 		throw new ErrorHandler('Invalid Fields!', 'BAD_REQUEST');
 	}
 
-	const { fullName, branchName, userId, address, city, country, pinCode, state } = validatedFields.data;
+	const { fullName, branchName, userId, address, city, country, pinCode, state, clientName, upiID } = validatedFields.data;
 
 	const existingUser = await getUserById(userId);
 
@@ -44,7 +44,11 @@ export const createRestaurant = withServerActionAsyncCatcher<RestaurantSchemaTyp
 				city,
 				country,
 				pinCode,
-				userId,
+				ClientName: clientName,
+				upiId: upiID,
+				user: {
+					connect: { id: userId },
+				},
 			},
 		});
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -27,7 +28,6 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 					{title}
 					{selectedValues?.size > 0 && (
 						<>
-							{/* <Separator orientation='vertical' className='mx-2 h-4' /> */}
 							<Badge variant='secondary' className='rounded-sm px-1 font-normal lg:hidden'>
 								{selectedValues.size}
 							</Badge>
@@ -38,8 +38,8 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 									</Badge>
 								) : (
 									options
-										.filter(option => selectedValues.has(option.value))
-										.map(option => (
+										.filter((option) => selectedValues.has(option.value))
+										.map((option) => (
 											<Badge variant='secondary' key={option.value} className='rounded-sm px-1 font-normal'>
 												{option.label}
 											</Badge>
@@ -55,8 +55,18 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 					<CommandInput placeholder={title} />
 					<CommandList>
 						<CommandEmpty>No results found.</CommandEmpty>
+						{selectedValues.size > 0 && (
+							<>
+								<CommandSeparator />
+								<CommandGroup>
+									<CommandItem onSelect={() => column?.setFilterValue(undefined)} className='justify-center text-center'>
+										Clear filters
+									</CommandItem>
+								</CommandGroup>
+							</>
+						)}
 						<CommandGroup>
-							{options.map(option => {
+							{options.map((option) => {
 								const isSelected = selectedValues.has(option.value);
 								return (
 									<CommandItem
@@ -79,7 +89,6 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 										>
 											<CheckIcon className={cn('h-4 w-4')} />
 										</div>
-										{option.icon && <option.icon className='mr-2 h-4 w-4 text-muted-foreground' />}
 										<span>{option.label}</span>
 										{facets?.get(option.value) && (
 											<span className='ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs'>
@@ -90,16 +99,6 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 								);
 							})}
 						</CommandGroup>
-						{selectedValues.size > 0 && (
-							<>
-								<CommandSeparator />
-								<CommandGroup>
-									<CommandItem onSelect={() => column?.setFilterValue(undefined)} className='justify-center text-center'>
-										Clear filters
-									</CommandItem>
-								</CommandGroup>
-							</>
-						)}
 					</CommandList>
 				</Command>
 			</PopoverContent>

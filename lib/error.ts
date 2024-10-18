@@ -1,6 +1,8 @@
+// src/lib/error.ts
 import { ERROR_CODE, ERROR_NAME } from '@/config/error.config';
 import { ZodError } from 'zod';
 import { generateErrorMessage } from 'zod-error';
+
 export interface ErrorResponseType {
 	name: string;
 	message: string;
@@ -8,10 +10,12 @@ export interface ErrorResponseType {
 	status: false;
 	error?: unknown;
 }
-class ErrorHandler extends Error {
+
+export class ErrorHandler extends Error {
 	status: false;
 	error?: unknown;
 	code: number;
+
 	constructor(message: string, code: keyof typeof ERROR_CODE, error?: unknown) {
 		super(message);
 		this.status = false;
@@ -21,7 +25,7 @@ class ErrorHandler extends Error {
 	}
 }
 
-function standardizeApiError(error: unknown): ErrorResponseType {
+export function standardizeApiError(error: unknown): ErrorResponseType {
 	if (error instanceof ErrorHandler) {
 		return {
 			name: error.name,
@@ -56,9 +60,8 @@ function standardizeApiError(error: unknown): ErrorResponseType {
 	}
 	return {
 		name: ERROR_NAME.INTERNAL_SERVER_ERROR,
-		message: "We're sorry for the inconvenience. Please report this issue to our support team ",
+		message: "We're sorry for the inconvenience. Please report this issue to our support team.",
 		code: ERROR_CODE.INTERNAL_SERVER_ERROR,
 		status: false,
 	};
 }
-export { ErrorHandler, standardizeApiError };

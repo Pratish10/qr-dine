@@ -8,7 +8,7 @@ import { getUserByEmail } from '@/lib/auth/user';
 import { getVerificationTokenByToken } from '@/lib/auth/verification-token';
 import { type ServerActionReturnType } from '@/types/api.types';
 
-export const newVerification = withServerActionAsyncCatcher<string, ServerActionReturnType>(async token => {
+export const newVerification = withServerActionAsyncCatcher<string, ServerActionReturnType>(async (token) => {
 	const existingToken = await getVerificationTokenByToken(token);
 	if (existingToken == null) {
 		throw new ErrorHandler('Token does not exists!', 'BAD_REQUEST');

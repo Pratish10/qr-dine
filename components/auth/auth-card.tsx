@@ -26,7 +26,7 @@ export const AuthCard = ({
 	HomeLabel,
 }: AuthCardProps): React.JSX.Element => {
 	return (
-		<div className='flex justify-center items-center' style={{ height: 'calc(100vh - 4rem)' }}>
+		<div className='flex justify-center items-center h-[calc(100vh-4rem)]'>
 			<Card className='w-[500px] shadow-2xl'>
 				<CardHeader>
 					<CardTitle>

@@ -23,7 +23,7 @@ export const NewVerificationForm = (): JSX.Element => {
 		}
 
 		newVerification(token)
-			.then(res => {
+			.then((res) => {
 				if (res.status) {
 					setSuccess(res.message);
 				} else {

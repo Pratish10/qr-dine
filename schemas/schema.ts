@@ -1,3 +1,4 @@
+import { Availability, MenuType } from '@prisma/client';
 import * as z from 'zod';
 
 export const RegisterUserSchema = z.object({
@@ -38,6 +39,9 @@ export const RestaurantSchema = z.object({
 	fullName: z.string().min(1, {
 		message: 'Restaurant Name is required',
 	}),
+	clientName: z.string().min(1, {
+		message: 'Your Name is required',
+	}),
 	branchName: z
 		.string()
 		.min(1, {
@@ -65,13 +69,14 @@ export const RestaurantSchema = z.object({
 	country: z.string().min(1, {
 		message: 'Country is Required',
 	}),
-
-	// Payment fields
-	cardNumber: z.string().min(16, 'Card number must be 16 digits').max(16, 'Card number must be 16 digits'),
-	expiryDate: z.string().min(5, 'Expiry date format should be MM/YY'),
-	cvv: z.string().min(3, 'CVV must be 3 digits').max(3, 'CVV must be 3 digits'),
-	accountName: z.string().min(1, 'Account name is required'),
-
+	upiID: z
+		.string()
+		.min(1, {
+			message: 'UPI ID is required',
+		})
+		.regex(/^[a-zA-Z0-9.-]{2,256}@[a-zA-Z]{3,64}$/, {
+			message: 'Invalid UPI ID',
+		}),
 	userId: z.string().min(1, {
 		message: 'UserId is Required',
 	}),
@@ -82,4 +87,42 @@ export const ProfileSchema = z.object({
 		message: 'Name is required',
 	}),
 	isTwoFactorEnabled: z.boolean().optional(),
+});
+
+export const AddMenuSchema = z.object({
+	name: z.string().min(1, {
+		message: 'Dish Name is required',
+	}),
+	description: z.string().min(1, {
+		message: 'Dish Description is required',
+	}),
+	type: z.enum([MenuType.Vegeterian, MenuType.nonVegeterian]),
+	availability: z.enum([Availability.Available, Availability.notAvailable]),
+	category: z.string().min(1, {
+		message: 'Category is required',
+	}),
+	amount: z
+		.string()
+		.refine((value) => value.trim() !== '', {
+			message: 'Amount is required',
+		})
+		.refine(
+			(value) => {
+				if (value.trim() !== '') {
+					const parsedValue = parseInt(value, 10);
+					return !isNaN(parsedValue) && parsedValue >= 0;
+				}
+				return false;
+			},
+			{
+				message: 'Amount must be a number more than 0',
+			}
+		),
+	image: z.array(z.string().min(1)).min(1, {
+		message: 'Image is required',
+	}),
+	isFeatured: z.boolean().optional(),
+	restaurantId: z.string().min(1, {
+		message: 'Restaurant Id is required',
+	}),
 });

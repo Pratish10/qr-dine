@@ -33,7 +33,7 @@ export const ResetForm = (): JSX.Element => {
 		setSuccess('');
 
 		startTransition(() => {
-			void resetPassword(values).then(res => {
+			void resetPassword(values).then((res) => {
 				if (res.status) {
 					setSuccess(res.message);
 				} else {

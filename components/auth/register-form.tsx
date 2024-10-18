@@ -37,7 +37,7 @@ export const RegisterForm = (): JSX.Element => {
 		setSuccess('');
 
 		startTransition(() => {
-			void register(values).then(res => {
+			void register(values).then((res) => {
 				if (res.status) {
 					setSuccess(res.message);
 				} else {

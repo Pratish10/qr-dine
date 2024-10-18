@@ -10,20 +10,8 @@ import { DataTableColumnHeader } from '@/components/SharedComponent/DataTable/da
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
-
-export interface Menu {
-	id: string;
-	name: string;
-	description: string;
-	type: 'Vegeterian' | 'nonVegeterian';
-	image: string;
-	category: string;
-	amount: string;
-	createdAt: string;
-	updatedAt: string;
-	availability: 'Available' | 'notAvailable';
-	isFeatured: boolean;
-}
+import { type Menu } from '@prisma/client';
+import { useSheetController } from '@/hooks/use-sheet-controller';
 
 export const columns: Array<ColumnDef<Menu>> = [
 	{
@@ -31,7 +19,7 @@ export const columns: Array<ColumnDef<Menu>> = [
 		header: ({ table }) => (
 			<Checkbox
 				checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
-				onCheckedChange={value => {
+				onCheckedChange={(value) => {
 					table.toggleAllPageRowsSelected(!!value);
 				}}
 				aria-label='Select all'
@@ -40,7 +28,7 @@ export const columns: Array<ColumnDef<Menu>> = [
 		cell: ({ row }) => (
 			<Checkbox
 				checked={row.getIsSelected()}
-				onCheckedChange={value => {
+				onCheckedChange={(value) => {
 					row.toggleSelected(!!value);
 				}}
 				aria-label='Select row'
@@ -53,21 +41,28 @@ export const columns: Array<ColumnDef<Menu>> = [
 		id: 'image',
 		cell: ({ row }) => {
 			const image = row.original.image;
+
 			const Name = row.original.name;
 			const initials = Name.split(' ')
-				.map(word => word.charAt(0).toUpperCase())
+				.map((word) => word.charAt(0).toUpperCase())
 				.join('');
 
 			return (
 				<Avatar>
-					<AvatarImage src={image} />
+					<AvatarImage src={image[0]} />
 					<AvatarFallback>{initials}</AvatarFallback>
 				</Avatar>
 			);
 		},
 	},
 	{
-		accessorKey: 'Name',
+		accessorKey: 'menuId',
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title='Menu Id' />;
+		},
+	},
+	{
+		accessorKey: 'name',
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title='Name' />;
 		},
@@ -151,7 +146,7 @@ export const columns: Array<ColumnDef<Menu>> = [
 			return <DataTableColumnHeader column={column} title='Last Modified' />;
 		},
 		cell: ({ row }) => {
-			const updatedAt: string | undefined = row.original.updatedAt;
+			const updatedAt: Date | undefined = row.original.updatedAt;
 			const formattedDate =
 				updatedAt !== undefined
 					? new Intl.DateTimeFormat('en-US', {
@@ -171,6 +166,7 @@ export const columns: Array<ColumnDef<Menu>> = [
 	{
 		id: 'actions',
 		cell: ({ row }) => {
+			const { onOpen } = useSheetController();
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
@@ -180,7 +176,11 @@ export const columns: Array<ColumnDef<Menu>> = [
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align='end'>
-						<DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() => {
+								onOpen(row.original);
+							}}
+						>
 							<Edit size={20} className='mr-3' />
 							Edit
 						</DropdownMenuItem>

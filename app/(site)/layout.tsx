@@ -2,6 +2,8 @@
 import { AppBar } from '@/components/AppBar';
 import { Navbar } from '@/components/Navbar';
 import { getCurrentUser } from '@/hooks/getCurrentUser';
+import AuthenticatedLayout from './authenticated-layout';
+import { SheetProvider } from './sheet-provider';
 
 export default async function DashboardLayout({
 	children,
@@ -13,8 +15,15 @@ export default async function DashboardLayout({
 	return (
 		<div className='h-screen'>
 			<Navbar />
-			{user && <AppBar />}
-			<div className='container'>{children}</div>
+			{user ? (
+				<AuthenticatedLayout>
+					<AppBar />
+					<SheetProvider />
+					{children}
+				</AuthenticatedLayout>
+			) : (
+				<div className='container'>{children}</div>
+			)}
 		</div>
 	);
 }

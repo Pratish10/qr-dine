@@ -1,8 +1,17 @@
-class SuccessResponse<T = unknown> {
+// src/lib/success.ts
+export interface SuccessResponseType<T = unknown> {
+	status: true;
+	statusCode: number;
+	message: string;
+	data?: T;
+}
+
+export class SuccessResponse<T = unknown> {
 	status: true;
 	statusCode: number;
 	data?: T;
 	message: string;
+
 	constructor(message: string, statusCode: number, data?: T) {
 		this.message = message;
 		this.statusCode = statusCode;
@@ -24,11 +33,3 @@ class SuccessResponse<T = unknown> {
 		};
 	}
 }
-
-export interface SuccessResponseType<T = unknown> {
-	status: true;
-	statusCode: number;
-	message: string;
-	data?: T;
-}
-export { SuccessResponse };

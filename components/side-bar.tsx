@@ -20,7 +20,7 @@ export const SidebarItems = ({ items, isCollapsed }: SideBarProps): React.JSX.El
 
 	return (
 		<>
-			{items.map(item => {
+			{items.map((item) => {
 				const isActive = pathname === item.href;
 
 				return (
