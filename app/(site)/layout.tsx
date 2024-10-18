@@ -22,7 +22,7 @@ export default async function DashboardLayout({
 					{children}
 				</AuthenticatedLayout>
 			) : (
-				<div className='container'>{children}</div>
+				<div>{children}</div>
 			)}
 		</div>
 	);

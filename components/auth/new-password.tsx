@@ -70,7 +70,7 @@ export const NewPasswordForm = (): JSX.Element => {
 							type='password'
 						/>
 					</div>
-					<Button type='submit' className='w-full' disabled={isPending}>
+					<Button variant='green' type='submit' className='w-full' disabled={isPending}>
 						Reset Password
 					</Button>
 				</form>

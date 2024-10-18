@@ -24,18 +24,18 @@ export default async function RootLayout({
 		<html lang='en'>
 			<body className={`${poppins.className} antialiased`}>
 				<NextTopLoader
-					color='#fe7e8b'
+					color='#17a34a'
 					initialPosition={0.08}
 					crawlSpeed={200}
 					height={3}
 					easing='ease'
 					speed={200}
-					shadow='0 0 10px #fe7e8b,0 0 5px #fe7e8b'
+					shadow='0 0 10px #17a34a,0 0 5px #17a34a'
 				/>
 				<Providers>
 					<SessionProvider session={session}>
 						{children}
-						<Toaster closeButton richColors position='top-center' />
+						<Toaster closeButton richColors position='top-right' />
 					</SessionProvider>
 				</Providers>
 			</body>

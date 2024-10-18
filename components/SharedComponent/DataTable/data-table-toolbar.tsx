@@ -4,46 +4,16 @@ import { Button } from '@/components/ui/button';
 import { type Table } from '@tanstack/react-table';
 import { Input } from '@/components/ui/input';
 import { DataTableFacetedFilter } from './data-table-faced-filter';
-import { Loader2, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useGetCategories } from '@/hooks/categories/use-get-category';
-import { type CategoryType } from '@/app/api/categories/route';
-import { useRecoilValue } from 'recoil';
-import { restaurant } from '@/recoil/restaurant/atom';
+import { X } from 'lucide-react';
 
 interface DataTableToolbarProps<TData> {
 	table: Table<TData>;
 	searchKey: string;
+	facedFilterKey: string;
+	options: Array<{ label: string; value: string }>;
 }
 
-export function DataTableToolbar<TData>({ table, searchKey }: DataTableToolbarProps<TData>): JSX.Element {
-	const { id } = useRecoilValue(restaurant);
-	const { data, isLoading, isSuccess, refetch, isRefetching } = useGetCategories(id);
-	const [categories, setCategories] = useState<Array<{ value: string; label: string }>>([]);
-
-	useEffect(() => {
-		// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-		if (id) {
-			void refetch();
-		}
-	}, [id]);
-
-	useEffect(() => {
-		if (isSuccess || !isRefetching) {
-			if (data !== undefined && 'status' in data && data.status) {
-				// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-				const categoryOptions: Array<{ value: string; label: string }> = data.data
-					? data.data.map((item: CategoryType) => ({
-							label: item.category,
-							value: item.category,
-						}))
-					: [];
-
-				setCategories(categoryOptions);
-			}
-		}
-	}, [isSuccess, isRefetching, data]);
-
+export function DataTableToolbar<TData>({ table, searchKey, facedFilterKey, options }: DataTableToolbarProps<TData>): JSX.Element {
 	const { columnFilters } = table.getState();
 	const isFiltered = columnFilters.length > 0;
 
@@ -56,13 +26,12 @@ export function DataTableToolbar<TData>({ table, searchKey }: DataTableToolbarPr
 					onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
 					className='h-8 w-[150px] lg:w-[250px]'
 				/>
-				{isLoading || isRefetching ? (
-					<div className='flex justify-center items-center h-full'>
-						<Loader2 className='h-6 w-6 animate-spin' />
-					</div>
-				) : (
-					table.getColumn('category') != null &&
-					isSuccess && <DataTableFacetedFilter column={table.getColumn('category')} title='Category' options={categories} />
+				{table.getColumn(facedFilterKey) != null && (
+					<DataTableFacetedFilter
+						column={table.getColumn(facedFilterKey)}
+						title={facedFilterKey.charAt(0).toUpperCase() + facedFilterKey.slice(1)}
+						options={options}
+					/>
 				)}
 
 				{isFiltered && (

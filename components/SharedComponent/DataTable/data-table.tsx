@@ -20,21 +20,30 @@ import { Loader2, TrashIcon } from 'lucide-react';
 import { DataTableToolbar } from './data-table-toolbar';
 import { DataTablePagination } from './datatable-pagination';
 import useConfirm from '@/hooks/use-confirm';
-import { type Menu } from '@prisma/client';
 
-export interface Row {
-	original: Menu;
+export interface Row<TData> {
+	original: TData;
 }
 
 interface DataTableProps<TData, TValue> {
 	columns: Array<ColumnDef<TData, TValue>>;
 	data: TData[];
 	searchKey: string;
+	facedFilterKey: string;
 	disabled?: boolean;
-	onDelete: (rows: Row[]) => void;
+	onDelete: (rows: Array<Row<TData>>) => void;
+	options: Array<{ label: string; value: string }>;
 }
 
-export function DataTable<TData, TValue>({ columns, data, searchKey, onDelete, disabled }: DataTableProps<TData, TValue>): JSX.Element {
+export function DataTable<TData, TValue>({
+	columns,
+	data,
+	searchKey,
+	onDelete,
+	disabled,
+	facedFilterKey,
+	options,
+}: DataTableProps<TData, TValue>): JSX.Element {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [rowSelection, setRowSelection] = useState({});
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -61,7 +70,7 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, onDelete, d
 		<div className='space-y-4'>
 			<ConfirmationDialog />
 			<div className='flex items-center'>
-				<DataTableToolbar table={table} searchKey={searchKey} />
+				<DataTableToolbar table={table} searchKey={searchKey} facedFilterKey={facedFilterKey} options={options} />
 				{table.getFilteredSelectedRowModel().rows.length > 0 && (
 					<Button
 						disabled={disabled}
@@ -72,7 +81,7 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, onDelete, d
 						onClick={async () => {
 							const ok = await confirm();
 							if (ok) {
-								onDelete(table.getSelectedRowModel().rows as Row[]);
+								onDelete(table.getSelectedRowModel().rows);
 								table.resetRowSelection();
 							}
 						}}

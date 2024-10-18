@@ -148,7 +148,7 @@ export const LoginForm = (): React.JSX.Element => {
 							</React.Fragment>
 						)}
 					</div>
-					<Button type='submit' className='w-full' disabled={isPending}>
+					<Button variant='green' type='submit' className='w-full' disabled={isPending}>
 						{isPending ? (
 							<span className='flex items-center'>
 								<Loader2 className='mr-2 h-4 w-4 animate-spin' />

@@ -6,9 +6,10 @@ import { ErrorHandler, standardizeApiError } from '@/lib/error';
 import { generateUniqueFourDigitNumber } from '@/lib/generateUniqueFourDigitNumber';
 import { getRestaurantByRestaurantId } from '@/lib/restaurant/restaurant';
 import { SuccessResponse } from '@/lib/success';
-import { AddMenuSchema } from '@/schemas/schema';
+import { getTableByTableNumber } from '@/lib/table/getTableByTableNumber';
+import { AddTableSchema } from '@/schemas/schema';
 import { type ServerActionReturnType } from '@/types/api.types';
-import { type Menu } from '@prisma/client';
+import { type Table } from '@prisma/client';
 import { type NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest): Promise<NextResponse<ServerActionReturnType>> {
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 			throw new ErrorHandler('Restaurant ID is required', 'BAD_REQUEST');
 		}
 
-		const menus: Menu[] = await prisma.menu.findMany({
+		const tables: Table[] = await prisma.table.findMany({
 			where: {
 				restaurantId: {
 					equals: id,
@@ -44,7 +45,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 		});
 
 		// Return success response with categories
-		return NextResponse.json(new SuccessResponse<Menu[]>('Fetched Menus Successfully', 200, menus).serialize());
+		return NextResponse.json(new SuccessResponse<Table[]>('Fetched Menus Successfully', 200, tables).serialize());
 	} catch (error) {
 		const standardizedError = standardizeApiError(error);
 		return NextResponse.json(standardizedError, { status: standardizedError.code });
@@ -56,19 +57,26 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 		const body = await req.json();
 
 		const user = await getCurrentUser();
-		const validatedFields = AddMenuSchema.safeParse(body);
+		const validatedFields = AddTableSchema.safeParse(body);
 
 		if (!validatedFields.success) {
 			throw new ErrorHandler('Invalid Fields!', 'BAD_REQUEST');
 		}
 
-		const { amount, availability, category, description, image, name, type, restaurantId, isFeatured } = validatedFields.data;
+		const { restaurantId, tableNumber, tableQrCode, tableSize, tableStatus } = validatedFields.data;
+
+		const exisitngTable = await getTableByTableNumber(tableNumber);
+
+		if (exisitngTable !== null) {
+			throw new ErrorHandler('Table Number already Exists', 'BAD_REQUEST');
+		}
 
 		if (!user?.id) {
 			throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');
 		}
 
 		const existingUser = await getUserById(user.id);
+
 		if (existingUser === null) {
 			throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');
 		}
@@ -79,26 +87,22 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 			throw new ErrorHandler('The Associated Restaurant not found', 'NOT_FOUND');
 		}
 
-		const menuId = `M-${generateUniqueFourDigitNumber()}`;
+		const tableId = `T-${generateUniqueFourDigitNumber()}`;
 
-		await prisma.menu.create({
+		await prisma.table.create({
 			data: {
-				menuId,
-				name,
-				description,
-				type,
-				image,
-				category,
-				amount,
-				availability,
-				isFeatured: isFeatured ?? false,
+				tableId,
+				tableNumber,
+				tableQrCode,
+				tableSize,
+				tableStatus,
 				restaurant: {
 					connect: { id: restaurantId },
 				},
 			},
 		});
 
-		return NextResponse.json(new SuccessResponse('Succesfully Added Menu', 200).serialize());
+		return NextResponse.json(new SuccessResponse('Succesfully Table Menu', 200).serialize());
 	} catch (error) {
 		const standardizedError = standardizeApiError(error);
 		return NextResponse.json(standardizedError, { status: standardizedError.code });
@@ -123,7 +127,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse<ServerActio
 			throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');
 		}
 
-		const deleteResult = await prisma.menu.deleteMany({
+		const deleteResult = await prisma.table.deleteMany({
 			where: {
 				id: {
 					in: body,
@@ -135,7 +139,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse<ServerActio
 			throw new ErrorHandler('No menus found to delete', 'NOT_FOUND');
 		}
 
-		return NextResponse.json(new SuccessResponse('Successfully Deleted Menus', 200).serialize());
+		return NextResponse.json(new SuccessResponse('Successfully Deleted Tables', 200).serialize());
 	} catch (error) {
 		const standardizedError = standardizeApiError(error);
 		return NextResponse.json(standardizedError, { status: standardizedError.code });

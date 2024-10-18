@@ -67,7 +67,7 @@ export const AppBar = (): React.JSX.Element => {
 							'justify-center': isCollapsed,
 						})}
 					>
-						<Button onClick={toggleCollapse} size='icon' className='rounded-full'>
+						<Button variant='green' onClick={toggleCollapse} size='icon' className='rounded-full'>
 							<motion.div className='flex items-center p-3 text-center transition-all duration-300'>
 								{isCollapsed ? <ChevronLeft /> : <ChevronRight />}
 							</motion.div>

@@ -1,4 +1,4 @@
-import { Availability, MenuType } from '@prisma/client';
+import { Availability, MenuType, TableStatus } from '@prisma/client';
 import * as z from 'zod';
 
 export const RegisterUserSchema = z.object({
@@ -124,5 +124,31 @@ export const AddMenuSchema = z.object({
 	isFeatured: z.boolean().optional(),
 	restaurantId: z.string().min(1, {
 		message: 'Restaurant Id is required',
+	}),
+});
+
+export const AddTableSchema = z.object({
+	tableNumber: z.string().min(1, {
+		message: 'Table Number is required',
+	}),
+	tableSize: z
+		.string()
+		.refine((value) => value.trim() !== '')
+		.refine(
+			(value) => {
+				if (value.trim() !== '') {
+					const parsedValue = parseInt(value, 10);
+					return !isNaN(parsedValue) && parsedValue >= 0;
+				}
+				return false;
+			},
+			{
+				message: 'Table Size must be a number',
+			}
+		),
+	tableStatus: z.enum([TableStatus.Vacant, TableStatus.Occupied]),
+	tableQrCode: z.string(),
+	restaurantId: z.string().min(1, {
+		message: 'Restaurant ID is required',
 	}),
 });

@@ -3,17 +3,16 @@
 import { type ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { Carrot, Drumstick, Edit, MoreHorizontal, TrashIcon } from 'lucide-react';
-
+import { Carrot, Drumstick, Edit, MoreHorizontal } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { DataTableColumnHeader } from '@/components/SharedComponent/DataTable/data-table-column-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import { type Menu } from '@prisma/client';
-import { useSheetController } from '@/hooks/use-sheet-controller';
+import { useMenuSheetController } from '@/hooks/menus/menu-sheet-controller';
 
-export const columns: Array<ColumnDef<Menu>> = [
+export const MenuColumn: Array<ColumnDef<Menu>> = [
 	{
 		id: 'select',
 		header: ({ table }) => (
@@ -119,7 +118,10 @@ export const columns: Array<ColumnDef<Menu>> = [
 		cell: ({ row }) => {
 			const Availability = row.original.availability;
 			return (
-				<Badge variant='outline' className={`rounded-full text-xs ${Availability === 'Available' ? 'bg-green-400' : 'bg-red-400'}`}>
+				<Badge
+					variant='outline'
+					className={`rounded-full font-thin text-xs ${Availability === 'Available' ? 'dark:bg-green-600 bg-green-400' : 'dark:bg-red-600 bg-red-400'}`}
+				>
 					{Availability}
 				</Badge>
 			);
@@ -166,7 +168,7 @@ export const columns: Array<ColumnDef<Menu>> = [
 	{
 		id: 'actions',
 		cell: ({ row }) => {
-			const { onOpen } = useSheetController();
+			const { onOpen } = useMenuSheetController();
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
@@ -183,10 +185,6 @@ export const columns: Array<ColumnDef<Menu>> = [
 						>
 							<Edit size={20} className='mr-3' />
 							Edit
-						</DropdownMenuItem>
-						<DropdownMenuItem>
-							<TrashIcon size={20} className='mr-3' />
-							Delete
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

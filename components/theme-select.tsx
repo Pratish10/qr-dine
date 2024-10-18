@@ -8,7 +8,7 @@ export const ThemeSelect = (): React.JSX.Element => {
 	const { setTheme, theme } = useTheme();
 	return (
 		<Button
-			variant='outline'
+			variant='ghost'
 			size='icon'
 			onClick={() => {
 				setTheme(theme === 'light' ? 'dark' : 'light');

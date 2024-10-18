@@ -106,7 +106,7 @@ export const ProfileForm = (): JSX.Element => {
 					// eslint-disable-next-line @typescript-eslint/no-misused-promises
 					onSubmit={form.handleSubmit(submitHandler)}
 				>
-					<div className='col-span-3 sm:col-span-1 border rounded-md p-4 flex flex-col items-center justify-center relative group'>
+					<div className='col-span-3 sm:col-span-1 border rounded-md p-4 flex flex-col items-center justify-center relative group dark:bg-gray-900'>
 						<div className='flex flex-col items-center'>
 							<Avatar className='border border-black w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-36 xl:h-36 sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'>
 								<AvatarImage src={data?.user?.image ?? ''} />
@@ -119,7 +119,7 @@ export const ProfileForm = (): JSX.Element => {
 						</div>
 					</div>
 
-					<div className='col-span-3 sm:col-span-2 border rounded-md p-4'>
+					<div className='col-span-3 sm:col-span-2 border rounded-md p-4 dark:bg-gray-900'>
 						<div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-3'>
 							<FormField
 								control={form.control}
@@ -176,7 +176,7 @@ export const ProfileForm = (): JSX.Element => {
 												<CommandSeparator />
 												<CommandGroup>
 													<CommandItem
-														onSelect={() => {
+														onClick={() => {
 															router.push(APP_PATHS.RESTAURANT);
 														}}
 														className='justify-center text-center'
@@ -215,7 +215,7 @@ export const ProfileForm = (): JSX.Element => {
 						</div>
 
 						<div className='flex justify-end mt-10'>
-							<Button type='submit' disabled={isPending || !editForm}>
+							<Button variant='green' type='submit' disabled={isPending || !editForm}>
 								{isPending ? (
 									<span className='flex items-center'>
 										<Loader2 className='mr-2 h-4 w-4 animate-spin' />

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { NewMenuSheet } from './menus/components/new-menu-sheet';
+import { NewTableSheet } from './table/components/new-table-sheet';
 
 export const SheetProvider = (): React.JSX.Element | null => {
 	const [isMounted, setIsMounted] = useState(false);
@@ -14,6 +15,7 @@ export const SheetProvider = (): React.JSX.Element | null => {
 
 	return (
 		<>
+			<NewTableSheet />
 			<NewMenuSheet />
 		</>
 	);

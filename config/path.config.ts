@@ -10,6 +10,7 @@ const APP_PATHS = {
 
 	DASHBOARD: '/dashboard',
 	MENUS: '/menus',
+	TABLES: '/table',
 	PROFILE: '/profile',
 };
 export default APP_PATHS;

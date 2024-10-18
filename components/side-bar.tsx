@@ -31,7 +31,7 @@ export const SidebarItems = ({ items, isCollapsed }: SideBarProps): React.JSX.El
 									href={item.href}
 									className={clsx(
 										'flex items-center rounded-lg p-3 text-center transition-all duration-300',
-										isActive ? 'bg-orange-600/15 text-orange-500' : 'hover:bg-orange-600/5 hover:text-orange-500',
+										isActive ? 'bg-green-600/15 text-green-500' : 'hover:bg-green-600/5 hover:text-green-500',
 										isCollapsed ? 'justify-center' : 'gap-2'
 									)}
 								>

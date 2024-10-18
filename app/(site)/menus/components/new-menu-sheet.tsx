@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { useSheetController } from '@/hooks/use-sheet-controller';
 
 import React from 'react';
 import { AddMenu } from './add-menu';
 import { Availability, MenuType } from '@prisma/client';
 import { useRecoilValue } from 'recoil';
 import { restaurant } from '@/recoil/restaurant/atom';
+import { useMenuSheetController } from '@/hooks/menus/menu-sheet-controller';
 
 export interface DefaultMenuType {
 	name: string;
@@ -22,7 +22,7 @@ export interface DefaultMenuType {
 }
 
 export const NewMenuSheet = (): React.JSX.Element => {
-	const { isOpen, onClose, data } = useSheetController();
+	const { isOpen, onClose, data } = useMenuSheetController();
 	const { id } = useRecoilValue(restaurant);
 	const defaultValues: DefaultMenuType = {
 		name: '',

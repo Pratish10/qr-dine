@@ -103,6 +103,7 @@ model Restaurant {
 
   Category Category[]
   Menu     Menu[]
+  Tables   Table[]
 }
 
 enum MenuType {
@@ -141,4 +142,25 @@ model Category {
 
   restaurantId String
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+}
+
+enum TableStatus {
+  Vacant
+  Occupied
+}
+
+model Table {
+  id          String      @id @default(cuid())
+  tableId     String      @unique
+  tableNumber String      @unique
+  tableStatus TableStatus @default(Vacant)
+  tableQrCode String
+  tableSize   String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@unique([restaurantId, tableNumber])
 }

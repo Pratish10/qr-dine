@@ -2,10 +2,8 @@
 import { RestaurantSchema } from '@/schemas/schema';
 import { type RestaurantSchemaType } from '@/schemas/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState, useTransition } from 'react';
+import React, { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormError } from '../form-error';
-import { FormSuccess } from '../form-success';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,12 +13,11 @@ import { useRouter } from 'next/navigation';
 import APP_PATHS from '@/config/path.config';
 import FormInputField from '@/components/SharedComponent/form-input-field';
 import { useSession } from 'next-auth/react';
+import { Loader2 } from 'lucide-react';
 
 export const RestaurantForm = (): React.JSX.Element => {
 	const { data } = useSession();
 	const router = useRouter();
-	const [error, setError] = useState<string | undefined>('');
-	const [success, setSuccess] = useState<string | undefined>('');
 	const [isPending, startTransition] = useTransition();
 
 	const form = useForm<RestaurantSchemaType>({
@@ -40,15 +37,13 @@ export const RestaurantForm = (): React.JSX.Element => {
 	});
 
 	const submitHandler = (values: RestaurantSchemaType): void => {
-		setError('');
-		setSuccess('');
 		startTransition(() => {
 			void createRestaurant(values).then((res) => {
 				if (res.status) {
 					toast.success(res.message);
 					router.push(APP_PATHS.DASHBOARD);
 				} else {
-					setError(res.message);
+					toast.success(res.message);
 				}
 			});
 		});
@@ -61,9 +56,6 @@ export const RestaurantForm = (): React.JSX.Element => {
 				onSubmit={form.handleSubmit(submitHandler)}
 				className='space-y-4'
 			>
-				<FormError message={error} />
-				<FormSuccess message={success} />
-
 				<>
 					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
 						<FormInputField<RestaurantSchemaType>
@@ -159,7 +151,14 @@ export const RestaurantForm = (): React.JSX.Element => {
 
 					<div className='flex justify-end'>
 						<Button type='submit' disabled={isPending}>
-							Submit
+							{isPending ? (
+								<span className='flex items-center'>
+									<Loader2 className='mr-2 h-4 w-4 animate-spin' />
+									Please wait
+								</span>
+							) : (
+								'Submit'
+							)}
 						</Button>
 					</div>
 				</>

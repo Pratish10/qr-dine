@@ -18,19 +18,11 @@ import { type FileState, MultiFileDropzone } from './multiFileDropZone';
 import { useEdgeStore } from '@/lib/edgestore';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { useSheetController } from '@/hooks/use-sheet-controller';
 import { useAddMenu } from '@/hooks/menus/use-add-menu';
 import { type DefaultMenuType } from './new-menu-sheet';
-
-const categories = [
-	{ label: 'Appetizers', value: 'Appetizers' },
-	{ label: 'Beverages', value: 'Beverages' },
-	{ label: 'Desserts', value: 'Desserts' },
-	{ label: 'Main Course', value: 'Main Course' },
-	{ label: 'Salads', value: 'Salads' },
-	{ label: 'Sides', value: 'Sides' },
-	{ label: 'Specials', value: 'Specials' },
-];
+import { useRecoilValue } from 'recoil';
+import { categories } from '@/recoil/categories/atom';
+import { useMenuSheetController } from '@/hooks/menus/menu-sheet-controller';
 
 export const AddMenu = ({
 	amount,
@@ -43,7 +35,8 @@ export const AddMenu = ({
 	restaurantId,
 	type,
 }: DefaultMenuType): JSX.Element => {
-	const { onClose } = useSheetController();
+	const { onClose } = useMenuSheetController();
+	const cat = useRecoilValue(categories);
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_, startTransition] = useTransition();
 	const [fileStates, setFileStates] = useState<FileState[]>([]);
@@ -172,7 +165,7 @@ export const AddMenu = ({
 												role='combobox'
 												className={cn('w-[250px] justify-between', !field.value && 'text-muted-foreground')}
 											>
-												{field.value ? categories.find((item) => item.value === field.value)?.label : 'Select category'}
+												{field.value ? cat.find((item) => item.value === field.value)?.label : 'Select category'}
 												<ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
 											</Button>
 										</FormControl>
@@ -183,7 +176,7 @@ export const AddMenu = ({
 											<CommandList>
 												<CommandEmpty>No category found.</CommandEmpty>
 												<CommandGroup>
-													{categories.map((item) => (
+													{cat.map((item) => (
 														<CommandItem
 															value={item.label}
 															key={item.value}
@@ -285,7 +278,7 @@ export const AddMenu = ({
 
 				{/* Submit Button */}
 				<div className='flex justify-end pt-4'>
-					<Button type='submit' disabled={isPending}>
+					<Button variant='green' type='submit' disabled={isPending}>
 						{isPending ? (
 							<span className='flex items-center'>
 								<Loader2 className='mr-2 h-4 w-4 animate-spin' />
