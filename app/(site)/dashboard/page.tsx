@@ -1,6 +1,6 @@
 import { DashboardPage } from '@/components/dashboard-page';
 
-const Dashboard = (): React.JSX.Element => {
+const Dashboard = (): JSX.Element => {
 	return <DashboardPage />;
 };
 

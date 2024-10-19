@@ -43,6 +43,9 @@ model User {
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
   restaurants           Restaurant[]
+
+  plantId String @default("38250b3b-fdab-4f74-97a8-ea4a9b9839b4") //default free plan id
+  plan    Plan   @relation(fields: [plantId], references: [id], onDelete: SetDefault)
 }
 
 model verificationToken {
@@ -163,4 +166,26 @@ model Table {
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
   @@unique([restaurantId, tableNumber])
+}
+
+enum planTypes {
+  free
+  starter
+  pro
+}
+
+model Plan {
+  id             String    @id @default(cuid())
+  name           String    @unique
+  description    String[]
+  maxMenus       Int
+  maxRestaurants Int
+  maxTables      Int
+  price          String
+  type           planTypes @default(free)
+
+  users User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

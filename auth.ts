@@ -5,6 +5,8 @@ import prisma from './db';
 import { getUserById } from './lib/auth/user';
 import { getTwoFactorConfirmationByUserId } from './lib/auth/two-factor-confirmation';
 import { PrismaAdapter } from '@auth/prisma-adapter';
+import { type planTypes } from '@prisma/client';
+import APP_PATHS from './config/path.config';
 
 export const {
 	handlers: { GET, POST },
@@ -13,7 +15,7 @@ export const {
 	signOut,
 } = NextAuth({
 	pages: {
-		signIn: '/auth/login',
+		signIn: APP_PATHS.LOGIN,
 		error: '/auth/error',
 	},
 	events: {
@@ -57,9 +59,10 @@ export const {
 				session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
 			}
 
-			// if (token.role && session.user) {
-			// 	session.user.role = token.role as UserRole;
-			// }
+			if (token.plan && token.plantId) {
+				session.user.plan = token.plan as planTypes;
+				session.user.plantId = token.plantId as string;
+			}
 
 			if (session.user) {
 				session.user.name = token.name;
@@ -74,8 +77,13 @@ export const {
 			if (!existingUser) return token;
 
 			token.name = existingUser.name;
+
 			token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
-			// token.role = existingUser.role;
+
+			token.plan = existingUser?.plan?.type || 'free';
+			token.plantId = existingUser?.plan?.id;
+
+			token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 			return token;
 		},
 	},

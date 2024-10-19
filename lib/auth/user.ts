@@ -1,4 +1,5 @@
 import prisma from '@/db';
+import { type Plan } from '@prisma/client';
 
 export const getUserByEmail = async (
 	email: string
@@ -10,10 +11,14 @@ export const getUserByEmail = async (
 	image: string | null;
 	encryptedPassword: string | null;
 	isTwoFactorEnabled: boolean;
+	plan: Plan;
 } | null> => {
 	try {
 		const user = await prisma.user.findUnique({
 			where: { email },
+			include: {
+				plan: true,
+			},
 		});
 		return user;
 	} catch {
@@ -30,10 +35,14 @@ export const getUserById = async (
 	image: string | null;
 	encryptedPassword: string | null;
 	isTwoFactorEnabled: boolean;
+	plan: Plan;
 } | null> => {
 	try {
 		const user = await prisma.user.findUnique({
 			where: { id },
+			include: {
+				plan: true,
+			},
 		});
 		return user;
 	} catch {

@@ -1,11 +1,12 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Smartphone, Utensils, CreditCard, BarChart, Check } from 'lucide-react';
 import Link from 'next/link';
 import APP_PATHS from '@/config/path.config';
 import { useTheme } from 'next-themes';
+import { PLANS } from '@/config/auth.config';
 
 export function LandingPage(): JSX.Element {
 	const { theme } = useTheme();
@@ -132,85 +133,45 @@ export function LandingPage(): JSX.Element {
 							Pricing
 						</h2>
 						<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-							<Card className='bg-white dark:bg-gray-800'>
-								<CardHeader>
-									<CardTitle className='text-gray-900 dark:text-gray-50'>Starter</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<p className='text-4xl font-bold mb-4 text-green-600'>
-										$29<span className='text-base font-normal'>/month</span>
-									</p>
-									<ul className='mb-6 space-y-2'>
-										<li className='flex items-center'>
-											<Check className='h-4 w-4 mr-2 text-green-600' />{' '}
-											<span className='text-gray-600 dark:text-gray-300'>Up to 50 menu items</span>
-										</li>
-										<li className='flex items-center'>
-											<Check className='h-4 w-4 mr-2 text-green-600' />{' '}
-											<span className='text-gray-600 dark:text-gray-300'>Basic analytics</span>
-										</li>
-										<li className='flex items-center'>
-											<Check className='h-4 w-4 mr-2 text-green-600' />{' '}
-											<span className='text-gray-600 dark:text-gray-300'>Email support</span>
-										</li>
-									</ul>
-									<Button variant='green' className='w-full'>
-										Choose Plan
-									</Button>
-								</CardContent>
-							</Card>
-							<Card className='bg-white dark:bg-gray-800 border-green-600'>
-								<CardHeader>
-									<CardTitle className='text-gray-900 dark:text-gray-50'>Pro</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<p className='text-4xl font-bold mb-4 text-green-600'>
-										$79<span className='text-base font-normal'>/month</span>
-									</p>
-									<ul className='mb-6 space-y-2'>
-										<li className='flex items-center'>
-											<Check className='h-4 w-4 mr-2 text-green-600' />{' '}
-											<span className='text-gray-600 dark:text-gray-300'>Unlimited menu items</span>
-										</li>
-										<li className='flex items-center'>
-											<Check className='h-4 w-4 mr-2 text-green-600' />{' '}
-											<span className='text-gray-600 dark:text-gray-300'>Advanced analytics</span>
-										</li>
-										<li className='flex items-center'>
-											<Check className='h-4 w-4 mr-2 text-green-600' />{' '}
-											<span className='text-gray-600 dark:text-gray-300'>Priority support</span>
-										</li>
-									</ul>
-									<Button variant='green' className='w-full'>
-										Choose Plan
-									</Button>
-								</CardContent>
-							</Card>
-							<Card className='bg-white dark:bg-gray-800'>
-								<CardHeader>
-									<CardTitle className='text-gray-900 dark:text-gray-50'>Enterprise</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<p className='text-4xl font-bold mb-4 text-green-600'>Custom</p>
-									<ul className='mb-6 space-y-2'>
-										<li className='flex items-center'>
-											<Check className='h-4 w-4 mr-2 text-green-600' />{' '}
-											<span className='text-gray-600 dark:text-gray-300'>Custom features</span>
-										</li>
-										<li className='flex items-center'>
-											<Check className='h-4 w-4 mr-2 text-green-600' />{' '}
-											<span className='text-gray-600 dark:text-gray-300'>Dedicated account manager</span>
-										</li>
-										<li className='flex items-center'>
-											<Check className='h-4 w-4 mr-2 text-green-600' />{' '}
-											<span className='text-gray-600 dark:text-gray-300'>24/7 phone support</span>
-										</li>
-									</ul>
-									<Button variant='green' className='w-full'>
-										Contact Sales
-									</Button>
-								</CardContent>
-							</Card>
+							{PLANS.map((plan) => (
+								<Card className='bg-white dark:bg-gray-800 flex flex-col' key={plan.id}>
+									<CardHeader>
+										<CardTitle className='text-gray-900 dark:text-gray-50'>{plan.name}</CardTitle>
+									</CardHeader>
+									<CardContent className='flex-grow'>
+										<p className='text-4xl font-bold mb-4 text-green-600'>
+											{plan.price === '0' ? (
+												'Free'
+											) : (
+												<>
+													₹{plan.price}
+													<span className='text-base font-normal'>/month</span>
+												</>
+											)}
+										</p>
+										<ul className='mb-6 space-y-2'>
+											{plan.description.map((item, index) => (
+												<li className='flex items-center' key={index}>
+													<Check className='h-4 w-4 mr-2 text-green-600' />
+													<span className='text-gray-600 dark:text-gray-300'>{item}</span>
+												</li>
+											))}
+										</ul>
+									</CardContent>
+									<CardFooter>
+										<Button
+											variant='green'
+											className='w-full'
+											disabled={plan.price === '0'}
+											onClick={() => {
+												console.log(plan);
+											}}
+										>
+											{plan.price === '0' ? 'Activated' : 'Choose Plan'}
+										</Button>
+									</CardFooter>
+								</Card>
+							))}
 						</div>
 					</div>
 				</section>

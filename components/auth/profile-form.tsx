@@ -115,6 +115,7 @@ export const ProfileForm = (): JSX.Element => {
 							<div className='mt-2 text-center'>
 								<p className='font-bold'>{data?.user?.name ?? 'Unknown'}</p>
 								<p className='text-sm text-gray-500'>{data?.user?.email ?? 'Unknown'}</p>
+								<p className='text-sm text-gray-500'>{data?.user?.plan ?? 'Unknown'}</p>
 							</div>
 						</div>
 					</div>

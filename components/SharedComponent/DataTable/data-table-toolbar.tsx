@@ -5,6 +5,7 @@ import { type Table } from '@tanstack/react-table';
 import { Input } from '@/components/ui/input';
 import { DataTableFacetedFilter } from './data-table-faced-filter';
 import { X } from 'lucide-react';
+import _ from 'lodash';
 
 interface DataTableToolbarProps<TData> {
 	table: Table<TData>;
@@ -21,17 +22,13 @@ export function DataTableToolbar<TData>({ table, searchKey, facedFilterKey, opti
 		<div className='flex items-center justify-between'>
 			<div className='flex flex-1 items-center space-x-2'>
 				<Input
-					placeholder={`Search ${searchKey}...`}
+					placeholder={`Search ${_.capitalize(searchKey)}...`}
 					value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ''}
 					onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
 					className='h-8 w-[150px] lg:w-[250px]'
 				/>
 				{table.getColumn(facedFilterKey) != null && (
-					<DataTableFacetedFilter
-						column={table.getColumn(facedFilterKey)}
-						title={facedFilterKey.charAt(0).toUpperCase() + facedFilterKey.slice(1)}
-						options={options}
-					/>
+					<DataTableFacetedFilter column={table.getColumn(facedFilterKey)} title={_.capitalize(facedFilterKey)} options={options} />
 				)}
 
 				{isFiltered && (
