@@ -35,7 +35,7 @@ const Tables = (): JSX.Element => {
 
 	const onDelete = (row: Array<Row<Table>>): void => {
 		const ids = row.map((item: { original: Table }) => item.original.id);
-		mutate(ids as string[]);
+		mutate(ids);
 	};
 	return (
 		<div className='my-9'>

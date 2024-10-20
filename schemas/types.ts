@@ -18,3 +18,4 @@ export type RestaurantSchemaType = z.infer<typeof RestaurantSchema>;
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
 export type AddMenuSchemaType = z.infer<typeof AddMenuSchema>;
 export type AddTableSchemaType = z.infer<typeof AddTableSchema>;
+export type AddMenuSchemaTypeWithOptionalId = z.infer<typeof AddMenuSchema>;

@@ -13,8 +13,15 @@ import { useAddTable } from '@/hooks/tables/use-add-table';
 import { toast } from 'sonner';
 import { useTableSheetController } from '@/hooks/tables/table-sheet-controller';
 import FormInputField from '@/components/SharedComponent/form-input-field';
+import Image from 'next/image';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
-export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, tableStatus }: DefaultTableType): JSX.Element => {
+interface AddTableProps extends DefaultTableType {
+	isEdit: boolean;
+}
+
+export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, tableStatus, isEdit }: AddTableProps): JSX.Element => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_, startTransition] = useTransition();
 	const { mutate, isPending } = useAddTable();
@@ -40,6 +47,28 @@ export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, ta
 		});
 	};
 
+	const downloadsAsPDF = async (): Promise<void> => {
+		try {
+			const imageElement = document.getElementById('table-qr-code');
+
+			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+			if (imageElement) {
+				const canvas = await html2canvas(imageElement);
+				const imgData = canvas.toDataURL('image/png');
+
+				// eslint-disable-next-line new-cap
+				const pdf = new jsPDF();
+				const imgWidth = 190;
+				const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+				pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+				pdf.save(`qr-code-table-${tableNumber}.pdf`);
+			}
+		} catch (error) {
+			toast.error('Failed to download PDF');
+		}
+	};
+
 	return (
 		<>
 			<Form {...form}>
@@ -48,14 +77,27 @@ export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, ta
 					// eslint-disable-next-line @typescript-eslint/no-misused-promises
 					onSubmit={form.handleSubmit(submitHandler)}
 				>
-					{/* <div className='col-span-3 sm:col-span-1 border rounded-md p-4 flex flex-col items-center justify-center relative group'>
-						<div className='flex flex-col items-center'>
-							<Image src={table?.tableQrCode ?? ''} alt='TableQr' width='400' height='400' />
+					{isEdit && (
+						<Button
+							variant='green'
+							size='sm'
+							// eslint-disable-next-line @typescript-eslint/no-misused-promises
+							onClick={async () => {
+								await downloadsAsPDF();
+							}}
+						>
+							Download QR Code
+						</Button>
+					)}
+
+					{isEdit && (
+						<div>
+							<Image id='table-qr-code' src={tableQrCode ?? ''} alt='TableQr' width={400} height={400} />
 							<div className='mt-2 text-center'>
 								<p className='text-sm text-gray-500'>Scan the qr code in order to see the menus</p>
 							</div>
 						</div>
-					</div> */}
+					)}
 
 					<div className='space-y-4'>
 						<FormInputField<AddTableSchemaType>
@@ -106,8 +148,10 @@ export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, ta
 										<Loader2 className='mr-2 h-4 w-4 animate-spin' />
 										Please wait
 									</span>
+								) : isEdit ? (
+									'Edit Table'
 								) : (
-									'Add'
+									'Add Table'
 								)}
 							</Button>
 						</div>

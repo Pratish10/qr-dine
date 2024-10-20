@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import FormInputField from '@/components/SharedComponent/form-input-field';
 import { AddMenuSchema } from '@/schemas/schema';
-import { type AddMenuSchemaType } from '@/schemas/types';
+import { type AddMenuSchemaTypeWithOptionalId, type AddMenuSchemaType } from '@/schemas/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Availability, MenuType } from '@prisma/client';
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -13,7 +13,7 @@ import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList, CommandI
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
+import { Check, ChevronsUpDown, CircleX, Loader2 } from 'lucide-react';
 import { type FileState, MultiFileDropzone } from './multiFileDropZone';
 import { useEdgeStore } from '@/lib/edgestore';
 import { Textarea } from '@/components/ui/textarea';
@@ -23,6 +23,12 @@ import { type DefaultMenuType } from './new-menu-sheet';
 import { useRecoilValue } from 'recoil';
 import { categories } from '@/recoil/categories/atom';
 import { useMenuSheetController } from '@/hooks/menus/menu-sheet-controller';
+import Image from 'next/image';
+import { usePatchMenu } from '@/hooks/menus/use-patch-menu';
+
+interface AddMenuProps extends DefaultMenuType {
+	isEdit: boolean;
+}
 
 export const AddMenu = ({
 	amount,
@@ -34,14 +40,19 @@ export const AddMenu = ({
 	name,
 	restaurantId,
 	type,
-}: DefaultMenuType): JSX.Element => {
+	isEdit,
+	id,
+}: AddMenuProps): JSX.Element => {
 	const { onClose } = useMenuSheetController();
 	const cat = useRecoilValue(categories);
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_, startTransition] = useTransition();
 	const [fileStates, setFileStates] = useState<FileState[]>([]);
 	const { edgestore } = useEdgeStore();
-	const { mutate, isPending } = useAddMenu();
+	const { mutate: addMenu, isPending: isAdding } = useAddMenu();
+	const { mutate: patchMenu, isPending: isPatching } = usePatchMenu();
+	const [editor, setEditor] = useState<boolean>(isEdit);
+	const [images, setImages] = useState<string[]>(image ?? []);
 
 	function updateFileProgress(key: string, progress: FileState['progress']): void {
 		setFileStates((fileStates) => {
@@ -61,7 +72,7 @@ export const AddMenu = ({
 			availability,
 			category,
 			description,
-			image,
+			image: images,
 			isFeatured,
 			name,
 			restaurantId,
@@ -69,18 +80,51 @@ export const AddMenu = ({
 		},
 	});
 
-	const submitHandler = (values: AddMenuSchemaType): void => {
-		startTransition(() => {
-			mutate(values, {
-				onSuccess: () => {
-					toast.success('Menu Successfully Added!');
-					onClose();
-				},
-				onError: (error: any) => {
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-					toast.error(error.response.data.message ?? error.message);
-				},
+	useEffect(() => {
+		if (images.length === 0) {
+			setEditor(false);
+		}
+		form.setValue('image', images);
+	}, [images.length]);
+
+	const submitHandler = (values: AddMenuSchemaTypeWithOptionalId): void => {
+		if (editor) {
+			startTransition(() => {
+				addMenu(values, {
+					onSuccess: () => {
+						toast.success('Menu Successfully Added!');
+						onClose();
+					},
+					onError: (error: any) => {
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+						toast.error(error.response.data.message ?? error.message);
+					},
+				});
 			});
+		} else {
+			startTransition(() => {
+				patchMenu(
+					{ ...values, id },
+					{
+						onSuccess: () => {
+							toast.success('Menu Successfully Added!');
+							onClose();
+						},
+						onError: (error: any) => {
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+							toast.error(error.response.data.message ?? error.message);
+						},
+					}
+				);
+			});
+		}
+	};
+
+	const onDeleteImage = async (imgUrl: string): Promise<void> => {
+		const updatedImages = images.filter((item) => item !== imgUrl);
+		setImages(updatedImages);
+		await edgestore.publicFiles.delete({
+			url: imgUrl,
 		});
 	};
 
@@ -92,53 +136,71 @@ export const AddMenu = ({
 				onSubmit={form.handleSubmit(submitHandler)}
 			>
 				<div className='space-y-4'>
-					<FormField
-						control={form.control}
-						name='image'
-						render={({ field }) => (
-							<FormItem>
-								<FormControl>
-									<MultiFileDropzone
-										value={fileStates}
-										onChange={(files) => {
-											setFileStates(files);
+					{editor ? (
+						<div>
+							{images.map((item, index) => (
+								<div key={index} className='relative'>
+									<span
+										className='absolute top-0 right-0'
+										onClick={() => {
+											void onDeleteImage(item);
 										}}
-										onFilesAdded={async (addedFiles) => {
-											await Promise.all(
-												addedFiles.map(async (addedFileState) => {
-													try {
-														const res = await edgestore.publicFiles.upload({
-															file: addedFileState.file,
-															onProgressChange: async (progress) => {
-																updateFileProgress(addedFileState.key, progress);
-																if (progress === 100) {
-																	await new Promise((resolve) => setTimeout(resolve, 1000));
-																	updateFileProgress(addedFileState.key, 'COMPLETE');
-																}
-															},
-														});
-														const currentImages = form.getValues('image') || [];
+									>
+										<CircleX className='cursor-pointer bg-white rounded-full text-black' size={35} />
+									</span>
+									<Image src={item} alt={item} width={400} height={400} />
+								</div>
+							))}
+						</div>
+					) : (
+						<FormField
+							control={form.control}
+							name='image'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<MultiFileDropzone
+											value={fileStates}
+											onChange={(files) => {
+												setFileStates(files);
+											}}
+											onFilesAdded={async (addedFiles) => {
+												await Promise.all(
+													addedFiles.map(async (addedFileState) => {
+														try {
+															const res = await edgestore.publicFiles.upload({
+																file: addedFileState.file,
+																onProgressChange: async (progress) => {
+																	updateFileProgress(addedFileState.key, progress);
+																	if (progress === 100) {
+																		await new Promise((resolve) => setTimeout(resolve, 1000));
+																		updateFileProgress(addedFileState.key, 'COMPLETE');
+																	}
+																},
+															});
+															const currentImages = form.getValues('image') || [];
 
-														form.setValue('image', [...currentImages, res.url]);
-													} catch (err) {
-														updateFileProgress(addedFileState.key, 'ERROR');
-													}
-												})
-											);
-										}}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+															form.setValue('image', [...currentImages, res.url]);
+														} catch (err) {
+															updateFileProgress(addedFileState.key, 'ERROR');
+														}
+													})
+												);
+											}}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					)}
 
 					<FormInputField<AddMenuSchemaType>
 						name='name'
 						label='Dish Name'
 						placeholder='Enter dish name'
 						control={form.control}
-						disabled={isPending}
+						disabled={isAdding || isPatching}
 						type='text'
 					/>
 					<FormInputField<AddMenuSchemaType>
@@ -146,7 +208,7 @@ export const AddMenu = ({
 						label='Price'
 						placeholder='Enter price in INR'
 						control={form.control}
-						disabled={isPending}
+						disabled={isAdding || isPatching}
 						type='number'
 					/>
 
@@ -211,7 +273,7 @@ export const AddMenu = ({
 							<FormItem>
 								<FormLabel>Dish Type</FormLabel>
 								<FormControl>
-									<Select onValueChange={field.onChange} disabled={isPending} {...field}>
+									<Select onValueChange={field.onChange} disabled={isAdding || isPatching} {...field}>
 										<SelectTrigger className='w-[200px]'>
 											<SelectValue placeholder='Select a type' />
 										</SelectTrigger>
@@ -237,7 +299,7 @@ export const AddMenu = ({
 							<FormItem>
 								<FormLabel>Availability</FormLabel>
 								<FormControl>
-									<Select onValueChange={field.onChange} disabled={isPending} {...field}>
+									<Select onValueChange={field.onChange} disabled={isAdding || isPatching} {...field}>
 										<SelectTrigger className='w-[200px]'>
 											<SelectValue placeholder='Select availability' />
 										</SelectTrigger>
@@ -267,7 +329,7 @@ export const AddMenu = ({
 										placeholder='Enter Dish Description'
 										className='w-full p-2 border rounded-md disabled:opacity-50'
 										rows={4}
-										disabled={isPending}
+										disabled={isAdding || isPatching}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -278,12 +340,14 @@ export const AddMenu = ({
 
 				{/* Submit Button */}
 				<div className='flex justify-end pt-4'>
-					<Button variant='green' type='submit' disabled={isPending}>
-						{isPending ? (
+					<Button variant='green' type='submit' disabled={isAdding || isPatching}>
+						{isAdding || isPatching ? (
 							<span className='flex items-center'>
 								<Loader2 className='mr-2 h-4 w-4 animate-spin' />
 								Please wait
 							</span>
+						) : editor ? (
+							'Edit Menu'
 						) : (
 							'Add Menu'
 						)}

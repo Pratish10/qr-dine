@@ -10,6 +10,7 @@ import { restaurant } from '@/recoil/restaurant/atom';
 import { useMenuSheetController } from '@/hooks/menus/menu-sheet-controller';
 
 export interface DefaultMenuType {
+	id: string;
 	name: string;
 	amount: string;
 	category: string;
@@ -25,6 +26,7 @@ export const NewMenuSheet = (): React.JSX.Element => {
 	const { isOpen, onClose, data } = useMenuSheetController();
 	const { id } = useRecoilValue(restaurant);
 	const defaultValues: DefaultMenuType = {
+		id: '',
 		name: '',
 		amount: '',
 		category: '',
@@ -35,7 +37,7 @@ export const NewMenuSheet = (): React.JSX.Element => {
 		isFeatured: false,
 		restaurantId: id,
 	};
-	const isEdit = data && typeof data === 'object' && !Array.isArray(data);
+	const isEdit = !!(data && typeof data === 'object' && !Array.isArray(data));
 	const values = isEdit ? (data as DefaultMenuType) : defaultValues;
 
 	return (
@@ -44,7 +46,7 @@ export const NewMenuSheet = (): React.JSX.Element => {
 				<SheetHeader>
 					<SheetTitle>{isEdit ? 'Edit Menu' : 'Add Menu'}</SheetTitle>
 					<SheetDescription>
-						<AddMenu {...values} />
+						<AddMenu {...values} isEdit={isEdit} />
 					</SheetDescription>
 				</SheetHeader>
 			</SheetContent>

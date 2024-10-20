@@ -22,12 +22,12 @@ export const NewTableSheet = (): React.JSX.Element => {
 	const { id } = useRecoilValue(restaurant);
 	const defaultValues: DefaultTableType = {
 		tableNumber: '',
-		tableQrCode: '',
+		tableQrCode: 'https://quickchart.io/qr?text=Hello%20world&size=200',
 		tableSize: '',
 		tableStatus: TableStatus.Vacant,
 		restaurantId: id,
 	};
-	const isEdit = data && typeof data === 'object' && !Array.isArray(data);
+	const isEdit = !!(data && typeof data === 'object' && !Array.isArray(data));
 	const values = isEdit ? (data as DefaultTableType) : defaultValues;
 
 	return (
@@ -36,7 +36,7 @@ export const NewTableSheet = (): React.JSX.Element => {
 				<SheetHeader>
 					<SheetTitle>{isEdit ? 'Edit Table' : 'Add Table'}</SheetTitle>
 					<SheetDescription>
-						<AddTable {...values} />
+						<AddTable {...values} isEdit={isEdit} />
 					</SheetDescription>
 				</SheetHeader>
 			</SheetContent>

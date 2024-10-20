@@ -141,3 +141,51 @@ export async function DELETE(req: NextRequest): Promise<NextResponse<ServerActio
 		return NextResponse.json(standardizedError, { status: standardizedError.code });
 	}
 }
+
+export async function PATCH(req: NextRequest): Promise<NextResponse<ServerActionReturnType>> {
+	try {
+		const body = await req.json();
+
+		const user = await getCurrentUser();
+		if (!user?.id) {
+			throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');
+		}
+
+		const existingUser = await getUserById(user.id);
+		if (!existingUser) {
+			throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');
+		}
+
+		const { id, ...updateData } = body;
+
+		if (!id) {
+			throw new ErrorHandler('Menu ID is required', 'BAD_REQUEST');
+		}
+
+		const validatedFields = AddMenuSchema.safeParse(updateData);
+		if (!validatedFields.success) {
+			throw new ErrorHandler('Invalid Fields!', 'BAD_REQUEST');
+		}
+
+		const existingMenu = await prisma.menu.findUnique({
+			where: { id },
+		});
+
+		if (!existingMenu) {
+			throw new ErrorHandler('Menu not found', 'NOT_FOUND');
+		}
+
+		const updatedMenu = await prisma.menu.update({
+			where: { id },
+			data: {
+				...validatedFields.data,
+				updatedAt: new Date(),
+			},
+		});
+
+		return NextResponse.json(new SuccessResponse('Successfully Updated Menu', 200, updatedMenu).serialize());
+	} catch (error) {
+		const standardizedError = standardizeApiError(error);
+		return NextResponse.json(standardizedError, { status: standardizedError.code });
+	}
+}

@@ -152,3 +152,7 @@ export const AddTableSchema = z.object({
 		message: 'Restaurant ID is required',
 	}),
 });
+
+export const AddMenuSchemaWithId = AddMenuSchema.extend({
+	id: z.string().optional(),
+});

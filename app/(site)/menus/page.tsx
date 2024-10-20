@@ -46,7 +46,7 @@ const Menus = (): JSX.Element => {
 
 	const onDelete = (rows: Array<Row<Menu>>): void => {
 		const ids = rows.map((item: Row<Menu>) => item.original.id);
-		deleteMenu(ids as string[]);
+		deleteMenu(ids);
 	};
 
 	return (
