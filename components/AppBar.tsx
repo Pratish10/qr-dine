@@ -6,26 +6,7 @@ import { Button } from './ui/button';
 import clsx from 'clsx';
 import { SidebarItems } from './side-bar';
 import { sideBarOptions } from '@/config/sideBar.config';
-
-const useMediaQuery = (query: string): boolean => {
-	const [matches, setMatches] = useState<boolean>(false);
-
-	useEffect(() => {
-		const media = window.matchMedia(query);
-		const listener = (): void => {
-			setMatches(media.matches);
-		};
-
-		// Set initial state
-		listener();
-		media.addListener(listener);
-		return () => {
-			media.removeListener(listener);
-		};
-	}, [query]);
-
-	return matches;
-};
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 export const AppBar = (): React.JSX.Element => {
 	const [isCollapsed, setIsCollapsed] = useState<boolean>(true);

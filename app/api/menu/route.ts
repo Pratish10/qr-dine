@@ -8,6 +8,7 @@ import { getRestaurantByRestaurantId } from '@/lib/restaurant/restaurant';
 import { SuccessResponse } from '@/lib/success';
 import { AddMenuSchema } from '@/schemas/schema';
 import { type ServerActionReturnType } from '@/types/api.types';
+import { canAddMenu } from '@/utils/permissions';
 import { type Menu } from '@prisma/client';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -81,24 +82,39 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 
 		const menuId = `M-${generateUniqueFourDigitNumber()}`;
 
-		await prisma.menu.create({
-			data: {
-				menuId,
-				name,
-				description,
-				type,
-				image,
-				category,
-				amount,
-				availability,
-				isFeatured: isFeatured ?? false,
-				restaurant: {
-					connect: { id: restaurantId },
+		const menus = await prisma.menu.findMany({
+			where: {
+				restaurantId: {
+					equals: restaurantId,
 				},
 			},
 		});
 
-		return NextResponse.json(new SuccessResponse('Succesfully Added Menu', 200).serialize());
+		if (canAddMenu(user, menus)) {
+			await prisma.menu.create({
+				data: {
+					menuId,
+					name,
+					description,
+					type,
+					image,
+					category,
+					amount,
+					availability,
+					isFeatured: isFeatured ?? false,
+					restaurant: {
+						connect: { id: restaurantId },
+					},
+				},
+			});
+
+			return NextResponse.json(new SuccessResponse('Succesfully Added Menu', 200).serialize());
+		} else {
+			throw new ErrorHandler(
+				'You’ve reached the limit of your current plan. To add more menus and unlock additional features, please upgrade to a higher plan.',
+				'INSUFFICIENT_PERMISSIONS'
+			);
+		}
 	} catch (error) {
 		const standardizedError = standardizeApiError(error);
 		return NextResponse.json(standardizedError, { status: standardizedError.code });

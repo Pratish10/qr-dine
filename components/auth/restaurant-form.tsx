@@ -43,7 +43,7 @@ export const RestaurantForm = (): React.JSX.Element => {
 					toast.success(res.message);
 					router.push(APP_PATHS.DASHBOARD);
 				} else {
-					toast.success(res.message);
+					toast.error(res.message);
 				}
 			});
 		});

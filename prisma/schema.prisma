@@ -178,10 +178,10 @@ model Plan {
   id             String    @id @default(cuid())
   name           String    @unique
   description    String[]
-  maxMenus       Int
-  maxRestaurants Int
-  maxTables      Int
-  price          String
+  maxMenus       Int       @default(15)
+  maxRestaurants Int       @default(2)
+  maxTables      Int       @default(6)
+  price          Int
   type           planTypes @default(free)
 
   users User[]

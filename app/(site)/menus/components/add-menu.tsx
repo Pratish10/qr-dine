@@ -88,7 +88,7 @@ export const AddMenu = ({
 	}, [images.length]);
 
 	const submitHandler = (values: AddMenuSchemaTypeWithOptionalId): void => {
-		if (editor) {
+		if (!editor) {
 			startTransition(() => {
 				addMenu(values, {
 					onSuccess: () => {

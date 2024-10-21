@@ -4,15 +4,30 @@ export const PASSWORD_RESET = 'Reset Your Password';
 
 export const PASSWORD_SALT = 10;
 
+export const FREE_MENUS = 15;
+export const FREE_RESTAURANTS = 2;
+export const FREE_TABLES = 6;
+export const FREE_PRICE = 0;
+
+export const STARTER_MENUS = 40;
+export const STARTER_RESTAURANTS = 5;
+export const STARTER_TABLES = 12;
+export const STARTER_PRICE = 499;
+
+export const PRO_MENUS = 100;
+export const PRO_RESTAURANTS = 10;
+export const PRO_TABLES = 20;
+export const PRO_PRICE = 999;
+
 export const PLANS = [
 	{
 		id: '38250b3b-fdab-4f74-97a8-ea4a9b9839b4',
 		name: 'Free Tier',
 		description: ['Manage up to 15 menus for your restaurants', 'Handle service for up to 6 tables at a time', 'Support for up to 2 restaurants'],
-		maxMenus: 15,
-		maxRestaurants: 2,
-		maxTables: 6,
-		price: '0',
+		maxMenus: FREE_MENUS,
+		maxRestaurants: FREE_RESTAURANTS,
+		maxTables: FREE_TABLES,
+		price: FREE_PRICE,
 		createdAt: '2024-10-19 12:40:04.192',
 		updatedAt: '2024-10-19 12:40:04.192',
 		type: 'free',
@@ -28,7 +43,7 @@ export const PLANS = [
 		maxMenus: 40,
 		maxRestaurants: 5,
 		maxTables: 12,
-		price: '499',
+		price: 499,
 		createdAt: '2024-10-19 12:40:04.192',
 		updatedAt: '2024-10-19 12:40:04.192',
 		type: 'starter',
@@ -44,7 +59,7 @@ export const PLANS = [
 		maxMenus: 100,
 		maxRestaurants: 10,
 		maxTables: 20,
-		price: '999',
+		price: 999,
 		createdAt: '2024-10-19 12:40:04.192',
 		updatedAt: '2024-10-19 12:40:04.192',
 		type: 'pro',

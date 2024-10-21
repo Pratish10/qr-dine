@@ -2,15 +2,13 @@
 import prisma from '@/db';
 import { getCurrentUser } from '@/hooks/getCurrentUser';
 import { getUserById } from '@/lib/auth/user';
+import { getCategoryById } from '@/lib/category/getCategoryById';
 import { ErrorHandler, standardizeApiError } from '@/lib/error';
-import { generateUniqueFourDigitNumber } from '@/lib/generateUniqueFourDigitNumber';
 import { getRestaurantByRestaurantId } from '@/lib/restaurant/restaurant';
 import { SuccessResponse } from '@/lib/success';
-import { getTableByTableNumber } from '@/lib/table/getTableByTableNumber';
-import { AddTableSchema } from '@/schemas/schema';
+import { AddCategorySchema } from '@/schemas/schema';
 import { type ServerActionReturnType } from '@/types/api.types';
-import { canAddTable } from '@/utils/permissions';
-import { type Table } from '@prisma/client';
+import { type Category } from '@prisma/client';
 import { type NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest): Promise<NextResponse<ServerActionReturnType>> {
@@ -34,7 +32,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 			throw new ErrorHandler('Restaurant ID is required', 'BAD_REQUEST');
 		}
 
-		const tables: Table[] = await prisma.table.findMany({
+		const categories: Category[] = await prisma.category.findMany({
 			where: {
 				restaurantId: {
 					equals: id,
@@ -46,7 +44,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 		});
 
 		// Return success response with categories
-		return NextResponse.json(new SuccessResponse<Table[]>('Fetched Menus Successfully', 200, tables).serialize());
+		return NextResponse.json(new SuccessResponse<Category[]>('Fetched Categories Successfully', 200, categories).serialize());
 	} catch (error) {
 		const standardizedError = standardizeApiError(error);
 		return NextResponse.json(standardizedError, { status: standardizedError.code });
@@ -58,26 +56,19 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 		const body = await req.json();
 
 		const user = await getCurrentUser();
-		const validatedFields = AddTableSchema.safeParse(body);
+		const validatedFields = AddCategorySchema.safeParse(body);
 
 		if (!validatedFields.success) {
 			throw new ErrorHandler('Invalid Fields!', 'BAD_REQUEST');
 		}
 
-		const { restaurantId, tableNumber, tableQrCode, tableSize, tableStatus } = validatedFields.data;
-
-		const exisitngTable = await getTableByTableNumber(tableNumber);
-
-		if (exisitngTable !== null) {
-			throw new ErrorHandler('Table Number already Exists', 'BAD_REQUEST');
-		}
+		const { category, restaurantId } = validatedFields.data;
 
 		if (!user?.id) {
 			throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');
 		}
 
 		const existingUser = await getUserById(user.id);
-
 		if (existingUser === null) {
 			throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');
 		}
@@ -88,37 +79,16 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 			throw new ErrorHandler('The Associated Restaurant not found', 'NOT_FOUND');
 		}
 
-		const tableId = `T-${generateUniqueFourDigitNumber()}`;
-
-		const tables = await prisma.table.findMany({
-			where: {
-				restaurantId: {
-					equals: restaurantId,
+		await prisma.category.create({
+			data: {
+				category,
+				restaurant: {
+					connect: { id: restaurantId },
 				},
 			},
 		});
 
-		if (canAddTable(user, tables)) {
-			await prisma.table.create({
-				data: {
-					tableId,
-					tableNumber,
-					tableQrCode,
-					tableSize,
-					tableStatus,
-					restaurant: {
-						connect: { id: restaurantId },
-					},
-				},
-			});
-
-			return NextResponse.json(new SuccessResponse('Succesfully Table Menu', 200).serialize());
-		} else {
-			throw new ErrorHandler(
-				'You’ve reached the limit of your current plan. To add more tables and unlock additional features, please upgrade to a higher plan.',
-				'INSUFFICIENT_PERMISSIONS'
-			);
-		}
+		return NextResponse.json(new SuccessResponse('Succesfully Added Category', 200).serialize());
 	} catch (error) {
 		const standardizedError = standardizeApiError(error);
 		return NextResponse.json(standardizedError, { status: standardizedError.code });
@@ -143,7 +113,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse<ServerActio
 			throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');
 		}
 
-		const deleteResult = await prisma.table.deleteMany({
+		const deleteResult = await prisma.category.deleteMany({
 			where: {
 				id: {
 					in: body,
@@ -152,10 +122,51 @@ export async function DELETE(req: NextRequest): Promise<NextResponse<ServerActio
 		});
 
 		if (deleteResult.count === 0) {
-			throw new ErrorHandler('No menus found to delete', 'NOT_FOUND');
+			throw new ErrorHandler('No category found to delete', 'NOT_FOUND');
 		}
 
-		return NextResponse.json(new SuccessResponse('Successfully Deleted Tables', 200).serialize());
+		return NextResponse.json(new SuccessResponse('Successfully Deleted Categories', 200).serialize());
+	} catch (error) {
+		const standardizedError = standardizeApiError(error);
+		return NextResponse.json(standardizedError, { status: standardizedError.code });
+	}
+}
+
+export async function PATCH(req: NextRequest): Promise<NextResponse<ServerActionReturnType>> {
+	try {
+		const body = await req.json();
+
+		const user = await getCurrentUser();
+		if (!user?.id) {
+			throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');
+		}
+
+		const existingUser = await getUserById(user.id);
+		if (!existingUser) {
+			throw new ErrorHandler('Unauthorized', 'UNAUTHORIZED');
+		}
+
+		const { id, category } = body;
+
+		if (!id) {
+			throw new ErrorHandler('Category ID is required', 'BAD_REQUEST');
+		}
+
+		const existingCategory = await getCategoryById(id as string);
+
+		if (!existingCategory) {
+			throw new ErrorHandler('Category not found', 'NOT_FOUND');
+		}
+
+		const updatedCategory = await prisma.menu.update({
+			where: { id },
+			data: {
+				category,
+				updatedAt: new Date(),
+			},
+		});
+
+		return NextResponse.json(new SuccessResponse('Successfully Updated Category', 200, updatedCategory).serialize());
 	} catch (error) {
 		const standardizedError = standardizeApiError(error);
 		return NextResponse.json(standardizedError, { status: standardizedError.code });

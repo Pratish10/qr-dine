@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use server';
 import prisma from '@/db';
+import { getCurrentUser } from '@/hooks/getCurrentUser';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { getUserById } from '@/lib/auth/user';
 import { ErrorHandler } from '@/lib/error';
@@ -9,8 +11,11 @@ import { SuccessResponse } from '@/lib/success';
 import { RestaurantSchema } from '@/schemas/schema';
 import { type RestaurantSchemaType } from '@/schemas/types';
 import { type ServerActionReturnType } from '@/types/api.types';
+import { canAddRestaurant } from '@/utils/permissions';
+import { type Restaurant } from '@prisma/client';
 
 export const createRestaurant = withServerActionAsyncCatcher<RestaurantSchemaType, ServerActionReturnType>(async (values) => {
+	const user = await getCurrentUser();
 	const validatedFields = RestaurantSchema.safeParse(values);
 
 	if (!validatedFields.success) {
@@ -31,29 +36,44 @@ export const createRestaurant = withServerActionAsyncCatcher<RestaurantSchemaTyp
 		throw new ErrorHandler('Restaurant with same Branch Name already exists!', 'BAD_REQUEST');
 	}
 
+	if (!user) {
+		throw new ErrorHandler('Invalid User!', 'BAD_REQUEST');
+	}
+
 	const restaurantId = `R-${generateUniqueFourDigitNumber()}`;
 
-	try {
-		await prisma.restaurant.create({
-			data: {
-				fullName,
-				branchName,
-				restaurantId,
-				state,
-				address,
-				city,
-				country,
-				pinCode,
-				ClientName: clientName,
-				upiId: upiID,
-				user: {
-					connect: { id: userId },
-				},
-			},
-		});
+	const restaurants: Restaurant[] = await prisma.restaurant.findMany({
+		where: { userId },
+	});
 
-		return new SuccessResponse('Your Restaurant has been successfully Registered!', 201).serialize();
-	} catch {
-		throw new ErrorHandler('Internal Server Error', 'INTERNAL_SERVER_ERROR');
+	try {
+		if (canAddRestaurant(user, restaurants)) {
+			await prisma.restaurant.create({
+				data: {
+					fullName,
+					branchName,
+					restaurantId,
+					state,
+					address,
+					city,
+					country,
+					pinCode,
+					ClientName: clientName,
+					upiId: upiID,
+					user: {
+						connect: { id: userId },
+					},
+				},
+			});
+
+			return new SuccessResponse('Your Restaurant has been successfully Registered!', 201).serialize();
+		} else {
+			throw new ErrorHandler(
+				'You’ve reached the limit of your current plan. To add more restaurants and unlock additional features, please upgrade to a higher plan.',
+				'INSUFFICIENT_PERMISSIONS'
+			);
+		}
+	} catch (error: any) {
+		throw new ErrorHandler(error.message as string, 'INTERNAL_SERVER_ERROR');
 	}
 });

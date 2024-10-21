@@ -8,6 +8,7 @@ import {
 	type ProfileSchema,
 	type AddMenuSchema,
 	type AddTableSchema,
+	type AddCategorySchema,
 } from './schema';
 
 export type RegisterUserType = z.infer<typeof RegisterUserSchema>;
@@ -19,3 +20,4 @@ export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
 export type AddMenuSchemaType = z.infer<typeof AddMenuSchema>;
 export type AddTableSchemaType = z.infer<typeof AddTableSchema>;
 export type AddMenuSchemaTypeWithOptionalId = z.infer<typeof AddMenuSchema>;
+export type AddCategorySchemaType = z.infer<typeof AddCategorySchema>;

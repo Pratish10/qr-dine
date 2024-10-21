@@ -6,10 +6,13 @@ import { Smartphone, Utensils, CreditCard, BarChart, Check } from 'lucide-react'
 import Link from 'next/link';
 import APP_PATHS from '@/config/path.config';
 import { useTheme } from 'next-themes';
-import { PLANS } from '@/config/auth.config';
+import { useRecoilValue } from 'recoil';
+import { plans } from '@/recoil/plans/atom';
+import { planTypes } from '@prisma/client';
 
 export function LandingPage(): JSX.Element {
 	const { theme } = useTheme();
+	const planData = useRecoilValue(plans);
 
 	const features = [
 		{ icon: Smartphone, title: 'QR Code Menus', description: 'Create dynamic QR code menus for each table in your restaurant.' },
@@ -133,14 +136,14 @@ export function LandingPage(): JSX.Element {
 							Pricing
 						</h2>
 						<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-							{PLANS.map((plan) => (
+							{planData.map((plan) => (
 								<Card className='bg-white dark:bg-gray-800 flex flex-col' key={plan.id}>
 									<CardHeader>
 										<CardTitle className='text-gray-900 dark:text-gray-50'>{plan.name}</CardTitle>
 									</CardHeader>
 									<CardContent className='flex-grow'>
 										<p className='text-4xl font-bold mb-4 text-green-600'>
-											{plan.price === '0' ? (
+											{plan.type === planTypes.free ? (
 												'Free'
 											) : (
 												<>
@@ -162,12 +165,12 @@ export function LandingPage(): JSX.Element {
 										<Button
 											variant='green'
 											className='w-full'
-											disabled={plan.price === '0'}
+											disabled={plan.type === planTypes.free}
 											onClick={() => {
 												console.log(plan);
 											}}
 										>
-											{plan.price === '0' ? 'Activated' : 'Choose Plan'}
+											{plan.type === planTypes.free ? 'Activated' : 'Choose Plan'}
 										</Button>
 									</CardFooter>
 								</Card>

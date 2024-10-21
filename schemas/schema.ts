@@ -156,3 +156,12 @@ export const AddTableSchema = z.object({
 export const AddMenuSchemaWithId = AddMenuSchema.extend({
 	id: z.string().optional(),
 });
+
+export const AddCategorySchema = z.object({
+	category: z.string().min(1, {
+		message: 'Category is required',
+	}),
+	restaurantId: z.string().min(1, {
+		message: 'Restaurant ID is required',
+	}),
+});

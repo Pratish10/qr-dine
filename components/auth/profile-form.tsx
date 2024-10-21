@@ -21,11 +21,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList, CommandInput, CommandSeparator } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
 import { type RestaurantType } from '@/app/api/restaurant/route';
-import { useRouter } from 'next/navigation';
 import APP_PATHS from '@/config/path.config';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export const ProfileForm = (): JSX.Element => {
-	const router = useRouter();
 	const restaurantData = useRecoilValue(restaurantList);
 	const [res, setRes] = useRecoilState(restaurant);
 	const [open, setOpen] = useState(false);
@@ -79,7 +79,13 @@ export const ProfileForm = (): JSX.Element => {
 	};
 
 	return (
-		<div className='h-[calc(100vh-4rem)]'>
+		<motion.div
+			initial={{ y: 10, opacity: 0 }}
+			animate={{ y: 0, opacity: 1 }}
+			exit={{ y: -10, opacity: 0 }}
+			transition={{ duration: 0.2 }}
+			className='h-[calc(100vh-4rem)]'
+		>
 			<div className='flex justify-end items-center py-4'>
 				<Button
 					onClick={() => {
@@ -176,15 +182,12 @@ export const ProfileForm = (): JSX.Element => {
 											<>
 												<CommandSeparator />
 												<CommandGroup>
-													<CommandItem
-														onClick={() => {
-															router.push(APP_PATHS.RESTAURANT);
-														}}
-														className='justify-center text-center'
-													>
-														<PlusCircle className='mr-2' size={20} />
-														Register more branches
-													</CommandItem>
+													<Link href={APP_PATHS.RESTAURANT}>
+														<CommandItem className='justify-center text-center'>
+															<PlusCircle className='mr-2' size={20} />
+															Register more branches
+														</CommandItem>
+													</Link>
 												</CommandGroup>
 											</>
 											<CommandGroup>
@@ -230,6 +233,6 @@ export const ProfileForm = (): JSX.Element => {
 					</div>
 				</form>
 			</Form>
-		</div>
+		</motion.div>
 	);
 };

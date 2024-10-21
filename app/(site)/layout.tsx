@@ -4,6 +4,7 @@ import { Navbar } from '@/components/Navbar';
 import { getCurrentUser } from '@/hooks/getCurrentUser';
 import AuthenticatedLayout from './authenticated-layout';
 import { SheetProvider } from './sheet-provider';
+import PlanLayout from './plan-layout';
 
 export default async function DashboardLayout({
 	children,
@@ -14,16 +15,18 @@ export default async function DashboardLayout({
 
 	return (
 		<div className='h-screen'>
-			<Navbar />
-			{user ? (
-				<AuthenticatedLayout>
-					<AppBar />
-					<SheetProvider />
-					{children}
-				</AuthenticatedLayout>
-			) : (
-				<div>{children}</div>
-			)}
+			<PlanLayout>
+				<Navbar />
+				{user ? (
+					<AuthenticatedLayout>
+						<AppBar />
+						<SheetProvider />
+						{children}
+					</AuthenticatedLayout>
+				) : (
+					<div>{children}</div>
+				)}
+			</PlanLayout>
 		</div>
 	);
 }

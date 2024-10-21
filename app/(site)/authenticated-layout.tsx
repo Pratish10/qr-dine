@@ -15,15 +15,16 @@ interface AuthenticatedLayoutProps {
 const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps): JSX.Element => {
 	const router = useRouter();
 	const restaurantData = useRecoilValue(restaurantList);
-	const { data, isLoading, isSuccess } = useGetRestaurants();
+
+	const { data: resData, isLoading: isRestaurantsLoading, isSuccess: isRestaurantsSuccess } = useGetRestaurants();
 
 	useEffect(() => {
-		if (isSuccess && restaurantData.length === 0) {
+		if (isRestaurantsSuccess && restaurantData.length === 0) {
 			router.push(APP_PATHS.RESTAURANT);
 		}
-	}, [isSuccess, data, router]);
+	}, [isRestaurantsSuccess, resData, router]);
 
-	if (isLoading) {
+	if (isRestaurantsLoading) {
 		return (
 			<div className='flex justify-center items-center h-[calc(100vh-4rem)]'>
 				<Loader2 className='h-8 w-8 animate-spin' />
