@@ -77,6 +77,7 @@ export const AddMenu = ({
 			name,
 			restaurantId,
 			type,
+			id,
 		},
 	});
 
@@ -103,19 +104,16 @@ export const AddMenu = ({
 			});
 		} else {
 			startTransition(() => {
-				patchMenu(
-					{ ...values, id },
-					{
-						onSuccess: () => {
-							toast.success('Menu Successfully Added!');
-							onClose();
-						},
-						onError: (error: any) => {
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-							toast.error(error.response.data.message ?? error.message);
-						},
-					}
-				);
+				patchMenu(values, {
+					onSuccess: () => {
+						toast.success('Menu Successfully Added!');
+						onClose();
+					},
+					onError: (error: any) => {
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+						toast.error(error.response.data.message ?? error.message);
+					},
+				});
 			});
 		}
 	};
