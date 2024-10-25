@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import FormInputField from '@/components/SharedComponent/form-input-field';
 import { AddMenuSchema } from '@/schemas/schema';
-import { type AddMenuSchemaTypeWithOptionalId, type AddMenuSchemaType } from '@/schemas/types';
+import { type AddMenuSchemaType } from '@/schemas/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Availability, MenuType } from '@prisma/client';
 import { useEffect, useState, useTransition } from 'react';
@@ -87,7 +87,7 @@ export const AddMenu = ({
 		form.setValue('image', images);
 	}, [images.length]);
 
-	const submitHandler = (values: AddMenuSchemaTypeWithOptionalId): void => {
+	const submitHandler = (values: AddMenuSchemaType): void => {
 		if (!editor) {
 			startTransition(() => {
 				addMenu(values, {

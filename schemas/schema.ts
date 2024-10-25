@@ -90,6 +90,7 @@ export const ProfileSchema = z.object({
 });
 
 export const AddMenuSchema = z.object({
+	id: z.string().optional(),
 	name: z.string().min(1, {
 		message: 'Dish Name is required',
 	}),
