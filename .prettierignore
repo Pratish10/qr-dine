@@ -1,0 +1,20 @@
+# Ignore the node_modules directory
+node_modules/
+
+# Ignore build artifacts
+build/
+dist/
+.next/
+coverage/
+
+# Ignore public assets
+public/
+
+# Ignore specific files
+*.min.js
+*.map
+*.svg
+*.png
+
+# Ignore all JavaScript files in the components/ui directory
+components/ui/**/*.js
