@@ -1,4 +1,3 @@
-// src/lib/error.ts
 import { ERROR_CODE, ERROR_NAME } from '@/config/error.config';
 import { ZodError } from 'zod';
 import { generateErrorMessage } from 'zod-error';

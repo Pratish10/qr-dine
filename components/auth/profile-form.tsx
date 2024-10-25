@@ -24,6 +24,7 @@ import { type RestaurantType } from '@/app/api/restaurant/route';
 import APP_PATHS from '@/config/path.config';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import _ from 'lodash';
 
 export const ProfileForm = (): JSX.Element => {
 	const restaurantData = useRecoilValue(restaurantList);
@@ -121,7 +122,7 @@ export const ProfileForm = (): JSX.Element => {
 							<div className='mt-2 text-center'>
 								<p className='font-bold'>{data?.user?.name ?? 'Unknown'}</p>
 								<p className='text-sm text-gray-500'>{data?.user?.email ?? 'Unknown'}</p>
-								<p className='text-sm text-gray-500'>{data?.user?.plan ?? 'Unknown'}</p>
+								<p className='text-sm text-gray-500'>{_.capitalize(data?.user?.plan) ?? 'Unknown'}</p>
 							</div>
 						</div>
 					</div>
@@ -179,7 +180,7 @@ export const ProfileForm = (): JSX.Element => {
 											<CommandEmpty>
 												<div className='flex justify-center items-center h-[100px]'>No Restaurants found.</div>
 											</CommandEmpty>
-											<>
+											<React.Fragment>
 												<CommandSeparator />
 												<CommandGroup>
 													<Link href={APP_PATHS.RESTAURANT}>
@@ -189,7 +190,7 @@ export const ProfileForm = (): JSX.Element => {
 														</CommandItem>
 													</Link>
 												</CommandGroup>
-											</>
+											</React.Fragment>
 											<CommandGroup>
 												{restaurants.map((item: { value: string; label: string }) => (
 													<CommandItem key={item.value} value={item.value} onSelect={onSelectRestaurant}>

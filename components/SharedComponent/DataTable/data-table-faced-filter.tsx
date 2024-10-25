@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { CheckIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { type Column } from '@tanstack/react-table';
+import React from 'react';
 
 interface DataTableFacetedFilterProps<TData, TValue> {
 	column?: Column<TData, TValue>;
@@ -27,7 +28,7 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 				<Button variant='outline' size='sm' className='h-8 border-dashed'>
 					{title}
 					{selectedValues?.size > 0 && (
-						<>
+						<React.Fragment>
 							<Badge variant='secondary' className='rounded-sm px-1 font-normal lg:hidden'>
 								{selectedValues.size}
 							</Badge>
@@ -46,7 +47,7 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 										))
 								)}
 							</div>
-						</>
+						</React.Fragment>
 					)}
 				</Button>
 			</PopoverTrigger>
@@ -56,14 +57,14 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 					<CommandList>
 						<CommandEmpty>No results found.</CommandEmpty>
 						{selectedValues.size > 0 && (
-							<>
+							<React.Fragment>
 								<CommandSeparator />
 								<CommandGroup>
 									<CommandItem onSelect={() => column?.setFilterValue(undefined)} className='justify-center text-center'>
 										Clear filters
 									</CommandItem>
 								</CommandGroup>
-							</>
+							</React.Fragment>
 						)}
 						<CommandGroup>
 							{options.map((option) => {

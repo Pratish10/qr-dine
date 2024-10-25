@@ -21,9 +21,9 @@ const authRoutes = [APP_PATHS.LOGIN, APP_PATHS.REGISTER, APP_PATHS.RESET_PASSWOR
  * Public routes accessible to all users.
  * @type {string[]}
  */
-const publicRoutes = [APP_PATHS.NEW_VERIFICATION, APP_PATHS.HOME];
+const publicRoutes = [APP_PATHS.NEW_VERIFICATION, APP_PATHS.HOME, '/api/stripe/webhook(.*)'];
 
-export default auth(req => {
+export default auth((req) => {
 	const { nextUrl } = req;
 	const isLoggedIn = !(req.auth == null);
 

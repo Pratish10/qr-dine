@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NewMenuSheet } from './menus/components/new-menu-sheet';
 import { NewTableSheet } from './table/components/new-table-sheet';
 
@@ -14,9 +14,9 @@ export const SheetProvider = (): React.JSX.Element | null => {
 	if (!isMounted) return null;
 
 	return (
-		<>
+		<React.Fragment>
 			<NewTableSheet />
 			<NewMenuSheet />
-		</>
+		</React.Fragment>
 	);
 };

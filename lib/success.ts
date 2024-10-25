@@ -1,4 +1,3 @@
-// src/lib/success.ts
 export interface SuccessResponseType<T = unknown> {
 	status: true;
 	statusCode: number;

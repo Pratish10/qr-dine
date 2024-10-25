@@ -19,7 +19,7 @@ export const SidebarItems = ({ items, isCollapsed }: SideBarProps): React.JSX.El
 	const pathname = usePathname();
 
 	return (
-		<>
+		<React.Fragment>
 			{items.map((item) => {
 				const isActive = pathname === item.href;
 
@@ -48,6 +48,6 @@ export const SidebarItems = ({ items, isCollapsed }: SideBarProps): React.JSX.El
 					</TooltipProvider>
 				);
 			})}
-		</>
+		</React.Fragment>
 	);
 };

@@ -28,7 +28,7 @@ export const AppBar = (): React.JSX.Element => {
 	};
 
 	return (
-		<>
+		<React.Fragment>
 			<motion.nav
 				initial={false}
 				animate={isMounted && (isCollapsed ? 'collapsed' : 'expanded')}
@@ -70,6 +70,6 @@ export const AppBar = (): React.JSX.Element => {
 					<SidebarItems items={sideBarOptions} isCollapsed={!isMediumToXL} />
 				</div>
 			</motion.nav>
-		</>
+		</React.Fragment>
 	);
 };

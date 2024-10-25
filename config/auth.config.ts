@@ -8,6 +8,7 @@ export const FREE_MENUS = 15;
 export const FREE_RESTAURANTS = 2;
 export const FREE_TABLES = 6;
 export const FREE_PRICE = 0;
+export const FREE_PLAN_ID = '38250b3b-fdab-4f74-97a8-ea4a9b9839b4';
 
 export const STARTER_MENUS = 40;
 export const STARTER_RESTAURANTS = 5;

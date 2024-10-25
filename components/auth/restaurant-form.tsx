@@ -56,112 +56,110 @@ export const RestaurantForm = (): React.JSX.Element => {
 				onSubmit={form.handleSubmit(submitHandler)}
 				className='space-y-4'
 			>
-				<>
-					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-						<FormInputField<RestaurantSchemaType>
-							name='fullName'
-							label='Restaurant Name'
-							placeholder='Restaurant Name'
-							control={form.control}
-							disabled={isPending}
-							type='text'
-						/>
-						<FormInputField
-							name='branchName'
-							label='Branch Name'
-							placeholder='Branch Name'
-							control={form.control}
-							disabled={isPending}
-							type='text'
-						/>
-					</div>
-					<FormField
+				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+					<FormInputField<RestaurantSchemaType>
+						name='fullName'
+						label='Restaurant Name'
+						placeholder='Restaurant Name'
 						control={form.control}
-						name='address'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Restaurant Address</FormLabel>
-								<FormControl>
-									<Textarea
-										{...field}
-										placeholder='Address'
-										className='w-full p-2 border rounded-md disabled:opacity-50'
-										rows={4}
-										disabled={isPending}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
+						disabled={isPending}
+						type='text'
 					/>
-					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-						<FormInputField<RestaurantSchemaType>
-							name='clientName'
-							label='Name'
-							placeholder='Enter your name'
-							control={form.control}
-							disabled={isPending}
-							type='text'
-						/>
-						<FormInputField<RestaurantSchemaType>
-							name='upiID'
-							label='UPI ID'
-							placeholder='Enter your upi id'
-							control={form.control}
-							disabled={isPending}
-							type='text'
-						/>
-					</div>
-					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-						<FormInputField<RestaurantSchemaType>
-							name='pinCode'
-							label='Pin Code'
-							placeholder='Pin Code'
-							control={form.control}
-							disabled={isPending}
-							type='number'
-						/>
-						<FormInputField<RestaurantSchemaType>
-							name='city'
-							label='City'
-							placeholder='City'
-							control={form.control}
-							disabled={isPending}
-							type='text'
-						/>
-					</div>
-					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-						<FormInputField<RestaurantSchemaType>
-							name='state'
-							label='State'
-							placeholder='State'
-							control={form.control}
-							disabled={isPending}
-							type='text'
-						/>
-						<FormInputField<RestaurantSchemaType>
-							name='country'
-							label='Country'
-							placeholder='Country'
-							control={form.control}
-							disabled={isPending}
-							type='text'
-						/>
-					</div>
+					<FormInputField
+						name='branchName'
+						label='Branch Name'
+						placeholder='Branch Name'
+						control={form.control}
+						disabled={isPending}
+						type='text'
+					/>
+				</div>
+				<FormField
+					control={form.control}
+					name='address'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Restaurant Address</FormLabel>
+							<FormControl>
+								<Textarea
+									{...field}
+									placeholder='Address'
+									className='w-full p-2 border rounded-md disabled:opacity-50'
+									rows={4}
+									disabled={isPending}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+					<FormInputField<RestaurantSchemaType>
+						name='clientName'
+						label='Name'
+						placeholder='Enter your name'
+						control={form.control}
+						disabled={isPending}
+						type='text'
+					/>
+					<FormInputField<RestaurantSchemaType>
+						name='upiID'
+						label='UPI ID'
+						placeholder='Enter your upi id'
+						control={form.control}
+						disabled={isPending}
+						type='text'
+					/>
+				</div>
+				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+					<FormInputField<RestaurantSchemaType>
+						name='pinCode'
+						label='Pin Code'
+						placeholder='Pin Code'
+						control={form.control}
+						disabled={isPending}
+						type='number'
+					/>
+					<FormInputField<RestaurantSchemaType>
+						name='city'
+						label='City'
+						placeholder='City'
+						control={form.control}
+						disabled={isPending}
+						type='text'
+					/>
+				</div>
+				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+					<FormInputField<RestaurantSchemaType>
+						name='state'
+						label='State'
+						placeholder='State'
+						control={form.control}
+						disabled={isPending}
+						type='text'
+					/>
+					<FormInputField<RestaurantSchemaType>
+						name='country'
+						label='Country'
+						placeholder='Country'
+						control={form.control}
+						disabled={isPending}
+						type='text'
+					/>
+				</div>
 
-					<div className='flex justify-end'>
-						<Button type='submit' disabled={isPending}>
-							{isPending ? (
-								<span className='flex items-center'>
-									<Loader2 className='mr-2 h-4 w-4 animate-spin' />
-									Please wait
-								</span>
-							) : (
-								'Submit'
-							)}
-						</Button>
-					</div>
-				</>
+				<div className='flex justify-end'>
+					<Button type='submit' disabled={isPending}>
+						{isPending ? (
+							<span className='flex items-center'>
+								<Loader2 className='mr-2 h-4 w-4 animate-spin' />
+								Please wait
+							</span>
+						) : (
+							'Submit'
+						)}
+					</Button>
+				</div>
 			</form>
 		</Form>
 	);

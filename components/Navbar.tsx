@@ -5,6 +5,7 @@ import APP_PATHS from '@/config/path.config';
 import { UserButton } from '@/components/auth/UserButton';
 import React from 'react';
 import { getCurrentUser } from '@/hooks/getCurrentUser';
+import _ from 'lodash';
 
 export const Navbar = async (): Promise<React.JSX.Element> => {
 	const user = await getCurrentUser();
@@ -48,7 +49,13 @@ export const Navbar = async (): Promise<React.JSX.Element> => {
 							</Link>
 						</React.Fragment>
 					) : (
-						<UserButton />
+						<React.Fragment>
+							<UserButton />
+							<div className='hidden md:flex flex-col justify-center items-start'>
+								<p>{user?.name}</p>
+								<p className='text-slate-600 text-xs'>{_.capitalize(user?.plan)}</p>
+							</div>
+						</React.Fragment>
 					)}
 				</div>
 			</div>

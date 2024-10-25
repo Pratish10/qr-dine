@@ -33,16 +33,19 @@ model Account {
 }
 
 model User {
-  id                    String                 @id @default(cuid())
-  name                  String?
-  email                 String?                @unique
-  emailVerified         DateTime?
-  image                 String?
-  encryptedPassword     String?
+  id                 String    @id @default(cuid())
+  name               String?
+  email              String?   @unique
+  emailVerified      DateTime?
+  image              String?
+  encryptedPassword  String?
+  isTwoFactorEnabled Boolean   @default(false)
+
   accounts              Account[]
-  isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
   restaurants           Restaurant[]
+
+  subscription Subscription?
 
   plantId String @default("38250b3b-fdab-4f74-97a8-ea4a9b9839b4") //default free plan id
   plan    Plan   @relation(fields: [plantId], references: [id], onDelete: SetDefault)
@@ -188,4 +191,18 @@ model Plan {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Subscription {
+  id             String   @id @default(cuid())
+  customerId     String?
+  subscriptionId String?  @unique
+  productId      String?
+  priceId        String?
+  endDate        DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

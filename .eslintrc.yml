@@ -20,6 +20,7 @@ rules:
     - endOfLine: auto
   react/react-in-jsx-scope: off
   no-console: error
+  react/jsx-no-useless-fragment: [error, { allowExpressions: true }]
 
 overrides:
   - files: ["components/ui/**/*"]

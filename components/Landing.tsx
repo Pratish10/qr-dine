@@ -9,10 +9,16 @@ import { useTheme } from 'next-themes';
 import { useRecoilValue } from 'recoil';
 import { plans } from '@/recoil/plans/atom';
 import { planTypes } from '@prisma/client';
+import { createSubscription } from '@/actions/stripe/createSubscription';
+import { toast } from 'sonner';
+import { useSession } from 'next-auth/react';
 
 export function LandingPage(): JSX.Element {
+	const { data } = useSession();
 	const { theme } = useTheme();
 	const planData = useRecoilValue(plans);
+
+	const filteredPlanData = planData.filter((item) => item.type !== planTypes.free);
 
 	const features = [
 		{ icon: Smartphone, title: 'QR Code Menus', description: 'Create dynamic QR code menus for each table in your restaurant.' },
@@ -20,6 +26,12 @@ export function LandingPage(): JSX.Element {
 		{ icon: CreditCard, title: 'Seamless Payments', description: 'Integrate with popular payment gateways for hassle-free transactions.' },
 		{ icon: BarChart, title: 'Real-time Analytics', description: "Get insights into your restaurant's performance with detailed analytics." },
 	];
+
+	const subscription = async (planType: planTypes): Promise<void> => {
+		await createSubscription(planType).catch((err: any) => {
+			toast.error(err.message as string);
+		});
+	};
 
 	return (
 		<div className={`min-h-screen flex flex-col ${theme === 'dark' ? 'dark' : ''}`}>
@@ -135,22 +147,16 @@ export function LandingPage(): JSX.Element {
 						<h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-gray-900 dark:text-gray-50'>
 							Pricing
 						</h2>
-						<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-							{planData.map((plan) => (
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+							{filteredPlanData.map((plan) => (
 								<Card className='bg-white dark:bg-gray-800 flex flex-col' key={plan.id}>
 									<CardHeader>
 										<CardTitle className='text-gray-900 dark:text-gray-50'>{plan.name}</CardTitle>
 									</CardHeader>
 									<CardContent className='flex-grow'>
 										<p className='text-4xl font-bold mb-4 text-green-600'>
-											{plan.type === planTypes.free ? (
-												'Free'
-											) : (
-												<>
-													₹{plan.price}
-													<span className='text-base font-normal'>/month</span>
-												</>
-											)}
+											₹{plan.price}
+											<span className='text-base font-normal'>/month</span>
 										</p>
 										<ul className='mb-6 space-y-2'>
 											{plan.description.map((item, index) => (
@@ -165,12 +171,12 @@ export function LandingPage(): JSX.Element {
 										<Button
 											variant='green'
 											className='w-full'
-											disabled={plan.type === planTypes.free}
+											disabled={data?.user?.plan === plan.type}
 											onClick={() => {
-												console.log(plan);
+												void subscription(plan.type);
 											}}
 										>
-											{plan.type === planTypes.free ? 'Activated' : 'Choose Plan'}
+											{data?.user?.plan === plan.type ? 'Activated' : 'Choose Plan'}
 										</Button>
 									</CardFooter>
 								</Card>
