@@ -73,7 +73,7 @@ export const AddMenu = ({
 			category,
 			description,
 			image: images,
-			isFeatured,
+			isFeatured: isFeatured ?? false,
 			name,
 			restaurantId,
 			type,

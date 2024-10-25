@@ -41,6 +41,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 				image: true,
 				isFeatured: true,
 				restaurantId: true,
+				id: true,
 			},
 		});
 

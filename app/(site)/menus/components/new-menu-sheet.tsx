@@ -18,7 +18,7 @@ export interface DefaultMenuType {
 	type: MenuType;
 	availability: Availability;
 	image: string[];
-	isFeatured: boolean;
+	isFeatured: boolean | null;
 	restaurantId: string;
 }
 
