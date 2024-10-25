@@ -4,7 +4,7 @@ import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import bcryptjs from 'bcryptjs';
 
-import type { NextAuthConfig } from 'next-auth';
+import type { NextAuthConfig, User } from 'next-auth';
 import { LoginUserSchema } from './schemas/schema';
 import { getUserByEmail } from './lib/auth/user';
 
@@ -31,7 +31,9 @@ export default {
 
 					const passwordMatch = await bcryptjs.compare(password, user.encryptedPassword);
 
-					if (passwordMatch) return user;
+					if (passwordMatch) {
+						return user as unknown as User;
+					}
 				}
 				return null;
 			},
