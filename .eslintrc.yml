@@ -21,6 +21,14 @@ rules:
   react/react-in-jsx-scope: off
   no-console: error
   react/jsx-no-useless-fragment: [error, { allowExpressions: true }]
+ignorePatterns:
+  - node_modules/
+  - build/
+  - dist/
+  - .next/
+  - coverage/
+  - public/
+  - components/ui/**/*.js
 
 overrides:
   - files: ["components/ui/**/*"]
