@@ -28,7 +28,7 @@ ignorePatterns:
   - .next/
   - coverage/
   - public/
-  - components/ui/**/*.js
+  - components/ui/**/*
 
 overrides:
   - files: ["components/ui/**/*"]

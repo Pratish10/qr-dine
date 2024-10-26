@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client';
 
 import { formatFileSize } from '@edgestore/react/utils';
