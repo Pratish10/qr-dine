@@ -7,6 +7,7 @@ export function cn(...inputs: ClassValue[]): string {
 
 export function getDomain(): string | undefined {
 	if (process.env.NODE_ENV === 'production') {
+		// eslint-disable-next-line no-console
 		console.log('LOGGER', process.env.NEXTAUTH_URL, process.env.NEXT_PUBLIC_URL);
 		return process.env.NEXTAUTH_URL;
 	} else {
