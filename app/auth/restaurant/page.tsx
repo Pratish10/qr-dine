@@ -1,17 +1,24 @@
 import { RestaurantForm } from '@/components/auth/restaurant-form';
+import APP_PATHS from '@/config/path.config';
+import { getRandomQuote } from '@/utils/quotes';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Restaurant = (): JSX.Element => {
+	const randomQuote = getRandomQuote();
+
 	return (
-		<div className='h-screen'>
-			<div className='md:hidden'>
-				<Image src='/examples/authentication-light.png' width={1280} height={843} alt='Authentication' className='block dark:hidden' />
-				<Image src='/examples/authentication-dark.png' width={1280} height={843} alt='Authentication' className='hidden dark:block' />
-			</div>
-			<div className='container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0'>
-				<div className='relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex'>
-					<div className='absolute inset-0 bg-zinc-900' />
-					<div className='relative z-20 flex items-center text-lg font-medium'>
+		<div className='h-screen flex items-center justify-center'>
+			<div className='mx-auto flex h-full items-center justify-center md:grid lg:grid-cols-2 lg:px-0'>
+				<div className='relative hidden h-full flex-col bg-muted p-10 text-black lg:flex lg:flex-col'>
+					<Image
+						src='/restaurant.jpg'
+						width={1280}
+						height={843}
+						alt='Restaurant'
+						className='absolute inset-0 h-full w-full object-cover z-10 opacity-70'
+					/>
+					<div className='relative z-20 flex items-center text-lg font-medium gap-2 mb-auto'>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							viewBox='0 0 24 24'
@@ -26,18 +33,18 @@ const Restaurant = (): JSX.Element => {
 							<path d='M7 2v20' />
 							<path d='M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7' />
 						</svg>
-						QR Dine
+						<Link href={APP_PATHS.DASHBOARD} className='text-black font-bold'>
+							QR Dine
+						</Link>
 					</div>
 					<div className='relative z-20 mt-auto'>
-						<blockquote className='space-y-2'>
-							<p className='text-lg'>
-								&ldquo;This library has saved me countless hours of work and helped me deliver stunning designs to my clients faster
-								than ever before.&rdquo;
-							</p>
-							<footer className='text-sm'>Sofia Davis</footer>
+						<blockquote className='space-y-2 '>
+							<p className='text-lg text-black font-semibold'>&ldquo;{randomQuote.quote}&rdquo;</p>
+							<footer className='text-sm text-black font-semibold'>{randomQuote.author}</footer>
 						</blockquote>
 					</div>
 				</div>
+
 				<div className='lg:p-8'>
 					<div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[600px]'>
 						<div className='flex flex-col space-y-2 text-center'>

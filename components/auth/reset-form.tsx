@@ -63,7 +63,7 @@ export const ResetForm = (): JSX.Element => {
 							type='email'
 						/>
 					</div>
-					<Button variant='green' type='submit' className='w-full' disabled={isPending}>
+					<Button size='sm' variant='green' type='submit' className='w-full' disabled={isPending}>
 						Send reset email
 					</Button>
 				</form>

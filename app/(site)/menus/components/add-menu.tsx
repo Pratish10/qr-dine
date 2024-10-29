@@ -221,6 +221,7 @@ export const AddMenu = ({
 									<PopoverTrigger asChild>
 										<FormControl>
 											<Button
+												size='sm'
 												variant='outline'
 												role='combobox'
 												className={cn('w-[250px] justify-between', !field.value && 'text-muted-foreground')}
@@ -338,11 +339,10 @@ export const AddMenu = ({
 
 				{/* Submit Button */}
 				<div className='flex justify-end pt-4'>
-					<Button variant='green' type='submit' disabled={isAdding || isPatching}>
+					<Button size='sm' variant='green' type='submit' disabled={isAdding || isPatching}>
 						{isAdding || isPatching ? (
 							<span className='flex items-center'>
-								<Loader2 className='mr-2 h-4 w-4 animate-spin' />
-								Please wait
+								<Loader2 className='h-4 w-4 animate-spin' />
 							</span>
 						) : editor ? (
 							'Edit Menu'

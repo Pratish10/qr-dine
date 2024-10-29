@@ -39,6 +39,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 				</div>
 				<div className='flex items-center space-x-2'>
 					<Button
+						size='sm'
 						variant='outline'
 						className='h-8 w-8 p-0 hidden lg:flex'
 						onClick={() => {
@@ -50,6 +51,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 						<ChevronsLeft className='h-4 w-4' />
 					</Button>
 					<Button
+						size='sm'
 						variant='outline'
 						className='h-8 w-8 p-0'
 						onClick={() => {
@@ -61,6 +63,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 						<ChevronLeft className='h-4 w-4' />
 					</Button>
 					<Button
+						size='sm'
 						variant='outline'
 						className='h-8 w-8 p-0'
 						onClick={() => {
@@ -72,6 +75,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 						<ChevronRight className='h-4 w-4' />
 					</Button>
 					<Button
+						size='sm'
 						variant='outline'
 						className='h-8 w-8 p-0 hidden lg:flex'
 						onClick={() => {

@@ -34,12 +34,12 @@ export function DialogBox({ header, content, show, onClose, onAction, onActionBu
 				<DrawerFooter className='flex pt-2'>
 					<div className='flex justify-center'>
 						<DrawerClose asChild onClick={onClose}>
-							<Button className='mx-2' variant='outline'>
+							<Button size='sm' className='mx-2' variant='outline'>
 								Cancel
 							</Button>
 						</DrawerClose>
 						<DrawerClose asChild onClick={handleDelete}>
-							<Button className='mx-2' variant='destructive'>
+							<Button size='sm' className='mx-2' variant='destructive'>
 								{onActionButtonLabel}
 							</Button>
 						</DrawerClose>

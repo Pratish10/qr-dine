@@ -148,11 +148,10 @@ export const LoginForm = (): React.JSX.Element => {
 							</React.Fragment>
 						)}
 					</div>
-					<Button variant='green' type='submit' className='w-full' disabled={isPending}>
+					<Button size='sm' variant='green' type='submit' className='w-full' disabled={isPending}>
 						{isPending ? (
 							<span className='flex items-center'>
-								<Loader2 className='mr-2 h-4 w-4 animate-spin' />
-								Please wait
+								<Loader2 className='h-4 w-4 animate-spin' />
 							</span>
 						) : showTwoFactor ? (
 							'Confirm'

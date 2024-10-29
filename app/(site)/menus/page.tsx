@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, Loader2, PlusCircle } from 'lucide-react';
+import { AlertCircle, PlusCircle } from 'lucide-react';
 import { MenuColumn } from './columns';
 import { DataTable } from '@/components/SharedComponent/DataTable/data-table';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,6 +21,7 @@ import Link from 'next/link';
 import APP_PATHS from '@/config/path.config';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { canAddMenu } from '@/utils/permissions';
+import { TableLoader } from '@/components/table-loader';
 
 const Menus = (): JSX.Element => {
 	const user = useCurrentUser();
@@ -105,9 +106,7 @@ const Menus = (): JSX.Element => {
 				</CardHeader>
 				<CardContent>
 					{isMenuLoading || isMenuRefetching ? (
-						<div className='flex justify-center items-center h-full'>
-							<Loader2 className='h-6 w-6 animate-spin' />
-						</div>
+						<TableLoader />
 					) : (
 						<DataTable
 							facedFilterKey={'category'}

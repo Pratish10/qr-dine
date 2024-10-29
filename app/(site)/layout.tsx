@@ -17,15 +17,17 @@ export default async function DashboardLayout({
 		<div className='h-screen'>
 			<PlanLayout>
 				<Navbar />
-				{user ? (
-					<AuthenticatedLayout>
-						<AppBar />
-						<SheetProvider />
-						{children}
-					</AuthenticatedLayout>
-				) : (
-					<div>{children}</div>
-				)}
+				<div className='pt-14'>
+					{user ? (
+						<AuthenticatedLayout>
+							<AppBar />
+							<SheetProvider />
+							{children}
+						</AuthenticatedLayout>
+					) : (
+						<div>{children}</div>
+					)}
+				</div>
 			</PlanLayout>
 		</div>
 	);

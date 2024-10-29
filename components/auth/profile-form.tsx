@@ -89,6 +89,7 @@ export const ProfileForm = (): JSX.Element => {
 		>
 			<div className='flex justify-end items-center py-4'>
 				<Button
+					size='sm'
 					onClick={() => {
 						setEditForm(!editForm);
 					}}
@@ -98,8 +99,7 @@ export const ProfileForm = (): JSX.Element => {
 				>
 					{isPending ? (
 						<span className='flex items-center'>
-							<Loader2 className='mr-2 h-4 w-4 animate-spin' />
-							Please wait
+							<Loader2 className='h-4 w-4 animate-spin' />
 						</span>
 					) : (
 						'Edit'
@@ -165,7 +165,7 @@ export const ProfileForm = (): JSX.Element => {
 						<div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-3'>
 							<Popover open={open} onOpenChange={setOpen}>
 								<PopoverTrigger asChild>
-									<Button variant='outline' role='combobox' aria-expanded={open} className='w-[300px] justify-between'>
+									<Button size='sm' variant='outline' role='combobox' aria-expanded={open} className='w-[300px] justify-between'>
 										{res.branchName
 											? restaurants.find((item: { value: string; label: string }) => item.value === res.branchName)?.label
 											: 'Search by Branch Name...'}
@@ -220,11 +220,10 @@ export const ProfileForm = (): JSX.Element => {
 						</div>
 
 						<div className='flex justify-end mt-10'>
-							<Button variant='green' type='submit' disabled={isPending || !editForm}>
+							<Button size='sm' variant='green' type='submit' disabled={isPending || !editForm}>
 								{isPending ? (
 									<span className='flex items-center'>
-										<Loader2 className='mr-2 h-4 w-4 animate-spin' />
-										Please wait
+										<Loader2 className='h-4 w-4 animate-spin' />
 									</span>
 								) : (
 									'Update'

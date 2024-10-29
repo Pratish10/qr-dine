@@ -4,7 +4,7 @@ import { Poppins } from 'next/font/google';
 import { Providers } from '@/app/providers';
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from '@/components/ui/sonner';
-import SessionProvider from './session-provider';
+import SessionProvider from '@/app/session-provider';
 
 const poppins = Poppins({ subsets: ['latin'], weight: '400' });
 

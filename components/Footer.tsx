@@ -44,7 +44,7 @@ export function Footer(): JSX.Element {
 								<span className='sr-only'>LinkedIn</span>
 								<Linkedin className='h-6 w-6' />
 							</a>
-							<a href='mailto:info@foodqrdine.com' className='text-gray-400 hover:text-gray-500'>
+							<a href='' className='text-gray-400 hover:text-gray-500'>
 								<span className='sr-only'>Email</span>
 								<Mail className='h-6 w-6' />
 							</a>

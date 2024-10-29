@@ -33,6 +33,7 @@ export function DataTableToolbar<TData>({ table, searchKey, facedFilterKey, opti
 
 				{isFiltered && (
 					<Button
+						size='sm'
 						variant='ghost'
 						onClick={() => {
 							table.resetColumnFilters();

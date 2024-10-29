@@ -3,7 +3,7 @@
 import { DataTable } from '@/components/SharedComponent/DataTable/data-table';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertCircle, Loader2, PlusCircle } from 'lucide-react';
+import { AlertCircle, PlusCircle } from 'lucide-react';
 import { TableColumn } from './columns';
 import { useRecoilValue } from 'recoil';
 import { restaurant } from '@/recoil/restaurant/atom';
@@ -19,6 +19,7 @@ import APP_PATHS from '@/config/path.config';
 import { canAddTable } from '@/utils/permissions';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import Link from 'next/link';
+import { TableLoader } from '@/components/table-loader';
 
 const options = [
 	{ label: TableStatus.Vacant, value: TableStatus.Vacant },
@@ -93,9 +94,7 @@ const Tables = (): JSX.Element => {
 				</CardHeader>
 				<CardContent>
 					{isLoading || isRefetching ? (
-						<div className='flex justify-center items-center h-full'>
-							<Loader2 className='h-6 w-6 animate-spin' />
-						</div>
+						<TableLoader />
 					) : (
 						<DataTable
 							columns={TableColumn}

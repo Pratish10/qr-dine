@@ -141,11 +141,10 @@ export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, ta
 						)}
 					/>
 					<div className='flex justify-end pt-4'>
-						<Button variant='green' type='submit' disabled={isPending}>
+						<Button size='sm' variant='green' type='submit' disabled={isPending}>
 							{isPending ? (
 								<span className='flex items-center'>
-									<Loader2 className='mr-2 h-4 w-4 animate-spin' />
-									Please wait
+									<Loader2 className='h-4 w-4 animate-spin' />
 								</span>
 							) : isEdit ? (
 								'Edit Table'

@@ -32,10 +32,10 @@ const useConfirm = (title: string, message: string): [() => JSX.Element, () => P
 					<DialogDescription>{message}</DialogDescription>
 				</DialogHeader>
 				<DialogFooter>
-					<Button variant='outline' onClick={handleCancel}>
+					<Button size='sm' variant='outline' onClick={handleCancel}>
 						Cancel
 					</Button>
-					<Button variant='destructive' onClick={handleConfirm}>
+					<Button size='sm' variant='destructive' onClick={handleConfirm}>
 						Confirm
 					</Button>
 				</DialogFooter>

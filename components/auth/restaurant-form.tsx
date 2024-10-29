@@ -149,11 +149,10 @@ export const RestaurantForm = (): React.JSX.Element => {
 				</div>
 
 				<div className='flex justify-end'>
-					<Button type='submit' disabled={isPending}>
+					<Button size='sm' type='submit' disabled={isPending}>
 						{isPending ? (
 							<span className='flex items-center'>
-								<Loader2 className='mr-2 h-4 w-4 animate-spin' />
-								Please wait
+								<Loader2 className='h-4 w-4 animate-spin' />
 							</span>
 						) : (
 							'Submit'
