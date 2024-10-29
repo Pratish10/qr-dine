@@ -60,7 +60,7 @@ const Menus = (): JSX.Element => {
 
 	return (
 		<motion.div
-			className='my-9'
+			className='my-9 pb-24'
 			initial={{ y: 10, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
 			exit={{ y: -10, opacity: 0 }}
