@@ -162,7 +162,7 @@ export const Navbar = (): React.JSX.Element => {
 				<SheetContent side='left'>
 					<SheetHeader>
 						<SheetTitle className='my-4'>{renderBrand()}</SheetTitle>
-						<SheetDescription>
+						<SheetDescription className='text-start'>
 							<NavLink
 								href={APP_PATHS.HOME + '#features'}
 								label='Features'
@@ -190,15 +190,18 @@ export const Navbar = (): React.JSX.Element => {
 								delay={0.3}
 								className='text-3xl'
 							/>
-							<NavLink
-								href={APP_PATHS.PROFILE}
-								label='Profile'
-								onClick={() => {
-									setIsMenuOpen(!isMenuOpen);
-								}}
-								delay={0.4}
-								className='text-3xl'
-							/>
+							{user && (
+								<NavLink
+									href={APP_PATHS.PROFILE}
+									label='Profile'
+									onClick={() => {
+										setIsMenuOpen(!isMenuOpen);
+									}}
+									delay={0.4}
+									className='text-3xl'
+								/>
+							)}
+
 							<motion.div
 								variants={linkVariants}
 								initial='initial'
@@ -212,19 +215,21 @@ export const Navbar = (): React.JSX.Element => {
 							>
 								{theme === 'light' ? 'Dark Theme' : 'Light Theme'}
 							</motion.div>
-							<motion.div
-								variants={linkVariants}
-								initial='initial'
-								animate='animate'
-								exit='exit'
-								transition={{ duration: 0.3, delay: 0.6 }}
-								className='hover:underline transition-all duration-200 hover:text-red-600 cursor-pointer text-3xl'
-								onClick={() => {
-									setShowDialog(true);
-								}}
-							>
-								Logout
-							</motion.div>
+							{user && (
+								<motion.div
+									variants={linkVariants}
+									initial='initial'
+									animate='animate'
+									exit='exit'
+									transition={{ duration: 0.3, delay: 0.6 }}
+									className='hover:underline transition-all duration-200 hover:text-red-600 cursor-pointer text-3xl'
+									onClick={() => {
+										setShowDialog(true);
+									}}
+								>
+									Logout
+								</motion.div>
+							)}
 						</SheetDescription>
 					</SheetHeader>
 				</SheetContent>
