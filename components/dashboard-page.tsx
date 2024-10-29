@@ -32,10 +32,11 @@ export const DashboardPage = (): React.JSX.Element => {
 			<h1 className='font-bold text-2xl mb-4'>
 				{greeting}, <span className='text-green-600'>{data?.user?.name}</span>
 			</h1>
-			<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+			<div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
 				<DashboardCard title='Total Restaurants' content={restaurantData.length} delay={0.1} />
 				<DashboardCard title='Total Menus' content={150} delay={0.2} />
 				<DashboardCard title='Total Tables' content={25} delay={0.3} />
+				<DashboardCard title='Total Categories' content={25} delay={0.4} />
 			</div>
 		</motion.div>
 	);

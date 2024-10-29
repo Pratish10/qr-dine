@@ -15,6 +15,7 @@ export interface DefaultTableType {
 	tableQrCode: string;
 	tableSize: string;
 	restaurantId: string;
+	id: string;
 }
 
 export const NewTableSheet = (): React.JSX.Element => {
@@ -26,6 +27,7 @@ export const NewTableSheet = (): React.JSX.Element => {
 		tableSize: '',
 		tableStatus: TableStatus.Vacant,
 		restaurantId: id,
+		id: '',
 	};
 	const isEdit = !!(data && typeof data === 'object' && !Array.isArray(data));
 	const values = isEdit ? (data as DefaultTableType) : defaultValues;

@@ -129,6 +129,7 @@ export const AddMenuSchema = z.object({
 });
 
 export const AddTableSchema = z.object({
+	id: z.string().optional(),
 	tableNumber: z.string().min(1, {
 		message: 'Table Number is required',
 	}),
@@ -154,14 +155,16 @@ export const AddTableSchema = z.object({
 	}),
 });
 
-export const AddMenuSchemaWithId = AddMenuSchema.extend({
-	id: z.string().optional(),
-});
-
 export const AddCategorySchema = z.object({
-	category: z.string().min(1, {
-		message: 'Category is required',
-	}),
+	category: z
+		.array(
+			z.string().min(1, {
+				message: 'Category is required',
+			})
+		)
+		.min(1, {
+			message: 'At least one category is required',
+		}),
 	restaurantId: z.string().min(1, {
 		message: 'Restaurant ID is required',
 	}),

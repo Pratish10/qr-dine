@@ -3,7 +3,7 @@
 import { type ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { Carrot, Drumstick, Edit, MoreHorizontal } from 'lucide-react';
+import { Carrot, Drumstick, Group, MoreHorizontal, Sandwich } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { DataTableColumnHeader } from '@/components/SharedComponent/DataTable/data-table-column-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -11,6 +11,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Badge } from '@/components/ui/badge';
 import { type Menu } from '@prisma/client';
 import { useMenuSheetController } from '@/hooks/menus/menu-sheet-controller';
+import { useCategoryController } from '@/hooks/use-category-controller';
 
 export const MenuColumn: Array<ColumnDef<Menu>> = [
 	{
@@ -168,7 +169,8 @@ export const MenuColumn: Array<ColumnDef<Menu>> = [
 	{
 		id: 'actions',
 		cell: ({ row }) => {
-			const { onOpen } = useMenuSheetController();
+			const { onOpen: onSheetOpen } = useMenuSheetController();
+			const { onOpen: onCategoryOpen } = useCategoryController();
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
@@ -180,11 +182,19 @@ export const MenuColumn: Array<ColumnDef<Menu>> = [
 					<DropdownMenuContent align='end'>
 						<DropdownMenuItem
 							onClick={() => {
-								onOpen(row.original);
+								onSheetOpen(row.original);
 							}}
 						>
-							<Edit size={20} className='mr-3' />
-							Edit
+							<Sandwich size={20} className='mr-3' />
+							Edit Menu
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() => {
+								onCategoryOpen(row.original);
+							}}
+						>
+							<Group size={20} className='mr-3' />
+							Edit Category
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

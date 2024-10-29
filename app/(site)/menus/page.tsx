@@ -22,6 +22,7 @@ import APP_PATHS from '@/config/path.config';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { canAddMenu } from '@/utils/permissions';
 import { TableLoader } from '@/components/table-loader';
+import { useCategoryController } from '@/hooks/use-category-controller';
 
 const Menus = (): JSX.Element => {
 	const user = useCurrentUser();
@@ -34,7 +35,8 @@ const Menus = (): JSX.Element => {
 
 	const { mutate: deleteMenu, isPending: isDeletePending } = useDeleteMenu();
 	const [menus, setMenus] = useState<Menu[]>([]);
-	const { onOpen } = useMenuSheetController();
+	const { onOpen: onSheetOpen } = useMenuSheetController();
+	const { onOpen: onCategoryOpen } = useCategoryController();
 
 	useEffect(() => {
 		if (isMenuSuccess || !isMenuRefetching) {
@@ -90,18 +92,31 @@ const Menus = (): JSX.Element => {
 							<CardTitle>Menus</CardTitle>
 							<CardDescription>Manage your menus</CardDescription>
 						</div>
-						<Button
-							variant='green'
-							className='mt-2 sm:mt-0 sm:ml-auto'
-							size='sm'
-							onClick={() => {
-								onOpen(undefined);
-							}}
-							disabled={!user || !canAddMenu(user, menus)}
-						>
-							<PlusCircle className='mr-2' size={20} />
-							Add Menu
-						</Button>
+						<div className='flec items-center space-x-3'>
+							<Button
+								variant='green'
+								className='mt-2 sm:mt-0 sm:ml-auto'
+								size='sm'
+								onClick={() => {
+									onSheetOpen(undefined);
+								}}
+								disabled={!user || !canAddMenu(user, menus)}
+							>
+								<PlusCircle className='mr-2' size={20} />
+								Add Menu
+							</Button>
+							<Button
+								variant='green'
+								className='mt-2 sm:mt-0 sm:ml-auto'
+								size='sm'
+								onClick={() => {
+									onCategoryOpen(undefined);
+								}}
+							>
+								<PlusCircle className='mr-2' size={20} />
+								Add Category
+							</Button>
+						</div>
 					</div>
 				</CardHeader>
 				<CardContent>

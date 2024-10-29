@@ -16,35 +16,52 @@ import FormInputField from '@/components/SharedComponent/form-input-field';
 import Image from 'next/image';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { usePatchTable } from '@/hooks/tables/use-patch-table';
 
 interface AddTableProps extends DefaultTableType {
 	isEdit: boolean;
 }
 
-export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, tableStatus, isEdit }: AddTableProps): JSX.Element => {
+export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, tableStatus, isEdit, id }: AddTableProps): JSX.Element => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_, startTransition] = useTransition();
-	const { mutate, isPending } = useAddTable();
+	const { mutate: addTable, isPending: isAdding } = useAddTable();
+	const { mutate: editTable, isPending: isPatching } = usePatchTable();
 	const { onClose } = useTableSheetController();
 
 	const form = useForm<AddTableSchemaType>({
 		resolver: zodResolver(AddTableSchema),
-		defaultValues: { restaurantId, tableNumber, tableQrCode, tableSize, tableStatus },
+		defaultValues: { restaurantId, tableNumber, tableQrCode, tableSize, tableStatus, id },
 	});
 
 	const submitHandler = (values: AddTableSchemaType): void => {
-		startTransition(() => {
-			mutate(values, {
-				onSuccess: () => {
-					toast.success('Table Successfully Added!');
-					onClose();
-				},
-				onError: (error: any) => {
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-					toast.error(error.response.data.message ?? error.message);
-				},
+		if (isEdit) {
+			startTransition(() => {
+				editTable(values, {
+					onSuccess: () => {
+						toast.success('Table Successfully Edited!');
+						onClose();
+					},
+					onError: (error: any) => {
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+						toast.error(error.response.data.message ?? error.message);
+					},
+				});
 			});
-		});
+		} else {
+			startTransition(() => {
+				addTable(values, {
+					onSuccess: () => {
+						toast.success('Table Successfully Added!');
+						onClose();
+					},
+					onError: (error: any) => {
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+						toast.error(error.response.data.message ?? error.message);
+					},
+				});
+			});
+		}
 	};
 
 	const downloadsAsPDF = async (): Promise<void> => {
@@ -102,7 +119,7 @@ export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, ta
 					<FormInputField<AddTableSchemaType>
 						name='tableNumber'
 						control={form.control}
-						disabled={isPending}
+						disabled={isAdding || isPatching}
 						label='Enter Table Number'
 						type='text'
 						placeholder='Enter table Number'
@@ -110,7 +127,7 @@ export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, ta
 					<FormInputField<AddTableSchemaType>
 						name='tableSize'
 						control={form.control}
-						disabled={isPending}
+						disabled={isAdding || isPatching}
 						label='Table Size'
 						type='text'
 						placeholder='Enter Size of Table'
@@ -123,7 +140,7 @@ export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, ta
 							<FormItem>
 								<FormLabel>Table Status</FormLabel>
 								<FormControl>
-									<Select onValueChange={field.onChange} disabled={isPending} {...field}>
+									<Select onValueChange={field.onChange} disabled={isAdding || isPatching} {...field}>
 										<SelectTrigger className='w-[180px]'>
 											<SelectValue placeholder='Change TAble Status' />
 										</SelectTrigger>
@@ -141,8 +158,8 @@ export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, ta
 						)}
 					/>
 					<div className='flex justify-end pt-4'>
-						<Button size='sm' variant='green' type='submit' disabled={isPending}>
-							{isPending ? (
+						<Button size='sm' variant='green' type='submit' disabled={isAdding || isPatching}>
+							{isAdding || isPatching ? (
 								<span className='flex items-center'>
 									<Loader2 className='h-4 w-4 animate-spin' />
 								</span>

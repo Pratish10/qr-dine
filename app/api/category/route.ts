@@ -79,13 +79,11 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 			throw new ErrorHandler('The Associated Restaurant not found', 'NOT_FOUND');
 		}
 
-		await prisma.category.create({
-			data: {
-				category,
-				restaurant: {
-					connect: { id: restaurantId },
-				},
-			},
+		await prisma.category.createMany({
+			data: category.map((cat) => ({
+				category: cat,
+				restaurantId,
+			})),
 		});
 
 		return NextResponse.json(new SuccessResponse('Succesfully Added Category', 200).serialize());
