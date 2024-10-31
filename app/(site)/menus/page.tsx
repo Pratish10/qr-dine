@@ -5,15 +5,12 @@ import { AlertCircle, PlusCircle } from 'lucide-react';
 import { MenuColumn } from './columns';
 import { DataTable } from '@/components/SharedComponent/DataTable/data-table';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useGetMenus } from '@/hooks/menus/use-get-menus';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { restaurant } from '@/recoil/restaurant/atom';
+import { useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 import { type Category, type Menu } from '@prisma/client';
 import { useDeleteMenu } from '@/hooks/menus/use-delete-menus';
 import { type Row } from '@/components/SharedComponent/DataTable/data-table';
-import { useGetCategories } from '@/hooks/categories/use-get-category';
-import { categories } from '@/recoil/categories/atom';
+import { categories, categoryStatus } from '@/recoil/categories/atom';
 import { useMenuSheetController } from '@/hooks/menus/menu-sheet-controller';
 import { motion } from 'framer-motion';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -23,37 +20,35 @@ import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { canAddMenu } from '@/utils/permissions';
 import { TableLoader } from '@/components/table-loader';
 import { useCategoryController } from '@/hooks/use-category-controller';
+import { menuList, menuStatus } from '@/recoil/menus/atom';
 
 const Menus = (): JSX.Element => {
 	const user = useCurrentUser();
-	const { id } = useRecoilValue(restaurant);
-	const [category, setCategory] = useRecoilState(categories);
+	const catStatus = useRecoilValue(categoryStatus);
+	const menStatus = useRecoilValue(menuStatus);
 
-	const { data: Menus, isLoading: isMenuLoading, isRefetching: isMenuRefetching, isSuccess: isMenuSuccess } = useGetMenus(id);
-
-	const { data: Categories, isSuccess: isCategoriesSuccess, isRefetching: isCategoriesRefetching } = useGetCategories(id);
+	const totalMenus = useRecoilValue(menuList);
+	const cat = useRecoilValue(categories);
 
 	const { mutate: deleteMenu, isPending: isDeletePending } = useDeleteMenu();
-	const [menus, setMenus] = useState<Menu[]>([]);
 	const { onOpen: onSheetOpen } = useMenuSheetController();
 	const { onOpen: onCategoryOpen } = useCategoryController();
 
-	useEffect(() => {
-		if (isMenuSuccess || !isMenuRefetching) {
-			if (Menus !== undefined && 'status' in Menus && Menus.status) {
-				setMenus(Menus?.data ?? []);
-			}
-		}
-	}, [isMenuSuccess, isMenuRefetching, Menus]);
+	const [category, setCategory] = useState<Array<{ label: string; value: string }>>([]);
+	const [menus, setMenus] = useState<Menu[]>([]);
 
 	useEffect(() => {
-		if (isCategoriesSuccess || !isCategoriesRefetching) {
-			if (Categories !== undefined && 'status' in Categories && Categories.status && Categories.data !== undefined) {
-				const data = Categories?.data.map((item: Category) => ({ label: item.category, value: item.category })) ?? [];
-				setCategory(data);
-			}
+		if (menStatus === 'success') {
+			setMenus(totalMenus);
 		}
-	}, [isCategoriesSuccess, isCategoriesRefetching, Categories]);
+	}, [catStatus, totalMenus]);
+
+	useEffect(() => {
+		if (catStatus === 'success') {
+			const data = cat.map((item: Category) => ({ label: item.category, value: item.category })) ?? [];
+			setCategory(data);
+		}
+	}, [catStatus]);
 
 	const onDelete = (rows: Array<Row<Menu>>): void => {
 		const ids = rows.map((item: Row<Menu>) => item.original.id);
@@ -120,7 +115,7 @@ const Menus = (): JSX.Element => {
 					</div>
 				</CardHeader>
 				<CardContent>
-					{isMenuLoading || isMenuRefetching ? (
+					{catStatus === 'loading' || menStatus === 'loading' ? (
 						<TableLoader />
 					) : (
 						<DataTable

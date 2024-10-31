@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
 import { type RestaurantType } from '@/app/api/restaurant/route';
+import { type RequestStatus } from '@/types/api.types';
 
 export const defaultRestaurant: RestaurantType = {
 	id: '',
@@ -19,4 +20,9 @@ export const restaurant = atom<RestaurantType>({
 export const restaurantList = atom<RestaurantType[]>({
 	key: 'restaurantList',
 	default: [defaultRestaurant],
+});
+
+export const restaurantStatus = atom<RequestStatus>({
+	key: 'restaurantStatus',
+	default: 'idle',
 });

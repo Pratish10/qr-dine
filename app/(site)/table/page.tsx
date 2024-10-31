@@ -6,10 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { AlertCircle, PlusCircle } from 'lucide-react';
 import { TableColumn } from './columns';
 import { useRecoilValue } from 'recoil';
-import { restaurant } from '@/recoil/restaurant/atom';
-import { useGetTables } from '@/hooks/tables/use-get-table';
 import { TableStatus, type Table } from '@prisma/client';
-import { useEffect, useState } from 'react';
 import { type Row } from '@/components/SharedComponent/DataTable/data-table';
 import { useTableSheetController } from '@/hooks/tables/table-sheet-controller';
 import { useDeleteTables } from '@/hooks/tables/use-delete-tables';
@@ -20,6 +17,7 @@ import { canAddTable } from '@/utils/permissions';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import Link from 'next/link';
 import { TableLoader } from '@/components/table-loader';
+import { tableList, tableStatus } from '@/recoil/tables/atom';
 
 const options = [
 	{ label: TableStatus.Vacant, value: TableStatus.Vacant },
@@ -28,19 +26,12 @@ const options = [
 
 const Tables = (): JSX.Element => {
 	const user = useCurrentUser();
-	const { id } = useRecoilValue(restaurant);
-	const { data, isLoading, isRefetching, isSuccess } = useGetTables(id);
-	const { mutate, isPending } = useDeleteTables();
-	const [table, setTable] = useState<Table[]>([]);
-	const { onOpen } = useTableSheetController();
 
-	useEffect(() => {
-		if (isSuccess || !isRefetching) {
-			if (data !== undefined && 'status' in data && data.status) {
-				setTable(data?.data ?? []);
-			}
-		}
-	}, [isSuccess, isRefetching, data]);
+	const tabStatus = useRecoilValue(tableStatus);
+	const totalTables = useRecoilValue(tableList);
+
+	const { mutate, isPending } = useDeleteTables();
+	const { onOpen } = useTableSheetController();
 
 	const onDelete = (row: Array<Row<Table>>): void => {
 		const ids = row.map((item: { original: Table }) => item.original.id);
@@ -57,7 +48,7 @@ const Tables = (): JSX.Element => {
 			<Card className='p-1 dark:bg-gray-900'>
 				<CardHeader>
 					{!user ||
-						(!canAddTable(user, table) && (
+						(!canAddTable(user, totalTables) && (
 							<Alert variant='destructive' className='border-red-600 bg-red-100 z-[99] mb-4'>
 								<AlertCircle className='h-4 w-4 mr-2' />
 								<div>
@@ -85,7 +76,7 @@ const Tables = (): JSX.Element => {
 							onClick={() => {
 								onOpen(undefined);
 							}}
-							disabled={!user || !canAddTable(user, table)}
+							disabled={!user || !canAddTable(user, totalTables)}
 						>
 							<PlusCircle className='mr-2' size={20} />
 							Add Table
@@ -93,12 +84,12 @@ const Tables = (): JSX.Element => {
 					</div>
 				</CardHeader>
 				<CardContent>
-					{isLoading || isRefetching ? (
+					{tabStatus === 'loading' ? (
 						<TableLoader />
 					) : (
 						<DataTable
 							columns={TableColumn}
-							data={table}
+							data={totalTables}
 							searchKey='tableNumber'
 							facedFilterKey={'tableStatus'}
 							disabled={isPending}
