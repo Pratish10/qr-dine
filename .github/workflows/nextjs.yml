@@ -1,4 +1,4 @@
-name: CI for Next.js Project
+name: QR Dine Continous Integration
 
 on:
   push:
