@@ -17,4 +17,4 @@ public/
 *.png
 
 # Ignore all JavaScript files in the components/ui directory
-components/ui/**/*.js
+components/ui/**

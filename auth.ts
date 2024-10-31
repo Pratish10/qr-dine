@@ -86,7 +86,7 @@ export const {
 			return token;
 		},
 	},
-	// @ts-ignore
+	// @ts-expect-error to ignore adaptor error
 	adapter: PrismaAdapter(prisma),
 	session: { strategy: 'jwt' },
 	...authConfig,

@@ -128,11 +128,7 @@ export const AddMenu = ({
 
 	return (
 		<Form {...form}>
-			<form
-				className='space-y-6 p-6'
-				// eslint-disable-next-line @typescript-eslint/no-misused-promises
-				onSubmit={form.handleSubmit(submitHandler)}
-			>
+			<form className='space-y-6 p-6' onSubmit={form.handleSubmit(submitHandler)}>
 				<div className='space-y-4'>
 					{editor ? (
 						<div>

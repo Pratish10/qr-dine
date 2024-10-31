@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { type CategoryType } from '@/app/api/categories/route';
 import { ErrorHandler } from '@/lib/error';
-import { categories, categoryStatus } from '@/recoil/categories/atom';
+import { categories, type CategoriesType, categoryStatus } from '@/recoil/categories/atom';
 import { type ServerActionReturnType } from '@/types/api.types';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
 
-export const useGetCategories = (restaurantId: string): UseQueryResult<ServerActionReturnType<CategoryType[]>, Error> => {
+export const useGetCategories = (restaurantId: string): UseQueryResult<ServerActionReturnType<CategoriesType[]>, Error> => {
 	const setStatus = useSetRecoilState(categoryStatus);
 	const setCategories = useSetRecoilState(categories);
 
@@ -18,16 +17,16 @@ export const useGetCategories = (restaurantId: string): UseQueryResult<ServerAct
 			setStatus('loading');
 			try {
 				const response = await axios.get(`/api/categories?id=${restaurantId}`);
-				const categoryData: CategoryType[] = response.data?.data;
+				const categoryData: CategoriesType[] = response.data?.data;
 
 				if (Array.isArray(categoryData)) {
-					setCategories(categoryData);
+					setCategories(categoryData.map((item) => ({ ...item, value: item.category, label: item.category })));
 				} else {
 					throw new Error('Data format is incorrect');
 				}
 
 				setStatus('success');
-				return response.data as ServerActionReturnType<CategoryType[]>;
+				return response.data as ServerActionReturnType<CategoriesType[]>;
 			} catch (error: any) {
 				setStatus('error');
 				throw new ErrorHandler(error.message as string, 'BAD_REQUEST');

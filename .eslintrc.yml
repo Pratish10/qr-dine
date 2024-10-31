@@ -29,6 +29,7 @@ ignorePatterns:
   - coverage/
   - public/
   - components/ui/**/*
+  - "next-env.d.ts"
 
 overrides:
   - files: ["components/ui/**/*"]

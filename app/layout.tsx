@@ -16,7 +16,6 @@ export const metadata: Metadata = {
 	authors: [{ name: 'QR Dine Team' }],
 	creator: 'QR Dine',
 	publisher: 'QR Dine',
-	viewport: 'width=device-width, initial-scale=1',
 	robots: 'index, follow',
 };
 
