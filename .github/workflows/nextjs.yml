@@ -1,11 +1,8 @@
-name: QR Dine CI
+name: CI for Next.js Project
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["master"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 permissions:
@@ -23,11 +20,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          
+
       - name: Install Bun
         run: |
           curl -fsSL https://bun.sh/install | bash
-          export PATH="$HOME/.bun/bin:$PATH"
+          echo "export PATH=\"$HOME/.bun/bin:\$PATH\"" >> $GITHUB_ENV
+        shell: bash
 
       - name: Cache Bun dependencies
         uses: actions/cache@v4
