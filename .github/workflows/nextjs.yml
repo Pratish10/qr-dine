@@ -23,8 +23,8 @@ jobs:
 
       - name: Install Bun
         run: |
-          curl -fsSL https://bun.sh/install | bash
-          echo "export PATH=\"$HOME/.bun/bin:\$PATH\"" >> $GITHUB_ENV
+          curl -fsSL https://bun.sh/install | bash && \
+          ln -s $HOME/.bun/bin/bun /usr/local/bin/bun
         shell: bash
 
       - name: Cache Bun dependencies
