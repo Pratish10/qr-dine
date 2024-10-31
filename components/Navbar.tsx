@@ -24,6 +24,33 @@ const linkVariants = {
 	exit: { opacity: 0, y: 20 },
 };
 
+const NavLink = ({
+	href,
+	label,
+	onClick,
+	delay = 0.1,
+	className,
+}: {
+	href: string;
+	label: string;
+	className?: string;
+	onClick?: () => void;
+	delay?: number;
+}): React.JSX.Element => (
+	<motion.div
+		variants={linkVariants}
+		initial='initial'
+		animate='animate'
+		exit='exit'
+		transition={{ duration: 0.3, delay }}
+		className={clsx('hover:underline transition-all duration-200 hover:text-green-600 cursor-pointer', className)}
+	>
+		<Link href={href} onClick={onClick}>
+			{label}
+		</Link>
+	</motion.div>
+);
+
 export const Navbar = (): React.JSX.Element => {
 	const user = useCurrentUser();
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -31,33 +58,6 @@ export const Navbar = (): React.JSX.Element => {
 	const isSmallScreen = useMediaQuery('(max-width: 1024px)');
 	const { setTheme, theme } = useTheme();
 	const size = useScroll();
-
-	const NavLink = ({
-		href,
-		label,
-		onClick,
-		delay = 0.1,
-		className,
-	}: {
-		href: string;
-		label: string;
-		className?: string;
-		onClick?: () => void;
-		delay?: number;
-	}): React.JSX.Element => (
-		<motion.div
-			variants={linkVariants}
-			initial='initial'
-			animate='animate'
-			exit='exit'
-			transition={{ duration: 0.3, delay }}
-			className={clsx('hover:underline transition-all duration-200 hover:text-green-600 cursor-pointer', className)}
-		>
-			<Link href={href} onClick={onClick}>
-				{label}
-			</Link>
-		</motion.div>
-	);
 
 	const renderBrand = (): JSX.Element => (
 		<Link href={APP_PATHS.HOME} className='flex items-center space-x-3'>
@@ -93,7 +93,9 @@ export const Navbar = (): React.JSX.Element => {
 						size='icon'
 						variant='link'
 						onClick={() => {
-							setIsMenuOpen(!isMenuOpen);
+							if (isSmallScreen) {
+								setIsMenuOpen(!isMenuOpen);
+							}
 						}}
 					>
 						{isMenuOpen ? <X /> : <Menu />}
@@ -106,7 +108,9 @@ export const Navbar = (): React.JSX.Element => {
 									href={APP_PATHS.HOME + '#features'}
 									label='Features'
 									onClick={() => {
-										setIsMenuOpen(!isMenuOpen);
+										if (isSmallScreen) {
+											setIsMenuOpen(!isMenuOpen);
+										}
 									}}
 									delay={0.1}
 								/>
@@ -114,7 +118,9 @@ export const Navbar = (): React.JSX.Element => {
 									href={APP_PATHS.HOME + '#how-it-works'}
 									label='How It Works'
 									onClick={() => {
-										setIsMenuOpen(!isMenuOpen);
+										if (isSmallScreen) {
+											setIsMenuOpen(!isMenuOpen);
+										}
 									}}
 									delay={0.2}
 								/>
@@ -122,7 +128,9 @@ export const Navbar = (): React.JSX.Element => {
 									href={APP_PATHS.HOME + '#pricing'}
 									label='Pricing'
 									onClick={() => {
-										setIsMenuOpen(!isMenuOpen);
+										if (isSmallScreen) {
+											setIsMenuOpen(!isMenuOpen);
+										}
 									}}
 									delay={0.3}
 								/>
@@ -155,7 +163,9 @@ export const Navbar = (): React.JSX.Element => {
 			</div>
 			<Sheet
 				onOpenChange={() => {
-					setIsMenuOpen(!isMenuOpen);
+					if (isSmallScreen) {
+						setIsMenuOpen(!isMenuOpen);
+					}
 				}}
 				open={isMenuOpen}
 			>
@@ -167,7 +177,9 @@ export const Navbar = (): React.JSX.Element => {
 								href={APP_PATHS.HOME + '#features'}
 								label='Features'
 								onClick={() => {
-									setIsMenuOpen(!isMenuOpen);
+									if (isSmallScreen) {
+										setIsMenuOpen(!isMenuOpen);
+									}
 								}}
 								delay={0.1}
 								className='text-3xl'
@@ -176,7 +188,9 @@ export const Navbar = (): React.JSX.Element => {
 								href={APP_PATHS.HOME + '#how-it-works'}
 								label='How It Works'
 								onClick={() => {
-									setIsMenuOpen(!isMenuOpen);
+									if (isSmallScreen) {
+										setIsMenuOpen(!isMenuOpen);
+									}
 								}}
 								delay={0.2}
 								className='text-3xl'
@@ -185,7 +199,9 @@ export const Navbar = (): React.JSX.Element => {
 								href={APP_PATHS.HOME + '#pricing'}
 								label='Pricing'
 								onClick={() => {
-									setIsMenuOpen(!isMenuOpen);
+									if (isSmallScreen) {
+										setIsMenuOpen(!isMenuOpen);
+									}
 								}}
 								delay={0.3}
 								className='text-3xl'
@@ -195,7 +211,9 @@ export const Navbar = (): React.JSX.Element => {
 									href={APP_PATHS.PROFILE}
 									label='Profile'
 									onClick={() => {
-										setIsMenuOpen(!isMenuOpen);
+										if (isSmallScreen) {
+											setIsMenuOpen(!isMenuOpen);
+										}
 									}}
 									delay={0.4}
 									className='text-3xl'
