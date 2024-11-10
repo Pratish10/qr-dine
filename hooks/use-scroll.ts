@@ -4,20 +4,26 @@ const useScroll = (): {
 	scrollX: number;
 	scrollY: number;
 } => {
-	const [windowSize, setWindowSize] = useState([window.scrollX, window.scrollY]);
+	const [scrollX, setScrollX] = useState(0);
+	const [scrollY, setScrollY] = useState(0);
 
 	useEffect(() => {
-		const windowSizeHandler = (): void => {
-			setWindowSize([window.scrollX, window.scrollY]);
-		};
-		window.addEventListener('scroll', windowSizeHandler);
+		if (typeof window !== 'undefined') {
+			const updateScrollPosition = (): void => {
+				setScrollX(window.scrollX);
+				setScrollY(window.scrollY);
+			};
 
-		return () => {
-			window.removeEventListener('scroll', windowSizeHandler);
-		};
+			window.addEventListener('scroll', updateScrollPosition);
+			updateScrollPosition();
+
+			return () => {
+				window.removeEventListener('scroll', updateScrollPosition);
+			};
+		}
 	}, []);
 
-	return { scrollX: windowSize[0], scrollY: windowSize[1] };
+	return { scrollX, scrollY };
 };
 
 export default useScroll;

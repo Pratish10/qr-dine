@@ -12,14 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node and Bun
+      - name: Setup Node and yarn
         run: |
           # Set up Node.js
           echo "Setting up Node.js"
-          npm install -g bun
+          npm i -g yarn
           
       - name: Install dependencies
-        run: bun install
+        run: yarn install
 
       - name: Set up environment variables
         id: set-env
@@ -43,10 +43,10 @@ jobs:
           echo "SRTIPE_PRO_SUBCRIPTION=${{ secrets.SRTIPE_PRO_SUBCRIPTION }}" >> $GITHUB_ENV
 
       - name: Run Lint
-        run: bun run lint
+        run: yarn run lint
 
       - name: Run Format Check
-        run: bun run format
+        run: yarn run format
 
       - name: Build with Next.js
-        run: bun run build
+        run: yarn run build

@@ -51,6 +51,26 @@ const NavLink = ({
 	</motion.div>
 );
 
+export const renderBrand = (): JSX.Element => (
+	<Link href={APP_PATHS.HOME} className='flex items-center space-x-3'>
+		<svg
+			xmlns='http://www.w3.org/2000/svg'
+			viewBox='0 0 24 24'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+			className='h-6 w-6 text-green-600'
+		>
+			<path d='M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2' />
+			<path d='M7 2v20' />
+			<path d='M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7' />
+		</svg>
+		<span className='font-bold'>QR Dine</span>
+	</Link>
+);
+
 export const Navbar = (): React.JSX.Element => {
 	const user = useCurrentUser();
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -58,26 +78,6 @@ export const Navbar = (): React.JSX.Element => {
 	const isSmallScreen = useMediaQuery('(max-width: 1024px)');
 	const { setTheme, theme } = useTheme();
 	const size = useScroll();
-
-	const renderBrand = (): JSX.Element => (
-		<Link href={APP_PATHS.HOME} className='flex items-center space-x-3'>
-			<svg
-				xmlns='http://www.w3.org/2000/svg'
-				viewBox='0 0 24 24'
-				fill='none'
-				stroke='currentColor'
-				strokeWidth='2'
-				strokeLinecap='round'
-				strokeLinejoin='round'
-				className='h-6 w-6 text-green-600'
-			>
-				<path d='M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2' />
-				<path d='M7 2v20' />
-				<path d='M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7' />
-			</svg>
-			<span className='font-bold'>QR Dine</span>
-		</Link>
-	);
 
 	return (
 		<nav

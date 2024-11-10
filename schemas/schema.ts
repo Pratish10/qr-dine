@@ -157,15 +157,10 @@ export const AddTableSchema = z.object({
 
 export const AddCategorySchema = z.object({
 	category: z
-		.array(
-			z.string().min(1, {
-				message: 'Category is required',
-			})
-		)
-		.min(1, {
-			message: 'At least one category is required',
+		.array(z.string().min(1, { message: 'Category is required' }))
+		.min(1, { message: 'At least one category is required' })
+		.refine((categories) => new Set(categories).size === categories.length, {
+			message: 'Categories must be unique',
 		}),
-	restaurantId: z.string().min(1, {
-		message: 'Restaurant ID is required',
-	}),
+	restaurantId: z.string().min(1, { message: 'Restaurant ID is required' }),
 });
