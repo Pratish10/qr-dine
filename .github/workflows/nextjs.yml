@@ -43,10 +43,10 @@ jobs:
           echo "SRTIPE_PRO_SUBCRIPTION=${{ secrets.SRTIPE_PRO_SUBCRIPTION }}" >> $GITHUB_ENV
 
       - name: Run Lint
-        run: yarn run lint
+        run: yarn lint
 
       - name: Run Format Check
-        run: yarn run format
+        run: yarn format
 
       - name: Build with Next.js
-        run: yarn run build
+        run: yarn build
