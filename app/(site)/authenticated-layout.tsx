@@ -6,8 +6,9 @@ import { useGetMenus } from '@/hooks/menus/use-get-menus';
 import { useGetRestaurants } from '@/hooks/restaurants/use-get-restaurants';
 import { useGetTables } from '@/hooks/tables/use-get-table';
 import { restaurant, restaurantList } from '@/recoil/restaurant/atom';
+import clsx from 'clsx';
 import { Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { type ReactNode, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 
@@ -17,6 +18,7 @@ interface AuthenticatedLayoutProps {
 
 const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps): JSX.Element => {
 	const router = useRouter();
+	const pathName = usePathname();
 	const restaurantData = useRecoilValue(restaurantList);
 	const { id } = useRecoilValue(restaurant);
 
@@ -46,7 +48,7 @@ const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps): JSX.Elemen
 		);
 	}
 
-	return <div className='container'>{children}</div>;
+	return <div className={clsx(pathName !== '/' && 'container')}>{children}</div>;
 };
 
 export default AuthenticatedLayout;

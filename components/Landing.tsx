@@ -5,7 +5,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Smartphone, Utensils, CreditCard, BarChart, Check, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import APP_PATHS from '@/config/path.config';
-import { useTheme } from 'next-themes';
 import { useRecoilValue } from 'recoil';
 import { plans } from '@/recoil/plans/atom';
 import { planTypes } from '@prisma/client';
@@ -15,7 +14,6 @@ import { useSession } from 'next-auth/react';
 
 export function LandingPage(): JSX.Element {
 	const { data } = useSession();
-	const { theme } = useTheme();
 	const planData = useRecoilValue(plans);
 
 	const filteredPlanData = planData.filter((item) => item.type !== planTypes.free);
@@ -34,7 +32,7 @@ export function LandingPage(): JSX.Element {
 	};
 
 	return (
-		<div className={`min-h-screen flex flex-col ${theme === 'dark' ? 'dark' : ''}`}>
+		<div className='min-h-screen flex flex-col'>
 			<main className='flex-1'>
 				<section className='w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-white dark:bg-gray-950'>
 					<div className='container px-4 md:px-6'>
@@ -184,7 +182,7 @@ export function LandingPage(): JSX.Element {
 													void subscription(plan.type);
 												}}
 											>
-												Get Started
+												{data?.user?.plan === plan.type ? 'Subscribed' : 'Get Started'}
 											</Button>
 										</CardFooter>
 									</Card>

@@ -15,7 +15,7 @@ export const EmailTemplate = ({ confirmLink }: EmailTemplateProps): string =>
       <strong>Note:</strong> This confirmation link is valid for 1 hour. If you did not create an account, please disregard this email.
     </p>
     <p>Thank you for joining us!</p>
-    <p>Best regards,<br />The Food-Ordering-System Team</p>
+    <p>Best regards,<br />QR Dine Team</p>
   </div>`;
 
 export const PasswordResetEmail = ({ confirmLink }: EmailTemplateProps): string =>
@@ -31,7 +31,7 @@ export const PasswordResetEmail = ({ confirmLink }: EmailTemplateProps): string 
         <strong>Note:</strong> This password reset link is valid for 1 hour. If you did not request this, please ignore this email.
       </p>
       <p>If you have any issues, feel free to contact our support team.</p>
-      <p>Best regards,<br />The Food-Ordering-System Team</p>
+      <p>Best regards,<br />QR Dine Team</p>
     </div>`;
 
 export const SendTwoFactorMailTemplate = ({ token }: { token: string }): string =>
@@ -46,5 +46,5 @@ export const SendTwoFactorMailTemplate = ({ token }: { token: string }): string 
         <p>
           <strong>Note:</strong> This code will expire in 5 minutes. If you did not request this code, please secure your account immediately.
         </p>
-        <p>Stay safe,<br />The Food-Ordering-System Team</p>
+        <p>Stay safe,<br />QR Dine Team</p>
       </div>`;
