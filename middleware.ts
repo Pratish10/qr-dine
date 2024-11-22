@@ -21,14 +21,14 @@ const authRoutes = [APP_PATHS.LOGIN, APP_PATHS.REGISTER, APP_PATHS.RESET_PASSWOR
  * Public routes accessible to all users.
  * @type {string[]}
  */
-const publicRoutes = [APP_PATHS.NEW_VERIFICATION, APP_PATHS.HOME, '/api/stripe/webhook(.*)'];
+const publicRoutes = [APP_PATHS.NEW_VERIFICATION, APP_PATHS.HOME];
 
 export default auth((req) => {
 	const { nextUrl } = req;
 	const isLoggedIn = !(req.auth == null);
 
 	const isApiRoutePrefix = nextUrl.pathname.startsWith(apiAuthPrefix);
-	const isPublicRoutes = publicRoutes.some((route) => new RegExp(route).test(nextUrl.pathname));
+	const isPublicRoutes = publicRoutes.includes(nextUrl.pathname);
 	const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
 	if (isApiRoutePrefix) return;

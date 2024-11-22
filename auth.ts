@@ -4,7 +4,6 @@ import authConfig from '@/auth.config';
 import prisma from './db';
 import { getUserById } from './lib/auth/user';
 import { getTwoFactorConfirmationByUserId } from './lib/auth/two-factor-confirmation';
-import { PrismaAdapter } from '@auth/prisma-adapter';
 import { type planTypes } from '@prisma/client';
 import APP_PATHS from './config/path.config';
 
@@ -86,8 +85,6 @@ export const {
 			return token;
 		},
 	},
-	// @ts-expect-error to ignore adaptor error
-	adapter: PrismaAdapter(prisma),
 	session: { strategy: 'jwt' },
 	...authConfig,
 });
