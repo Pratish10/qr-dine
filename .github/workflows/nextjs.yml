@@ -1,52 +1,55 @@
 name: QR Dine Continous Integration
 
 on:
-  push:
-    branches: ["master"]
-  workflow_dispatch:
+    push:
+        branches: ['master']
+    workflow_dispatch:
 
 jobs:
-  ci:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    ci:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-      - name: Setup Node and yarn
-        run: |
-          # Set up Node.js
-          echo "Setting up Node.js"
-          npm i -g yarn
-          
-      - name: Install dependencies
-        run: yarn install
+            - name: Setup Node and yarn
+              run: |
+                  # Set up Node.js
+                  echo "Setting up Node.js"
+                  npm i -g yarn
 
-      - name: Set up environment variables
-        id: set-env
-        run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
-          echo "AUTH_SECRET=${{ secrets.AUTH_SECRET }}" >> $GITHUB_ENV
-          echo "SMTP_USER=${{ secrets.SMTP_USER }}" >> $GITHUB_ENV
-          echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> $GITHUB_ENV
-          echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}" >> $GITHUB_ENV
-          echo "GITHUB_CLIENT_ID=${{ secrets.GITHUB_CLIENT_ID }}" >> $GITHUB_ENV
-          echo "GITHUB_CLIENT_SECRET=${{ secrets.GITHUB_CLIENT_SECRET }}" >> $GITHUB_ENV
-          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
-          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
-          echo "EDGE_STORE_ACCESS_KEY=${{ secrets.EDGE_STORE_ACCESS_KEY }}" >> $GITHUB_ENV
-          echo "EDGE_STORE_SECRET_KEY=${{ secrets.EDGE_STORE_SECRET_KEY }}" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}" >> $GITHUB_ENV
-          echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> $GITHUB_ENV
-          echo "STRIPE_WEBHOOK_KEY=${{ secrets.STRIPE_WEBHOOK_KEY }}" >> $GITHUB_ENV
-          echo "SRTIPE_STARTER_SUBCRIPTION=${{ secrets.SRTIPE_STARTER_SUBCRIPTION }}" >> $GITHUB_ENV
-          echo "SRTIPE_PRO_SUBCRIPTION=${{ secrets.SRTIPE_PRO_SUBCRIPTION }}" >> $GITHUB_ENV
+            - name: Clean up dependencies
+              run: rm -rf node_modules yarn.lock
 
-      - name: Run Lint
-        run: yarn lint
+            - name: Install dependencies
+              run: yarn install
 
-      - name: Run Format Check
-        run: yarn format
+            - name: Set up environment variables
+              id: set-env
+              run: |
+                  echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+                  echo "AUTH_SECRET=${{ secrets.AUTH_SECRET }}" >> $GITHUB_ENV
+                  echo "SMTP_USER=${{ secrets.SMTP_USER }}" >> $GITHUB_ENV
+                  echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> $GITHUB_ENV
+                  echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> $GITHUB_ENV
+                  echo "NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}" >> $GITHUB_ENV
+                  echo "GITHUB_CLIENT_ID=${{ secrets.GITHUB_CLIENT_ID }}" >> $GITHUB_ENV
+                  echo "GITHUB_CLIENT_SECRET=${{ secrets.GITHUB_CLIENT_SECRET }}" >> $GITHUB_ENV
+                  echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
+                  echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
+                  echo "EDGE_STORE_ACCESS_KEY=${{ secrets.EDGE_STORE_ACCESS_KEY }}" >> $GITHUB_ENV
+                  echo "EDGE_STORE_SECRET_KEY=${{ secrets.EDGE_STORE_SECRET_KEY }}" >> $GITHUB_ENV
+                  echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}" >> $GITHUB_ENV
+                  echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> $GITHUB_ENV
+                  echo "STRIPE_WEBHOOK_KEY=${{ secrets.STRIPE_WEBHOOK_KEY }}" >> $GITHUB_ENV
+                  echo "SRTIPE_STARTER_SUBCRIPTION=${{ secrets.SRTIPE_STARTER_SUBCRIPTION }}" >> $GITHUB_ENV
+                  echo "SRTIPE_PRO_SUBCRIPTION=${{ secrets.SRTIPE_PRO_SUBCRIPTION }}" >> $GITHUB_ENV
 
-      - name: Build with Next.js
-        run: yarn build
+            - name: Run Lint
+              run: yarn lint
+
+            - name: Run Format Check
+              run: yarn format
+
+            - name: Build with Next.js
+              run: yarn build
