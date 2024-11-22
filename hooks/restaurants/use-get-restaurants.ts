@@ -1,7 +1,7 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
-import { restaurant, restaurantList, restaurantStatus } from '@/recoil/restaurant/atom';
+import { defaultRestaurant, restaurant, restaurantList, restaurantStatus } from '@/recoil/restaurant/atom';
 import { ErrorHandler } from '@/lib/error';
 import { type ServerActionReturnType } from '@/types/api.types';
 import { type RestaurantType } from '@/app/api/restaurant/route';
@@ -21,7 +21,7 @@ export const useGetRestaurants = (): UseQueryResult<ServerActionReturnType<Resta
 
 				if (Array.isArray(restaurantData)) {
 					setRestaurantList(restaurantData);
-					setRestaurant(restaurantData[0]);
+					setRestaurant(restaurantData[0] ?? defaultRestaurant);
 				} else {
 					throw new Error('Data format is incorrect');
 				}
