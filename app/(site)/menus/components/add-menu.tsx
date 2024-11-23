@@ -222,7 +222,7 @@ export const AddMenu = ({
 												role='combobox'
 												className={cn('w-[250px] justify-between', !field.value && 'text-muted-foreground')}
 											>
-												{field.value ? cat.find((item) => item.value === field.value)?.label : 'Select category'}
+												{field.value ? cat?.find((item) => item.value === field.value)?.label : 'Select category'}
 												<ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
 											</Button>
 										</FormControl>
@@ -233,7 +233,7 @@ export const AddMenu = ({
 											<CommandList>
 												<CommandEmpty>No category found.</CommandEmpty>
 												<CommandGroup>
-													{cat.map((item) => (
+													{cat?.map((item) => (
 														<CommandItem
 															value={item.label}
 															key={item.value}
