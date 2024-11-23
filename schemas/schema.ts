@@ -69,14 +69,9 @@ export const RestaurantSchema = z.object({
 	country: z.string().min(1, {
 		message: 'Country is Required',
 	}),
-	upiID: z
-		.string()
-		.min(1, {
-			message: 'UPI ID is required',
-		})
-		.regex(/^[a-zA-Z0-9.-]{2,256}@[a-zA-Z]{3,64}$/, {
-			message: 'Invalid UPI ID',
-		}),
+	upiID: z.string().min(1, {
+		message: 'UPI ID is required',
+	}),
 	userId: z.string().min(1, {
 		message: 'UserId is Required',
 	}),

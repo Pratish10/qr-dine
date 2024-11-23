@@ -14,11 +14,15 @@ import APP_PATHS from '@/config/path.config';
 import FormInputField from '@/components/SharedComponent/form-input-field';
 import { useSession } from 'next-auth/react';
 import { Loader2 } from 'lucide-react';
+import { restaurantList } from '@/recoil/restaurant/atom';
+import { useSetRecoilState } from 'recoil';
+import { type RestaurantType } from '@/app/api/restaurant/route';
 
 export const RestaurantForm = (): React.JSX.Element => {
 	const { data } = useSession();
 	const router = useRouter();
 	const [isPending, startTransition] = useTransition();
+	const setRestaurantList = useSetRecoilState(restaurantList);
 
 	const form = useForm<RestaurantSchemaType>({
 		resolver: zodResolver(RestaurantSchema),
@@ -40,7 +44,20 @@ export const RestaurantForm = (): React.JSX.Element => {
 		startTransition(() => {
 			void createRestaurant(values).then((res) => {
 				if (res.status) {
+					const resData = res.data as RestaurantType;
 					toast.success(res.message);
+					const newRestaurant: RestaurantType = {
+						id: resData.id,
+						restaurantId: resData.restaurantId,
+						fullName: resData.fullName,
+						branchName: resData.branchName,
+						createdAt: resData.createdAt,
+						updatedAt: resData.updatedAt,
+						userId: resData.userId,
+						ClientName: resData.ClientName,
+					};
+
+					setRestaurantList((prevList: any) => [...prevList, newRestaurant]);
 					router.push(APP_PATHS.DASHBOARD);
 				} else {
 					toast.error(res.message);

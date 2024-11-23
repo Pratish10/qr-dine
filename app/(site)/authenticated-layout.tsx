@@ -25,7 +25,7 @@ const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps): JSX.Elemen
 	const { data: resData, isLoading: isRestaurantsLoading, isSuccess: isRestaurantsSuccess } = useGetRestaurants();
 
 	useEffect(() => {
-		if (isRestaurantsSuccess && restaurantData.length === 0) {
+		if (isRestaurantsSuccess && (!restaurantData || restaurantData.length === 0)) {
 			router.push(APP_PATHS.RESTAURANT);
 		}
 	}, [isRestaurantsSuccess, restaurantData, router]);

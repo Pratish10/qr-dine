@@ -17,9 +17,9 @@ export const defaultCategory: CategoriesType = {
 	label: '',
 };
 
-export const categories = atom<CategoriesType[]>({
+export const categories = atom<CategoriesType[] | null>({
 	key: 'categories',
-	default: [defaultCategory],
+	default: null,
 });
 
 export const categoryStatus = atom<RequestStatus>({

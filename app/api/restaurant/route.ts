@@ -15,6 +15,7 @@ export interface RestaurantType {
 	branchName: string;
 	userId: string;
 	restaurantId: string;
+	ClientName: string;
 }
 
 export async function GET(): Promise<NextResponse<ServerActionReturnType>> {

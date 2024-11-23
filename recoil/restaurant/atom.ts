@@ -10,6 +10,7 @@ export const defaultRestaurant: RestaurantType = {
 	branchName: '',
 	userId: '',
 	restaurantId: '',
+	ClientName: '',
 };
 
 export const restaurant = atom<RestaurantType>({
@@ -17,9 +18,9 @@ export const restaurant = atom<RestaurantType>({
 	default: defaultRestaurant,
 });
 
-export const restaurantList = atom<RestaurantType[]>({
+export const restaurantList = atom<RestaurantType[] | null>({
 	key: 'restaurantList',
-	default: [defaultRestaurant],
+	default: null,
 });
 
 export const restaurantStatus = atom<RequestStatus>({

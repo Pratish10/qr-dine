@@ -48,7 +48,7 @@ export const createRestaurant = withServerActionAsyncCatcher<RestaurantSchemaTyp
 
 	try {
 		if (canAddRestaurant(user, restaurants)) {
-			await prisma.restaurant.create({
+			const res = await prisma.restaurant.create({
 				data: {
 					fullName,
 					branchName,
@@ -64,9 +64,19 @@ export const createRestaurant = withServerActionAsyncCatcher<RestaurantSchemaTyp
 						connect: { id: userId },
 					},
 				},
+				select: {
+					id: true,
+					createdAt: true,
+					updatedAt: true,
+					fullName: true,
+					branchName: true,
+					userId: true,
+					restaurantId: true,
+					ClientName: true,
+				},
 			});
 
-			return new SuccessResponse('Your Restaurant has been successfully Registered!', 201).serialize();
+			return new SuccessResponse('Your Restaurant has been successfully Registered!', 201, res).serialize();
 		} else {
 			throw new ErrorHandler(
 				'You’ve reached the limit of your current plan. To add more restaurants and unlock additional features, please upgrade to a higher plan.',
