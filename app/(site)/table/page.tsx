@@ -28,7 +28,7 @@ const Tables = (): JSX.Element => {
 	const user = useCurrentUser();
 
 	const tabStatus = useRecoilValue(tableStatus);
-	const totalTables = useRecoilValue(tableList);
+	const totalTables = useRecoilValue(tableList) ?? [];
 
 	const { mutate, isPending } = useDeleteTables();
 	const { onOpen } = useTableSheetController();

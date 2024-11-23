@@ -39,13 +39,13 @@ const Menus = (): JSX.Element => {
 
 	useEffect(() => {
 		if (menStatus === 'success') {
-			setMenus(totalMenus);
+			setMenus(totalMenus ?? []);
 		}
 	}, [catStatus, totalMenus]);
 
 	useEffect(() => {
 		if (catStatus === 'success') {
-			const data = cat.map((item: Category) => ({ label: item.category, value: item.category })) ?? [];
+			const data = cat?.map((item: Category) => ({ label: item.category, value: item.category })) ?? [];
 			setCategory(data);
 		}
 	}, [catStatus]);
