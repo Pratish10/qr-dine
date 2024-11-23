@@ -23,10 +23,10 @@ const getGreeting = (): 'Good Morning' | 'Good Afternoon' | 'Good Evening' => {
 export const DashboardPage = (): React.JSX.Element => {
 	const { data } = useSession();
 	const greeting = getGreeting();
-	const restaurantData = useRecoilValue(restaurantList);
-	const categoryList = useRecoilValue(categories);
-	const tables = useRecoilValue(tableList);
-	const menus = useRecoilValue(menuList);
+	const restaurantData = useRecoilValue(restaurantList) ?? [];
+	const categoryList = useRecoilValue(categories) ?? [];
+	const tables = useRecoilValue(tableList) ?? [];
+	const menus = useRecoilValue(menuList) ?? [];
 
 	const resStatus = useRecoilValue(restaurantStatus);
 	const catStatus = useRecoilValue(categoryStatus);

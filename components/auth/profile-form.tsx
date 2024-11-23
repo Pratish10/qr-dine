@@ -27,7 +27,7 @@ import Link from 'next/link';
 import _ from 'lodash';
 
 export const ProfileForm = (): JSX.Element => {
-	const restaurantData = useRecoilValue(restaurantList);
+	const restaurantData = useRecoilValue(restaurantList) ?? [];
 	const [res, setRes] = useRecoilState(restaurant);
 	const [open, setOpen] = useState(false);
 	const [isPending, startTransition] = useTransition();
