@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import { PLANS } from '@/config/auth.config';
 import prisma from '@/db';
 import { getCurrentUser } from '@/hooks/getCurrentUser';
 import { getUserById } from '@/lib/auth/user';
@@ -9,7 +10,6 @@ import { SuccessResponse } from '@/lib/success';
 import { getTableByTableNumber } from '@/lib/table/getTableByTableNumber';
 import { AddTableSchema } from '@/schemas/schema';
 import { type ServerActionReturnType } from '@/types/api.types';
-import { canAddTable } from '@/utils/permissions';
 import { type Table } from '@prisma/client';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -88,37 +88,42 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 			throw new ErrorHandler('The Associated Restaurant not found', 'NOT_FOUND');
 		}
 
+		const userPlan = existingUser.plan.type;
+		const planDetails = PLANS.find((plan) => plan.type === userPlan);
+
+		if (!planDetails) {
+			throw new ErrorHandler('User plan not found', 'NOT_FOUND');
+		}
+
+		const tableCount = await prisma.table.count({
+			where: {
+				restaurantId,
+			},
+		});
+
+		if (tableCount >= planDetails.maxTables) {
+			throw new ErrorHandler(
+				`You’ve reached the limit of your current plan (${planDetails.name}). Upgrade to a higher plan to add more menus.`,
+				'INSUFFICIENT_PERMISSIONS'
+			);
+		}
+
 		const tableId = `T-${generateUniqueFourDigitNumber()}`;
 
-		const tables = await prisma.table.findMany({
-			where: {
-				restaurantId: {
-					equals: restaurantId,
+		await prisma.table.create({
+			data: {
+				tableId,
+				tableNumber,
+				tableQrCode,
+				tableSize,
+				tableStatus,
+				restaurant: {
+					connect: { id: restaurantId },
 				},
 			},
 		});
 
-		if (canAddTable(user, tables)) {
-			await prisma.table.create({
-				data: {
-					tableId,
-					tableNumber,
-					tableQrCode,
-					tableSize,
-					tableStatus,
-					restaurant: {
-						connect: { id: restaurantId },
-					},
-				},
-			});
-
-			return NextResponse.json(new SuccessResponse('Succesfully Table Menu', 200).serialize());
-		} else {
-			throw new ErrorHandler(
-				'You’ve reached the limit of your current plan. To add more tables and unlock additional features, please upgrade to a higher plan.',
-				'INSUFFICIENT_PERMISSIONS'
-			);
-		}
+		return NextResponse.json(new SuccessResponse('Succesfully Added Table', 200).serialize());
 	} catch (error) {
 		const standardizedError = standardizeApiError(error);
 		return NextResponse.json(standardizedError, { status: standardizedError.code });

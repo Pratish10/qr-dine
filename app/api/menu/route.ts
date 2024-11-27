@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import { PLANS } from '@/config/auth.config';
 import prisma from '@/db';
 import { getCurrentUser } from '@/hooks/getCurrentUser';
 import { getUserById } from '@/lib/auth/user';
@@ -8,7 +9,6 @@ import { getRestaurantByRestaurantId } from '@/lib/restaurant/restaurant';
 import { SuccessResponse } from '@/lib/success';
 import { AddMenuSchema } from '@/schemas/schema';
 import { type ServerActionReturnType } from '@/types/api.types';
-import { canAddMenu } from '@/utils/permissions';
 import { type Menu } from '@prisma/client';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -80,41 +80,46 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 			throw new ErrorHandler('The Associated Restaurant not found', 'NOT_FOUND');
 		}
 
+		const userPlan = existingUser.plan.type;
+		const planDetails = PLANS.find((plan) => plan.type === userPlan);
+
+		if (!planDetails) {
+			throw new ErrorHandler('User plan not found', 'NOT_FOUND');
+		}
+
+		const menuCount = await prisma.menu.count({
+			where: {
+				restaurantId,
+			},
+		});
+
+		if (menuCount >= planDetails.maxMenus) {
+			throw new ErrorHandler(
+				`You’ve reached the limit of your current plan (${planDetails.name}). Upgrade to a higher plan to add more menus.`,
+				'INSUFFICIENT_PERMISSIONS'
+			);
+		}
+
 		const menuId = `M-${generateUniqueFourDigitNumber()}`;
 
-		const menus = await prisma.menu.findMany({
-			where: {
-				restaurantId: {
-					equals: restaurantId,
+		await prisma.menu.create({
+			data: {
+				menuId,
+				name,
+				description,
+				type,
+				image,
+				category,
+				amount,
+				availability,
+				isFeatured: isFeatured ?? false,
+				restaurant: {
+					connect: { id: restaurantId },
 				},
 			},
 		});
 
-		if (canAddMenu(user, menus)) {
-			await prisma.menu.create({
-				data: {
-					menuId,
-					name,
-					description,
-					type,
-					image,
-					category,
-					amount,
-					availability,
-					isFeatured: isFeatured ?? false,
-					restaurant: {
-						connect: { id: restaurantId },
-					},
-				},
-			});
-
-			return NextResponse.json(new SuccessResponse('Succesfully Added Menu', 200).serialize());
-		} else {
-			throw new ErrorHandler(
-				'You’ve reached the limit of your current plan. To add more menus and unlock additional features, please upgrade to a higher plan.',
-				'INSUFFICIENT_PERMISSIONS'
-			);
-		}
+		return NextResponse.json(new SuccessResponse('Succesfully Added Menu', 200).serialize());
 	} catch (error) {
 		const standardizedError = standardizeApiError(error);
 		return NextResponse.json(standardizedError, { status: standardizedError.code });
