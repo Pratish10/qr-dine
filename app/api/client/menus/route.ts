@@ -15,7 +15,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 			throw new ErrorHandler('Restaurant ID is required', 'BAD_REQUEST');
 		}
 
-		const menus: Menu[] = await prisma.menu.findMany({
+		const menus = await prisma.menu.findMany({
 			where: {
 				restaurantId: {
 					equals: id,
@@ -28,12 +28,32 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 				updatedAt: 'asc',
 			},
 			include: {
-				ratings: true,
+				ratings: {
+					select: {
+						value: true,
+					},
+				},
 			},
 		});
 
-		// Return success response with categories
-		return NextResponse.json(new SuccessResponse<Menu[]>('Fetched Menus Successfully', 200, menus).serialize());
+		const menusWithAverageRating = await Promise.all(
+			menus.map(async (menu) => {
+				const ratingData = await prisma.rating.aggregate({
+					where: {
+						menuId: menu.id,
+					},
+					_avg: {
+						value: true,
+					},
+				});
+
+				return {
+					...menu,
+					averageRating: ratingData._avg.value !== null ? Number(ratingData._avg.value.toFixed(1)) : null,
+				};
+			})
+		);
+		return NextResponse.json(new SuccessResponse<Menu[]>('Fetched Menus Successfully', 200, menusWithAverageRating).serialize());
 	} catch (error) {
 		const standardizedError = standardizeApiError(error);
 		return NextResponse.json(standardizedError, { status: standardizedError.code });
