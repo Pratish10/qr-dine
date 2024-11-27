@@ -138,6 +138,16 @@ model Menu {
 
   restaurantId String
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  ratings Rating[]
+}
+
+model Rating {
+  id        String   @id @default(cuid())
+  value     Int?
+  menuId    String
+  menu      Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }
 
 model Category {

@@ -27,6 +27,9 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 			orderBy: {
 				updatedAt: 'asc',
 			},
+			include: {
+				ratings: true,
+			},
 		});
 
 		// Return success response with categories
