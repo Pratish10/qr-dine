@@ -20,9 +20,6 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 				restaurantId: {
 					equals: id,
 				},
-				availability: {
-					equals: 'Available',
-				},
 			},
 			orderBy: {
 				updatedAt: 'asc',
