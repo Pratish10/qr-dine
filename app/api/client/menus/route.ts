@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import prisma from '@/db';
 import { ErrorHandler, standardizeApiError } from '@/lib/error';
 import { SuccessResponse } from '@/lib/success';
