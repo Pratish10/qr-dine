@@ -2,7 +2,6 @@
 'use client';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
-import React from 'react';
 import { AddMenu } from './add-menu';
 import { Availability, MenuType } from '@prisma/client';
 import { useRecoilValue } from 'recoil';
@@ -22,7 +21,7 @@ export interface DefaultMenuType {
 	restaurantId: string;
 }
 
-export const NewMenuSheet = (): React.JSX.Element => {
+export const NewMenuSheet = (): JSX.Element => {
 	const { isOpen, onClose, data } = useMenuSheetController();
 	const { id } = useRecoilValue(restaurant);
 	const defaultValues: DefaultMenuType = {

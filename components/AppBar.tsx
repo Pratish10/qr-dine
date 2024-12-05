@@ -8,7 +8,7 @@ import { SidebarItems } from './side-bar';
 import { sideBarOptions } from '@/config/sideBar.config';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 
-export const AppBar = (): React.JSX.Element => {
+export const AppBar = (): JSX.Element => {
 	const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
 	const [isMounted, setIsMounted] = useState<boolean>(false);
 

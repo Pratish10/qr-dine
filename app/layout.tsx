@@ -5,19 +5,11 @@ import { Providers } from '@/app/providers';
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from '@/components/ui/sonner';
 import SessionProvider from '@/app/session-provider';
+import { siteConfig } from '@/config/site-config';
 
 const poppins = Poppins({ subsets: ['latin'], weight: '400' });
 
-export const metadata: Metadata = {
-	title: 'QR Dine | Smart QR Code Menus for Restaurants',
-	description:
-		'QR Dine revolutionizes restaurant dining with QR code-based digital menus and ordering systems. Enhance customer experience, streamline operations, and boost efficiency for your restaurant.',
-	keywords: ['QR code menu', 'digital restaurant menu', 'contactless ordering', 'restaurant technology', 'food ordering system'],
-	authors: [{ name: 'QR Dine Team' }],
-	creator: 'QR Dine',
-	publisher: 'QR Dine',
-	robots: 'index, follow',
-};
+export const metadata: Metadata = siteConfig;
 
 export default function RootLayout({
 	children,

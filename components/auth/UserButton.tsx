@@ -20,7 +20,7 @@ const chillMusicLinks = [
 	'https://www.bensound.com/bensound-music/bensound-november.mp3',
 ];
 
-export const UserButton = (): React.JSX.Element => {
+export const UserButton = (): JSX.Element => {
 	const { data } = useSession();
 	const [showDialog, setShowDialog] = useState<boolean>(false);
 	const { setTheme, theme } = useTheme();

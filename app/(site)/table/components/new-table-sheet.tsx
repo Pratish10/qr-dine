@@ -2,7 +2,6 @@
 'use client';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
-import React from 'react';
 import { TableStatus } from '@prisma/client';
 import { useRecoilValue } from 'recoil';
 import { restaurant } from '@/recoil/restaurant/atom';
@@ -18,7 +17,7 @@ export interface DefaultTableType {
 	id: string;
 }
 
-export const NewTableSheet = (): React.JSX.Element => {
+export const NewTableSheet = (): JSX.Element => {
 	const { isOpen, onClose, data } = useTableSheetController();
 	const { id } = useRecoilValue(restaurant);
 	const defaultValues: DefaultTableType = {

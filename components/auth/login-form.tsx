@@ -21,7 +21,7 @@ import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import FormInputField from '../SharedComponent/form-input-field';
 
-export const LoginForm = (): React.JSX.Element => {
+export const LoginForm = (): JSX.Element => {
 	const router = useRouter();
 	const [error, setError] = useState<string | undefined>('');
 	const [success, setSuccess] = useState<string | undefined>('');

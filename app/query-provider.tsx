@@ -3,7 +3,6 @@
 
 // Since QueryClientProvider relies on useContext under the hood, we have to put 'use client' on top
 import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
 
 function makeQueryClient(): QueryClient {
 	return new QueryClient({
@@ -33,7 +32,7 @@ function getQueryClient(): QueryClient {
 	}
 }
 
-export function QueryProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
+export function QueryProvider({ children }: { children: React.ReactNode }): JSX.Element {
 	// NOTE: Avoid useState when initializing the query client if you don't
 	//       have a suspense boundary between this and the code that may
 	//       suspend because React will throw away the client on the initial

@@ -1,8 +1,8 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { SocialButtons } from './social-buttons';
-import React from 'react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
+import React from 'react';
 
 interface AuthCardProps {
 	children: React.ReactNode;
@@ -24,7 +24,7 @@ export const AuthCard = ({
 	backButtonTo,
 	toHome,
 	HomeLabel,
-}: AuthCardProps): React.JSX.Element => {
+}: AuthCardProps): JSX.Element => {
 	return (
 		<div className='flex justify-center items-center h-[calc(100vh-4rem)]'>
 			<Card className='w-[500px] shadow-2xl'>

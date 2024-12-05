@@ -16,6 +16,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 		const availability = searchParams.get('availability');
 		const category = searchParams.get('category');
 		const rating = parseInt(searchParams.get('rating') ?? '0', 10);
+		const amountSort = searchParams.get('amountSort');
 
 		if (!id) {
 			throw new ErrorHandler('Restaurant ID is required', 'BAD_REQUEST');
@@ -44,13 +45,21 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 			};
 		}
 
+		const orderBy: any[] = [];
+
+		if (amountSort === 'asc' || amountSort === 'desc') {
+			orderBy.push({ amount: amountSort });
+		}
+
+		if (orderBy.length === 0) {
+			orderBy.push({ updatedAt: 'asc' });
+		}
+
 		const menus = await prisma.menu.findMany({
 			where: filters,
 			skip: offset,
 			take: limit,
-			orderBy: {
-				updatedAt: 'asc',
-			},
+			orderBy,
 			include: {
 				ratings: {
 					select: {

@@ -1,9 +1,9 @@
 'use client';
-import React from 'react';
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import React from 'react';
 
 interface SideBarProps {
 	items: Array<{
@@ -15,7 +15,7 @@ interface SideBarProps {
 	isCollapsed: boolean;
 }
 
-export const SidebarItems = ({ items, isCollapsed }: SideBarProps): React.JSX.Element => {
+export const SidebarItems = ({ items, isCollapsed }: SideBarProps): JSX.Element => {
 	const pathname = usePathname();
 
 	return (

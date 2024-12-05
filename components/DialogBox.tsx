@@ -1,7 +1,7 @@
-import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DrawerClose, DrawerFooter } from '@/components/ui/drawer';
+import { useEffect, useState } from 'react';
 
 interface DialogBoxProps {
 	header: string;
@@ -12,10 +12,10 @@ interface DialogBoxProps {
 	onActionButtonLabel: string;
 }
 
-export function DialogBox({ header, content, show, onClose, onAction, onActionButtonLabel }: DialogBoxProps): React.JSX.Element {
-	const [open, setOpen] = React.useState(false);
+export function DialogBox({ header, content, show, onClose, onAction, onActionButtonLabel }: DialogBoxProps): JSX.Element {
+	const [open, setOpen] = useState(false);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		setOpen(show);
 	}, [show]);
 

@@ -1,6 +1,5 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import React from 'react';
 import { type Control, type FieldValues, type Path } from 'react-hook-form';
 
 interface FormInputFieldProps<T extends FieldValues> {
@@ -12,7 +11,7 @@ interface FormInputFieldProps<T extends FieldValues> {
 	type: string;
 }
 
-const FormInputField = <T extends FieldValues>({ name, label, placeholder, control, disabled, type }: FormInputFieldProps<T>): React.JSX.Element => (
+const FormInputField = <T extends FieldValues>({ name, label, placeholder, control, disabled, type }: FormInputFieldProps<T>): JSX.Element => (
 	<FormField
 		control={control}
 		name={name}

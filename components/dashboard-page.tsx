@@ -20,7 +20,7 @@ const getGreeting = (): 'Good Morning' | 'Good Afternoon' | 'Good Evening' => {
 	}
 };
 
-export const DashboardPage = (): React.JSX.Element => {
+export const DashboardPage = (): JSX.Element => {
 	const { data } = useSession();
 	const greeting = getGreeting();
 	const restaurantData = useRecoilValue(restaurantList) ?? [];

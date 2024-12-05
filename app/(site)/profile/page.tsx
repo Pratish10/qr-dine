@@ -1,6 +1,6 @@
 import { ProfileForm } from '@/components/auth/profile-form';
 
-const Profile = (): React.JSX.Element => {
+const Profile = (): JSX.Element => {
 	return <ProfileForm />;
 };
 

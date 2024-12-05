@@ -36,7 +36,7 @@ const NavLink = ({
 	className?: string;
 	onClick?: () => void;
 	delay?: number;
-}): React.JSX.Element => (
+}): JSX.Element => (
 	<motion.div
 		variants={linkVariants}
 		initial='initial'
@@ -71,7 +71,7 @@ export const renderBrand = (): JSX.Element => (
 	</Link>
 );
 
-export const Navbar = (): React.JSX.Element => {
+export const Navbar = (): JSX.Element => {
 	const user = useCurrentUser();
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 	const [showDialog, setShowDialog] = useState<boolean>(false);

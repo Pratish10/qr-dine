@@ -18,7 +18,7 @@ import { restaurantList } from '@/recoil/restaurant/atom';
 import { useSetRecoilState } from 'recoil';
 import { type RestaurantType } from '@/app/api/restaurant/route';
 
-export const RestaurantForm = (): React.JSX.Element => {
+export const RestaurantForm = (): JSX.Element => {
 	const { data } = useSession();
 	const router = useRouter();
 	const [isPending, startTransition] = useTransition();
