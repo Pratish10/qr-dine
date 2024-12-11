@@ -22,7 +22,7 @@ export const NewTableSheet = (): JSX.Element => {
 	const { isOpen, onClose, data } = useTableSheetController();
 	const { id } = useRecoilValue(restaurant);
 
-	const tableQr = `https://quickchart.io/qr?text=${encodeToUrl(process.env.NEXT_PUBLIC_URL ?? '')}?resId=${id}&size=200`;
+	const tableQr = `https://quickchart.io/qr?text=${encodeToUrl(process.env.NEXT_PUBLIC_CLIENT_URL ?? '')}?resId=${id}&size=200`;
 
 	const defaultValues: DefaultTableType = {
 		tableNumber: '',
