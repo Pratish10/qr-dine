@@ -8,6 +8,7 @@ import { generateUniqueFourDigitNumber } from '@/lib/generateUniqueFourDigitNumb
 import { getRestaurantByRestaurantId } from '@/lib/restaurant/restaurant';
 import { SuccessResponse } from '@/lib/success';
 import { getTableByTableNumber } from '@/lib/table/getTableByTableNumber';
+import { encodeToUrl } from '@/lib/utils';
 import { AddTableSchema } from '@/schemas/schema';
 import { type ServerActionReturnType } from '@/types/api.types';
 import { type Table } from '@prisma/client';
@@ -64,7 +65,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 			throw new ErrorHandler('Invalid Fields!', 'BAD_REQUEST');
 		}
 
-		const { restaurantId, tableNumber, tableQrCode, tableSize, tableStatus } = validatedFields.data;
+		let { restaurantId, tableNumber, tableQrCode, tableSize, tableStatus } = validatedFields.data;
 
 		const exisitngTable = await getTableByTableNumber(tableNumber);
 
@@ -109,6 +110,9 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 		}
 
 		const tableId = `T-${generateUniqueFourDigitNumber()}`;
+
+		const tableQr = `https://quickchart.io/qr?text=${encodeToUrl(`${process.env.NEXT_PUBLIC_CLIENT_URL ?? ''}?resId=${restaurantId}&tableId=${tableId}`)}&size=200`;
+		tableQrCode = tableQr;
 
 		await prisma.table.create({
 			data: {
