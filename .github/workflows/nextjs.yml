@@ -33,6 +33,7 @@ jobs:
                   echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> $GITHUB_ENV
                   echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> $GITHUB_ENV
                   echo "NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}" >> $GITHUB_ENV
+                  echo "NEXT_PUBLIC_CLIENT_URL=${{ secrets.NEXT_PUBLIC_CLIENT_URL }}" >> $GITHUB_ENV
                   echo "GITHUB_CLIENT_ID=${{ secrets.GITHUB_CLIENT_ID }}" >> $GITHUB_ENV
                   echo "GITHUB_CLIENT_SECRET=${{ secrets.GITHUB_CLIENT_SECRET }}" >> $GITHUB_ENV
                   echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
