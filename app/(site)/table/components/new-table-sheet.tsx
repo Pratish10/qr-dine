@@ -7,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { restaurant } from '@/recoil/restaurant/atom';
 import { AddTable } from './add-table';
 import { useTableSheetController } from '@/hooks/tables/table-sheet-controller';
+import { encodeToUrl } from '@/lib/utils';
 
 export interface DefaultTableType {
 	tableNumber: string;
@@ -20,9 +21,12 @@ export interface DefaultTableType {
 export const NewTableSheet = (): JSX.Element => {
 	const { isOpen, onClose, data } = useTableSheetController();
 	const { id } = useRecoilValue(restaurant);
+
+	const tableQr = `https://quickchart.io/qr?text=${encodeToUrl(process.env.NEXT_PUBLIC_URL ?? '')}?resId=${id}&size=200`;
+
 	const defaultValues: DefaultTableType = {
 		tableNumber: '',
-		tableQrCode: 'https://quickchart.io/qr?text=Hello%20world&size=200',
+		tableQrCode: tableQr,
 		tableSize: '',
 		tableStatus: TableStatus.Vacant,
 		restaurantId: id,

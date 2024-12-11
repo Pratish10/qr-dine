@@ -12,3 +12,7 @@ export function getDomain(): string | undefined {
 		return 'http://localhost:3000';
 	}
 }
+
+export function encodeToUrl(str: string): string {
+	return encodeURIComponent(str).replace(/[!'()*]/g, (c) => `%${c.charCodeAt(0).toString(16)}`);
+}
