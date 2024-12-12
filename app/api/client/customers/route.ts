@@ -9,17 +9,6 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest): Promise<NextResponse<ServerActionReturnType>> {
 	try {
-		const restaurantId = req.cookies.get('resId')?.value;
-
-		if (!restaurantId) {
-			throw new ErrorHandler('Restaurant ID is required', 'BAD_REQUEST');
-		}
-
-		const existingRestaurant = await getRestaurantByRestaurantId(restaurantId);
-		if (!existingRestaurant) {
-			throw new ErrorHandler('The Associated Restaurant not found', 'NOT_FOUND');
-		}
-
 		const { ratings, name, email } = await req.json();
 
 		const existingCustomer = await getCustomerByEmail((email ?? '') as string);
