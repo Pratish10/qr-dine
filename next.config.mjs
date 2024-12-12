@@ -21,19 +21,20 @@ const nextConfig = {
 		],
 	},
 	async headers() {
+		const END_POINT = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_CLIENT_URL : 'http://localhost:3001';
 		return [
 			{
 				source: '/api/(.*)',
 				headers: [
 					{ key: 'Access-Control-Allow-Credentials', value: 'true' },
-					{ key: 'Access-Control-Allow-Origin', value: '*' },
+					{ key: 'Access-Control-Allow-Origin', value: END_POINT },
 					{
 						key: 'Access-Control-Allow-Methods',
-						value: '*',
+						value: 'GET, POST, OPTIONS, PUT, DELETE',
 					},
 					{
 						key: 'Access-Control-Allow-Headers',
-						value: '*',
+						value: 'Content-Type, Authorization',
 					},
 				],
 			},

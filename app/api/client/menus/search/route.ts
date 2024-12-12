@@ -7,7 +7,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest): Promise<NextResponse<ServerActionReturnType>> {
 	try {
-		const { search } = Object.fromEntries(new URL(req.url).searchParams);
+		const { search, resId } = Object.fromEntries(new URL(req.url).searchParams);
 
 		if (!search) {
 			return NextResponse.json(new SuccessResponse('Please provide a search query.', 400).serialize());
@@ -15,11 +15,16 @@ export async function GET(req: NextRequest): Promise<NextResponse<ServerActionRe
 
 		const menus = await prisma.menu.findMany({
 			where: {
-				OR: [
-					{ name: { contains: search, mode: 'insensitive' } },
-					{ description: { contains: search, mode: 'insensitive' } },
-					{ category: { contains: search, mode: 'insensitive' } },
-					{ amount: { contains: search, mode: 'insensitive' } },
+				AND: [
+					{ restaurantId: resId },
+					{
+						OR: [
+							{ name: { contains: search, mode: 'insensitive' } },
+							{ description: { contains: search, mode: 'insensitive' } },
+							{ category: { contains: search, mode: 'insensitive' } },
+							{ amount: { contains: search, mode: 'insensitive' } },
+						],
+					},
 				],
 			},
 			select: {
