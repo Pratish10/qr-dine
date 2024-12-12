@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import prisma from '@/db';
 import { getCustomerByEmail } from '@/lib/customer/getCustomerByEmail';
-import { ErrorHandler, standardizeApiError } from '@/lib/error';
-import { getRestaurantByRestaurantId } from '@/lib/restaurant/restaurant';
+import { standardizeApiError } from '@/lib/error';
 import { SuccessResponse } from '@/lib/success';
 import { type ServerActionReturnType } from '@/types/api.types';
 import { type NextRequest, NextResponse } from 'next/server';
