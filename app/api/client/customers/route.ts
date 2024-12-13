@@ -20,7 +20,9 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 				})),
 			});
 
-			return NextResponse.json(new SuccessResponse('Existing Customer', 200, { customer: existingCustomer, createdRatings }).serialize());
+			return NextResponse.json(
+				new SuccessResponse(`Welcome Back ${existingCustomer.name}`, 200, { customer: existingCustomer, createdRatings }).serialize()
+			);
 		} else {
 			const [customer, createdRatings] = await prisma.$transaction(async (tx) => {
 				const customer = await tx.customer.create({

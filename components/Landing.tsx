@@ -1,219 +1,66 @@
 'use client';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Smartphone, Utensils, CreditCard, BarChart, Check, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
-import APP_PATHS from '@/config/path.config';
-import { useRecoilValue } from 'recoil';
-import { plans } from '@/recoil/plans/atom';
-import { planTypes } from '@prisma/client';
-import { createSubscription } from '@/actions/stripe/createSubscription';
-import { toast } from 'sonner';
-import { useSession } from 'next-auth/react';
 
-export function LandingPage(): JSX.Element {
-	const { data } = useSession();
-	const planData = useRecoilValue(plans);
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useTheme } from 'next-themes';
+import { useEffect } from 'react';
+import { HeroSection } from './Home/HeroSection';
+import { FeaturesSection } from './Home/FeatureSection';
+import { HowItWorksSection } from './Home/HowItWorksSection';
+import { PricingSection } from './Home/PriceSection';
+import { CTASection } from './Home/CTASection';
 
-	const filteredPlanData = planData.filter((item) => item.type !== planTypes.free);
+export default function LandingPage(): JSX.Element {
+	const { theme } = useTheme();
+	const { scrollYProgress } = useScroll();
+	const lightBackgroundColor = useTransform(
+		scrollYProgress,
+		[0, 0.2, 0.4, 0.6, 0.8, 1],
+		['#f0fdf4', '#dcfce7', '#bbf7d0', '#86efac', '#4ade80', '#22c55e']
+	);
 
-	const features = [
-		{ icon: Smartphone, title: 'QR Code Menus', description: 'Create dynamic QR code menus for each table in your restaurant.' },
-		{ icon: Utensils, title: 'Easy Ordering', description: 'Customers can browse and order directly from their smartphones.' },
-		{ icon: CreditCard, title: 'Seamless Payments', description: 'Integrate with popular payment gateways for hassle-free transactions.' },
-		{ icon: BarChart, title: 'Real-time Analytics', description: "Get insights into your restaurant's performance with detailed analytics." },
-	];
+	const darkBackgroundColor = useTransform(
+		scrollYProgress,
+		[0, 0.2, 0.4, 0.6, 0.8, 1],
+		['#022c22', '#064e3b', '#065f46', '#047857', '#059669', '#10b981']
+	);
 
-	const subscription = async (planType: planTypes): Promise<void> => {
-		await createSubscription(planType).catch((err: any) => {
-			toast.error(err.message as string);
-		});
-	};
+	useEffect(() => {
+		const updateMousePosition = (e: MouseEvent): void => {
+			document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+			document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+		};
+
+		window.addEventListener('mousemove', updateMousePosition);
+
+		return () => {
+			window.removeEventListener('mousemove', updateMousePosition);
+		};
+	}, []);
 
 	return (
-		<div className='min-h-screen flex flex-col'>
-			<main className='flex-1'>
-				<section className='w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-white dark:bg-gray-950'>
-					<div className='container px-4 md:px-6'>
-						<motion.div
-							className='flex flex-col items-center space-y-4 text-center'
-							initial={{ opacity: 0, y: 30 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.8, ease: 'easeOut' }}
-						>
-							<div className='space-y-2'>
-								<h1 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-gray-900 dark:text-gray-50'>
-									Welcome to <span className='text-green-600'>QR Dine</span>
-								</h1>
-								<p className='mx-auto max-w-[700px] text-gray-600 dark:text-gray-400 md:text-xl'>
-									Revolutionize your dining experience with our QR code-based menu and ordering system.
-								</p>
-							</div>
-							<Link href={APP_PATHS.REGISTER}>
-								<Button size='lg' variant='green'>
-									Get Started
-									<ArrowRight className='h-4 w-4 ml-2' />
-								</Button>
-							</Link>
-						</motion.div>
-					</div>
-				</section>
-
-				<section id='features' className='w-full py-12 md:py-24 lg:py-32 bg-gray-50 dark:bg-gray-900'>
-					<div className='container px-4 md:px-6'>
-						<h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-gray-900 dark:text-gray-50'>
-							Features
-						</h2>
-						<motion.div
-							className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'
-							initial='hidden'
-							whileInView='visible'
-							viewport={{ once: true }}
-							variants={{
-								hidden: { opacity: 0, y: 30 },
-								visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.2 } },
-							}}
-						>
-							{features.map((feature, index) => (
-								<motion.div
-									key={index}
-									initial={{ opacity: 0, y: 50 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.6, ease: 'easeOut' }}
-								>
-									<Card className='h-full bg-white dark:bg-gray-800'>
-										<CardHeader>
-											<feature.icon className='h-8 w-8 mb-2 text-green-600' />
-											<CardTitle className='text-gray-900 dark:text-gray-50'>{feature.title}</CardTitle>
-										</CardHeader>
-										<CardContent>
-											<p className='text-gray-600 dark:text-gray-300'>{feature.description}</p>
-										</CardContent>
-									</Card>
-								</motion.div>
-							))}
-						</motion.div>
-					</div>
-				</section>
-
-				<section id='how-it-works' className='w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-950'>
-					<div className='container px-4 md:px-6'>
-						<h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-gray-900 dark:text-gray-50'>
-							How It Works
-						</h2>
-						<motion.div
-							className='grid grid-cols-1 md:grid-cols-3 gap-8'
-							initial='hidden'
-							whileInView='visible'
-							viewport={{ once: true }}
-							variants={{
-								hidden: { opacity: 0, y: 50 },
-								visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.3 } },
-							}}
-						>
-							{['Scan QR Code', 'Browse & Order', 'Pay & Enjoy'].map((step, index) => (
-								<motion.div
-									className='flex flex-col items-center text-center'
-									key={index}
-									variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } }}
-									transition={{ duration: 0.6, ease: 'easeOut' }}
-								>
-									<div className='w-16 h-16 rounded-full bg-green-600 flex items-center justify-center text-white text-2xl font-bold mb-4'>
-										{index + 1}
-									</div>
-									<h3 className='text-xl font-bold mb-2 text-gray-900 dark:text-gray-50'>{step}</h3>
-									<p className='text-gray-600 dark:text-gray-300'>
-										{index === 0
-											? 'Customers scan the QR code on their table'
-											: index === 1
-												? 'View the menu and place orders directly from their device'
-												: 'Complete the payment and enjoy their meal'}
-									</p>
-								</motion.div>
-							))}
-						</motion.div>
-					</div>
-				</section>
-
-				<section id='pricing' className='w-full py-12 md:py-24 lg:py-32 bg-gray-50 dark:bg-gray-900'>
-					<div className='container px-4 md:px-6'>
-						<h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-gray-900 dark:text-gray-50'>
-							Pricing
-						</h2>
-						<motion.div
-							className='grid grid-cols-1 md:grid-cols-2 gap-8'
-							initial='hidden'
-							whileInView='visible'
-							viewport={{ once: true }}
-							variants={{
-								hidden: { opacity: 0, y: 30 },
-								visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.2 } },
-							}}
-						>
-							{filteredPlanData.map((plan) => (
-								<motion.div key={plan.id} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}>
-									<Card className='bg-white dark:bg-gray-800 flex flex-col'>
-										<CardHeader>
-											<CardTitle className='text-gray-900 dark:text-gray-50'>{plan.name}</CardTitle>
-										</CardHeader>
-										<CardContent className='flex-grow'>
-											<p className='text-4xl font-bold mb-4 text-green-600'>
-												₹{plan.price}
-												<span className='text-base font-normal'>/month</span>
-											</p>
-											<ul className='mb-6 space-y-2'>
-												{plan.description.map((item, index) => (
-													<li className='flex items-center' key={index}>
-														<Check className='h-4 w-4 mr-2 text-green-600' />
-														<span className='text-gray-600 dark:text-gray-300'>{item}</span>
-													</li>
-												))}
-											</ul>
-										</CardContent>
-										<CardFooter>
-											<Button
-												size='sm'
-												variant='green'
-												className='w-full'
-												disabled={data?.user?.plan === plan.type}
-												onClick={() => {
-													void subscription(plan.type);
-												}}
-											>
-												{data?.user?.plan === plan.type ? 'Subscribed' : 'Get Started'}
-											</Button>
-										</CardFooter>
-									</Card>
-								</motion.div>
-							))}
-						</motion.div>
-					</div>
-				</section>
-
-				<section className='w-full py-12 md:py-24 lg:py-32 bg-green-600'>
-					<div className='container px-4 md:px-6'>
-						<motion.div
-							className='flex flex-col items-center space-y-4 text-center'
-							initial={{ opacity: 0, y: 30 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.8, ease: 'easeOut' }}
-						>
-							<h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white'>
-								Ready to Transform Your Restaurant?
-							</h2>
-							<Link href={APP_PATHS.REGISTER}>
-								<Button size='lg' variant='outline'>
-									Get Started
-									<ArrowRight className='h-4 w-4 ml-2' />
-								</Button>
-							</Link>
-						</motion.div>
-					</div>
-				</section>
-			</main>
-		</div>
+		<motion.div
+			className='min-h-screen overflow-hidden transition-colors duration-300'
+			style={{ backgroundColor: theme === 'dark' ? darkBackgroundColor : lightBackgroundColor }}
+		>
+			<div className='fixed inset-0 pointer-events-none z-0'>
+				<div className="absolute inset-0 bg-[url('/qr-pattern.svg')] opacity-5 dark:opacity-10" />
+				<div
+					className='absolute inset-0 bg-gradient-radial from-green-300/20 to-transparent dark:from-green-700/20 dark:to-transparent'
+					style={{
+						background:
+							theme === 'dark'
+								? 'radial-gradient(600px at var(--mouse-x) var(--mouse-y), rgba(74, 222, 128, 0.15), transparent 80%)'
+								: 'radial-gradient(600px at var(--mouse-x) var(--mouse-y), rgba(6, 78, 59, 0.15), transparent 80%)',
+					}}
+				/>
+			</div>
+			<div className='relative z-10'>
+				<HeroSection />
+				<FeaturesSection />
+				<HowItWorksSection />
+				<PricingSection />
+				<CTASection />
+			</div>
+		</motion.div>
 	);
 }

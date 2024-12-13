@@ -1,30 +1,34 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ThemeSelect } from './theme-select';
-import { Button } from '@/components/ui/button';
-import APP_PATHS from '@/config/path.config';
-import { UserButton } from '@/components/auth/UserButton';
-import React, { useState } from 'react';
-import _ from 'lodash';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
-import clsx from 'clsx';
 import { useTheme } from 'next-themes';
+import { Menu, X, Moon, Sun } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import APP_PATHS from '@/config/path.config';
+import { UserButton } from './auth/UserButton';
+import _ from 'lodash';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { DialogBox } from './DialogBox';
 import { signOut } from 'next-auth/react';
-import useScroll from '@/hooks/use-scroll';
+import clsx from 'clsx';
 
-const linkVariants = {
-	initial: { opacity: 0, y: 20 },
-	animate: { opacity: 1, y: 0 },
-	exit: { opacity: 0, y: 20 },
-};
+const NavLink = ({ href, label, onClick }: { href: string; label: string; onClick?: () => void }): JSX.Element => (
+	<motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+		<Link
+			href={href}
+			onClick={onClick}
+			className='text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition-colors'
+		>
+			{label}
+		</Link>
+	</motion.div>
+);
 
-const NavLink = ({
+const NavLinkMobile = ({
 	href,
 	label,
 	onClick,
@@ -38,12 +42,11 @@ const NavLink = ({
 	delay?: number;
 }): JSX.Element => (
 	<motion.div
-		variants={linkVariants}
 		initial='initial'
 		animate='animate'
 		exit='exit'
 		transition={{ duration: 0.3, delay }}
-		className={clsx('hover:underline transition-all duration-200 hover:text-green-600 cursor-pointer', className)}
+		className={clsx('hover:underline transition-all duration-200 hover:text-green-600 cursor-pointer text-3xl', className)}
 	>
 		<Link href={href} onClick={onClick}>
 			{label}
@@ -51,177 +54,175 @@ const NavLink = ({
 	</motion.div>
 );
 
-export const renderBrand = (): JSX.Element => (
-	<Link href={APP_PATHS.HOME} className='flex items-center space-x-3'>
-		<svg
-			xmlns='http://www.w3.org/2000/svg'
-			viewBox='0 0 24 24'
-			fill='none'
-			stroke='currentColor'
-			strokeWidth='2'
-			strokeLinecap='round'
-			strokeLinejoin='round'
-			className='h-6 w-6 text-green-600'
-		>
-			<path d='M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2' />
-			<path d='M7 2v20' />
-			<path d='M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7' />
-		</svg>
-		<span className='font-bold'>QR Dine</span>
-	</Link>
-);
-
 export const Navbar = (): JSX.Element => {
-	const user = useCurrentUser();
-	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [showDialog, setShowDialog] = useState<boolean>(false);
-	const isSmallScreen = useMediaQuery('(max-width: 1024px)');
-	const { setTheme, theme } = useTheme();
-	const size = useScroll();
+	const { theme, setTheme } = useTheme();
+	const user = useCurrentUser();
+	const [scrolled, setScrolled] = useState(false);
+
+	useEffect(() => {
+		const handleScroll = (): void => {
+			setScrolled(window.scrollY > 20);
+		};
+
+		window.addEventListener('scroll', handleScroll);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
+
+	const toggleMenu = (): void => {
+		setIsOpen(!isOpen);
+	};
 
 	return (
-		<nav
-			className={clsx(
-				'flex items-center h-14 fixed top-0 left-0 w-full z-10',
-				size.scrollY > 100 && 'dark:bg-black bg-white border-b-2 dark:border-b-gray-600'
-			)}
+		<motion.nav
+			className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white dark:bg-gray-900 shadow-lg' : 'bg-transparent'}`}
+			initial={{ y: -100 }}
+			animate={{ y: 0 }}
+			transition={{ type: 'spring', stiffness: 300, damping: 30 }}
 		>
-			<div className='container flex items-center justify-between h-full'>
-				{renderBrand()}
-				{isSmallScreen ? (
-					<Button
-						size='icon'
-						variant='link'
-						onClick={() => {
-							if (isSmallScreen) {
-								setIsMenuOpen(!isMenuOpen);
-							}
-						}}
-					>
-						{isMenuOpen ? <X /> : <Menu />}
-					</Button>
-				) : (
-					<>
-						{user === undefined && (
-							<nav className='flex items-center justify-center flex-1 space-x-6 text-sm font-medium'>
-								<NavLink
-									href={APP_PATHS.HOME + '#features'}
-									label='Features'
-									onClick={() => {
-										if (isSmallScreen) {
-											setIsMenuOpen(!isMenuOpen);
-										}
-									}}
-									delay={0.1}
-								/>
-								<NavLink
-									href={APP_PATHS.HOME + '#how-it-works'}
-									label='How It Works'
-									onClick={() => {
-										if (isSmallScreen) {
-											setIsMenuOpen(!isMenuOpen);
-										}
-									}}
-									delay={0.2}
-								/>
-								<NavLink
-									href={APP_PATHS.HOME + '#pricing'}
-									label='Pricing'
-									onClick={() => {
-										if (isSmallScreen) {
-											setIsMenuOpen(!isMenuOpen);
-										}
-									}}
-									delay={0.3}
-								/>
-							</nav>
-						)}
+			<div className='container mx-auto px-4 sm:px-6 lg:px-8'>
+				<div className='flex items-center justify-between h-16'>
+					<Link href={APP_PATHS.HOME} className='flex items-center space-x-2'>
+						<motion.svg
+							xmlns='http://www.w3.org/2000/svg'
+							viewBox='0 0 24 24'
+							fill='none'
+							stroke='currentColor'
+							strokeWidth='2'
+							strokeLinecap='round'
+							strokeLinejoin='round'
+							className='h-8 w-8 text-green-600'
+							whileHover={{ rotate: 360 }}
+							transition={{ duration: 0.5 }}
+						>
+							<path d='M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2' />
+							<path d='M7 2v20' />
+							<path d='M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7' />
+						</motion.svg>
+						<span className='font-bold text-xl text-gray-900 dark:text-white'>QR Dine</span>
+					</Link>
 
-						<div className='flex items-center space-x-4'>
-							<ThemeSelect />
-							{user === undefined ? (
-								<>
-									<Link href={APP_PATHS.LOGIN}>
-										<Button variant='green'>Login</Button>
-									</Link>
-									<Link href={APP_PATHS.REGISTER}>
-										<Button variant='green'>Register</Button>
-									</Link>
-								</>
-							) : (
-								<>
-									<UserButton />
-									<div className='hidden md:flex flex-col justify-center items-start'>
-										<p>{user?.name}</p>
-										<p className='text-slate-600 text-xs'>{_.capitalize(user?.plan)}</p>
-									</div>
-								</>
-							)}
-						</div>
-					</>
-				)}
+					<div className='hidden md:flex items-center space-x-4'>
+						<NavLink href={`${APP_PATHS.HOME}#features`} label='Features' />
+						<NavLink href={`${APP_PATHS.HOME}#how-it-works`} label='How It Works' />
+						<NavLink href={`${APP_PATHS.HOME}#pricing`} label='Pricing' />
+
+						<motion.button
+							whileHover={{ scale: 1.1 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={() => {
+								setTheme(theme === 'dark' ? 'light' : 'dark');
+							}}
+							className='p-2 rounded-full bg-gray-200 dark:bg-gray-700'
+						>
+							{theme === 'dark' ? <Sun className='h-5 w-5' /> : <Moon className='h-5 w-5' />}
+						</motion.button>
+						{user ? (
+							<>
+								<UserButton />
+								<div className='hidden md:flex flex-col justify-center items-start'>
+									<p>{user?.name}</p>
+									<p className='text-slate-600 text-xs'>{_.capitalize(user?.plan)}</p>
+								</div>
+							</>
+						) : (
+							<>
+								<Link href={APP_PATHS.LOGIN}>
+									<Button size='sm' variant='green'>
+										Login
+									</Button>
+								</Link>
+								<Link href={APP_PATHS.REGISTER}>
+									<Button size='sm' variant='green'>
+										Register
+									</Button>
+								</Link>
+							</>
+						)}
+					</div>
+
+					<div className='md:hidden'>
+						<motion.button
+							whileHover={{ scale: 1.1 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={toggleMenu}
+							className='text-gray-700 dark:text-gray-200'
+						>
+							{isOpen ? <X /> : <Menu />}
+						</motion.button>
+					</div>
+				</div>
 			</div>
+
 			<Sheet
 				onOpenChange={() => {
-					if (isSmallScreen) {
-						setIsMenuOpen(!isMenuOpen);
-					}
+					setIsOpen(!isOpen);
 				}}
-				open={isMenuOpen}
+				open={isOpen}
 			>
 				<SheetContent side='left'>
 					<SheetHeader>
-						<SheetTitle className='my-4'>{renderBrand()}</SheetTitle>
+						<SheetTitle className='my-4'>
+							<Link href={APP_PATHS.HOME} className='flex items-center space-x-2'>
+								<motion.svg
+									xmlns='http://www.w3.org/2000/svg'
+									viewBox='0 0 24 24'
+									fill='none'
+									stroke='currentColor'
+									strokeWidth='2'
+									strokeLinecap='round'
+									strokeLinejoin='round'
+									className='h-8 w-8 text-green-600'
+									whileHover={{ rotate: 360 }}
+									transition={{ duration: 0.5 }}
+								>
+									<path d='M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2' />
+									<path d='M7 2v20' />
+									<path d='M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7' />
+								</motion.svg>
+								<span className='font-bold text-xl text-gray-900 dark:text-white'>QR Dine</span>
+							</Link>
+						</SheetTitle>
 						<SheetDescription className='text-start'>
-							<NavLink
+							<NavLinkMobile
 								href={APP_PATHS.HOME + '#features'}
 								label='Features'
 								onClick={() => {
-									if (isSmallScreen) {
-										setIsMenuOpen(!isMenuOpen);
-									}
+									setIsOpen(!isOpen);
 								}}
 								delay={0.1}
-								className='text-3xl'
 							/>
-							<NavLink
+							<NavLinkMobile
 								href={APP_PATHS.HOME + '#how-it-works'}
 								label='How It Works'
 								onClick={() => {
-									if (isSmallScreen) {
-										setIsMenuOpen(!isMenuOpen);
-									}
+									setIsOpen(!isOpen);
 								}}
 								delay={0.2}
-								className='text-3xl'
 							/>
-							<NavLink
+							<NavLinkMobile
 								href={APP_PATHS.HOME + '#pricing'}
 								label='Pricing'
 								onClick={() => {
-									if (isSmallScreen) {
-										setIsMenuOpen(!isMenuOpen);
-									}
+									setIsOpen(!isOpen);
 								}}
 								delay={0.3}
-								className='text-3xl'
 							/>
 							{user && (
-								<NavLink
+								<NavLinkMobile
 									href={APP_PATHS.PROFILE}
 									label='Profile'
 									onClick={() => {
-										if (isSmallScreen) {
-											setIsMenuOpen(!isMenuOpen);
-										}
+										setIsOpen(!isOpen);
 									}}
 									delay={0.4}
-									className='text-3xl'
 								/>
 							)}
 
 							<motion.div
-								variants={linkVariants}
 								initial='initial'
 								animate='animate'
 								exit='exit'
@@ -235,7 +236,6 @@ export const Navbar = (): JSX.Element => {
 							</motion.div>
 							{user && (
 								<motion.div
-									variants={linkVariants}
 									initial='initial'
 									animate='animate'
 									exit='exit'
@@ -266,6 +266,6 @@ export const Navbar = (): JSX.Element => {
 				}}
 				onActionButtonLabel='Logout'
 			/>
-		</nav>
+		</motion.nav>
 	);
 };

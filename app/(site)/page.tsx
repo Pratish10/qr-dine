@@ -1,5 +1,5 @@
-import { Footer } from '@/components/Footer';
-import { LandingPage } from '@/components/Landing';
+import { Footer } from '@/components/Home/Footer';
+import LandingPage from '@/components/Landing';
 
 export default function Auth(): JSX.Element {
 	return (

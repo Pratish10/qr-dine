@@ -23,15 +23,7 @@ export default function RootLayout({
 				<link rel='apple-touch-icon' href='/app/logo.svg' />
 			</head>
 			<body className={`${poppins.className} antialiased`}>
-				<NextTopLoader
-					color='#17a34a'
-					initialPosition={0.08}
-					crawlSpeed={200}
-					height={3}
-					easing='ease'
-					speed={200}
-					shadow='0 0 10px #17a34a,0 0 5px #17a34a'
-				/>
+				<NextTopLoader color='#17a34a' height={3} showSpinner={false} />
 				<Providers>
 					<SessionProvider>
 						{children}
