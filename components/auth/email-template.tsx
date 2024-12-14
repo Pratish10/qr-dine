@@ -4,12 +4,12 @@ interface EmailTemplateProps {
 
 export const EmailTemplate = ({ confirmLink }: EmailTemplateProps): string =>
 	`<div style="font-family: 'Arial', sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-    <h2 style="color: #1a73e8; text-align: center;">Welcome to QR Dinw!</h2>
+    <h2 style="color: #1a73e8; text-align: center;">Welcome to QR Dine!</h2>
     <p style="font-size: 16px;">
       Hello,
     </p>
     <p style="font-size: 16px;">
-      Thank you for joining <strong>QR Dinw</strong>. We're thrilled to have you with us! To activate your account and begin exploring all the delicious options we offer, please confirm your email address by clicking the button below:
+      Thank you for joining <strong>QR Dine</strong>. We're thrilled to have you with us! To activate your account and begin exploring all the delicious options we offer, please confirm your email address by clicking the button below:
     </p>
     <div style="text-align: center; margin: 20px 0;">
       <a href="${confirmLink}" style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
