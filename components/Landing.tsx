@@ -2,14 +2,15 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTheme } from 'next-themes';
-import { useEffect } from 'react';
 import { HeroSection } from './Home/HeroSection';
 import { FeaturesSection } from './Home/FeatureSection';
 import { HowItWorksSection } from './Home/HowItWorksSection';
 import { PricingSection } from './Home/PriceSection';
 import { CTASection } from './Home/CTASection';
+import { useMousePosition } from '@/hooks/useMousePosition';
 
 export default function LandingPage(): JSX.Element {
+	useMousePosition();
 	const { theme } = useTheme();
 	const { scrollYProgress } = useScroll();
 	const lightBackgroundColor = useTransform(
@@ -23,19 +24,6 @@ export default function LandingPage(): JSX.Element {
 		[0, 0.2, 0.4, 0.6, 0.8, 1],
 		['#022c22', '#064e3b', '#065f46', '#047857', '#059669', '#10b981']
 	);
-
-	useEffect(() => {
-		const updateMousePosition = (e: MouseEvent): void => {
-			document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
-			document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
-		};
-
-		window.addEventListener('mousemove', updateMousePosition);
-
-		return () => {
-			window.removeEventListener('mousemove', updateMousePosition);
-		};
-	}, []);
 
 	return (
 		<motion.div

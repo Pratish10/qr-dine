@@ -1,16 +1,23 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { MdOutlineCheckCircle } from 'react-icons/md';
+import { type FC } from 'react';
 
 interface FormSuccessProps {
 	message?: string;
 }
 
-export const FormSuccess = ({ message }: FormSuccessProps): JSX.Element | null => {
+export const FormSuccess: FC<FormSuccessProps> = ({ message }) => {
 	if (!message) return null;
+
 	return (
-		<div className='bg-green-200 p-3 flex items-center gap-x-2 text-sm text-green-600'>
+		<div
+			className='p-3 flex items-center gap-x-2 text-sm rounded-md shadow-md
+        bg-green-200 text-green-600 dark:bg-green-800 dark:text-green-200'
+			role='alert'
+			aria-live='polite'
+		>
 			<MdOutlineCheckCircle className='h-5 w-5' />
-			{message}
+			<span>{message}</span>
 		</div>
 	);
 };

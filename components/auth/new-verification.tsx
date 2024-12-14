@@ -20,6 +20,7 @@ export const NewVerificationForm = (): JSX.Element => {
 		if (success ?? error) return;
 		if (!token) {
 			setError('Token Missing!');
+			return;
 		}
 
 		newVerification(token)
@@ -44,7 +45,6 @@ export const NewVerificationForm = (): JSX.Element => {
 			headerLabel='Confirming your verification'
 			backButtonTo={APP_PATHS.LOGIN}
 			backButtonLabel='Back to Login Page'
-			cardTitle='logo here'
 			HomeLabel='Back To Home'
 			toHome={APP_PATHS.HOME}
 		>

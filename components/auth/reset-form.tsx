@@ -44,7 +44,7 @@ export const ResetForm = (): JSX.Element => {
 	};
 
 	return (
-		<AuthCard headerLabel='' cardTitle='Reset Password' backButtonLabel='Back' backButtonTo={APP_PATHS.HOME}>
+		<AuthCard headerLabel='QR Dine' cardTitle='Reset Password' backButtonLabel='Back' backButtonTo={APP_PATHS.HOME}>
 			<Form {...form}>
 				<form
 					// eslint-disable-next-line @typescript-eslint/no-misused-promises

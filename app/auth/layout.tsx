@@ -1,3 +1,4 @@
+import { Navbar } from '@/components/Navbar';
 import { Suspense } from 'react';
 
 export default function AuthLayout({
@@ -6,8 +7,11 @@ export default function AuthLayout({
 	children: React.ReactNode;
 }>): JSX.Element {
 	return (
-		<div className='h-screen bg-gradient-to-r from-green-600 via-green-400 to-green-600'>
-			<Suspense>{children}</Suspense>
+		<div className='h-screen'>
+			<Suspense>
+				<Navbar />
+				{children}
+			</Suspense>
 		</div>
 	);
 }

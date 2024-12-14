@@ -49,7 +49,7 @@ export const NewPasswordForm = (): JSX.Element => {
 	};
 	return (
 		<AuthCard
-			headerLabel=''
+			headerLabel='QR Dine'
 			backButtonTo={APP_PATHS.LOGIN}
 			backButtonLabel='Back to Login Page'
 			cardTitle='Reset your password'

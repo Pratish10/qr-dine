@@ -15,6 +15,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '
 import { DialogBox } from './DialogBox';
 import { signOut } from 'next-auth/react';
 import clsx from 'clsx';
+import { usePathname } from 'next/navigation';
 
 const NavLink = ({ href, label, onClick }: { href: string; label: string; onClick?: () => void }): JSX.Element => (
 	<motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
@@ -60,6 +61,7 @@ export const Navbar = (): JSX.Element => {
 	const { theme, setTheme } = useTheme();
 	const user = useCurrentUser();
 	const [scrolled, setScrolled] = useState(false);
+	const pathName = usePathname();
 
 	useEffect(() => {
 		const handleScroll = (): void => {
@@ -78,7 +80,10 @@ export const Navbar = (): JSX.Element => {
 
 	return (
 		<motion.nav
-			className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white dark:bg-gray-900 shadow-lg' : 'bg-transparent'}`}
+			className={clsx(
+				scrolled || pathName === APP_PATHS.RESTAURANT ? 'bg-white dark:bg-gray-900 shadow-lg' : 'bg-transparent',
+				'fixed w-full z-50 transition-all duration-300'
+			)}
 			initial={{ y: -100 }}
 			animate={{ y: 0 }}
 			transition={{ type: 'spring', stiffness: 300, damping: 30 }}

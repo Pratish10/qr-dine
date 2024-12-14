@@ -49,12 +49,11 @@ export const RegisterForm = (): JSX.Element => {
 
 	return (
 		<AuthCard
-			isSocialbutton
-			headerLabel='Register'
-			cardTitle='Food Ordering System'
-			backButtonLabel='Already have an account?'
+			isSocialButton
+			headerLabel='Create an Account'
+			backButtonLabel='Already have an account? Login'
 			backButtonTo={APP_PATHS.LOGIN}
-			HomeLabel='Back To Home'
+			HomeLabel='Back to Home'
 			toHome={APP_PATHS.HOME}
 		>
 			<Form {...form}>

@@ -74,12 +74,11 @@ export const LoginForm = (): JSX.Element => {
 
 	return (
 		<AuthCard
-			isSocialbutton
-			headerLabel='Login'
-			cardTitle='Food Ordering System'
-			backButtonLabel="Didn't have an account?"
+			isSocialButton
+			headerLabel='Login to QR Dine'
+			backButtonLabel="Don't have an account? Register"
 			backButtonTo={APP_PATHS.REGISTER}
-			HomeLabel='Back To Home'
+			HomeLabel='Back to Home'
 			toHome={APP_PATHS.HOME}
 		>
 			<Form {...form}>
