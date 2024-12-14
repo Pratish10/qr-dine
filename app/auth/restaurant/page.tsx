@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client';
 import { RestaurantForm } from '@/components/auth/restaurant-form';
 import { getRandomQuote } from '@/utils/quotes';
