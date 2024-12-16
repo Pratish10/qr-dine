@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client';
 
 import { motion } from 'framer-motion';
@@ -10,14 +11,25 @@ import { useRecoilValue } from 'recoil';
 import { planTypes } from '@prisma/client';
 import { createSubscription } from '@/actions/stripe/createSubscription';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import APP_PATHS from '@/config/path.config';
 
 export function PricingSection(): JSX.Element {
+	const router = useRouter();
 	const planData = useRecoilValue(plans);
 	const { data } = useSession();
 	const handleSubscription = async (planType: planTypes): Promise<void> => {
 		await createSubscription(planType).catch((err: any) => {
 			toast.error(err.message as string);
 		});
+	};
+
+	const onSubscribeClick = (planType: planTypes): void => {
+		if (data) {
+			void handleSubscription(planType);
+		} else {
+			router.push(APP_PATHS.REGISTER);
+		}
 	};
 
 	const filteredPlanData = planData.filter((item) => item.type !== planTypes.free);
@@ -92,7 +104,7 @@ export function PricingSection(): JSX.Element {
 										variant='default'
 										className='w-full bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white'
 										onClick={() => {
-											void handleSubscription(plan.type);
+											onSubscribeClick(plan.type);
 										}}
 										disabled={data?.user?.plan === plan.type}
 									>

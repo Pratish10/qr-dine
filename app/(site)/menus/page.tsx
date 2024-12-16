@@ -21,6 +21,7 @@ import { canAddMenu } from '@/utils/permissions';
 import { TableLoader } from '@/components/table-loader';
 import { useCategoryController } from '@/hooks/use-category-controller';
 import { menuList, menuStatus } from '@/recoil/menus/atom';
+import { MenuHeaderContent } from '@/components/Menus/MenuHeader';
 
 const Menus = (): JSX.Element => {
 	const user = useCurrentUser();
@@ -65,54 +66,7 @@ const Menus = (): JSX.Element => {
 		>
 			<Card className='p-1 dark:bg-gray-900'>
 				<CardHeader>
-					{!user ||
-						(!canAddMenu(user, menus) && (
-							<Alert variant='destructive' className='border-red-600 bg-red-100 z-[99] mb-4'>
-								<AlertCircle className='h-4 w-4 mr-2' />
-								<div>
-									<AlertTitle>Upgrade Required</AlertTitle>
-									<AlertDescription>
-										You’ve reached the limit of your current plan. To add more menus and unlock additional features, please{' '}
-										<Link href={`${APP_PATHS.HOME}#pricing`} className='hover:underline cursor-pointer'>
-											<strong>subscribe</strong>
-										</Link>
-										.
-									</AlertDescription>
-								</div>
-							</Alert>
-						))}
-
-					<div className='flex flex-col sm:flex-row sm:justify-between sm:items-center'>
-						<div>
-							<CardTitle>Menus</CardTitle>
-							<CardDescription>Manage your menus</CardDescription>
-						</div>
-						<div className='flec items-center space-x-3'>
-							<Button
-								variant='green'
-								className='mt-2 sm:mt-0 sm:ml-auto'
-								size='sm'
-								onClick={() => {
-									onSheetOpen(undefined);
-								}}
-								disabled={!user || !canAddMenu(user, menus)}
-							>
-								<PlusCircle className='mr-2' size={20} />
-								Add Menu
-							</Button>
-							<Button
-								variant='green'
-								className='mt-2 sm:mt-0 sm:ml-auto'
-								size='sm'
-								onClick={() => {
-									onCategoryOpen(undefined);
-								}}
-							>
-								<PlusCircle className='mr-2' size={20} />
-								Add Category
-							</Button>
-						</div>
-					</div>
+					<MenuHeaderContent menus={menus} />
 				</CardHeader>
 				<CardContent>
 					{catStatus === 'loading' || menStatus === 'loading' ? (
