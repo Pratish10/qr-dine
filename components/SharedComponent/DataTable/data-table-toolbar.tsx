@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { type Table } from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DataTableFacetedFilter } from './data-table-faced-filter';
 import { X } from 'lucide-react';
@@ -15,36 +15,29 @@ interface DataTableToolbarProps<TData> {
 }
 
 export function DataTableToolbar<TData>({ table, searchKey, facedFilterKey, options }: DataTableToolbarProps<TData>): JSX.Element {
-	const { columnFilters } = table.getState();
-	const isFiltered = columnFilters.length > 0;
+	const isFiltered = table.getState().columnFilters.length > 0;
 
 	return (
-		<div className='flex items-center justify-between'>
-			<div className='flex flex-1 items-center space-x-2'>
-				<Input
-					placeholder={`Search ${_.capitalize(searchKey)}...`}
-					value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ''}
-					onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
-					className='h-8 w-[150px] lg:w-[250px]'
-				/>
-				{table.getColumn(facedFilterKey) != null && (
-					<DataTableFacetedFilter column={table.getColumn(facedFilterKey)} title={_.capitalize(facedFilterKey)} options={options} />
-				)}
-
-				{isFiltered && (
-					<Button
-						size='sm'
-						variant='ghost'
-						onClick={() => {
-							table.resetColumnFilters();
-						}}
-						className='h-8 px-2 lg:px-3'
-					>
-						Reset
-						<X className='ml-2 h-4 w-4' />
-					</Button>
-				)}
-			</div>
+		<div className='flex flex-col sm:flex-row gap-4 items-center py-4'>
+			<Input
+				placeholder={`Search ${_.capitalize(searchKey)}...`}
+				value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ''}
+				onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
+				className='max-w-sm'
+			/>
+			<DataTableFacetedFilter column={table.getColumn(facedFilterKey)} options={options} title={_.capitalize(facedFilterKey)} />
+			{isFiltered && (
+				<Button
+					variant='ghost'
+					onClick={() => {
+						table.resetColumnFilters();
+					}}
+					className='h-8 px-2 lg:px-3'
+				>
+					Reset
+					<X className='ml-2 h-4 w-4' />
+				</Button>
+			)}
 		</div>
 	);
 }

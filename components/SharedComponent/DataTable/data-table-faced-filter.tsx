@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+'use client';
+
+import { type Column } from '@tanstack/react-table';
+import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
-import { CheckIcon } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { type Column } from '@tanstack/react-table';
-import React from 'react';
+import { CheckIcon, PlusCircleIcon } from 'lucide-react';
 
 interface DataTableFacetedFilterProps<TData, TValue> {
 	column?: Column<TData, TValue>;
@@ -26,9 +27,10 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 		<Popover>
 			<PopoverTrigger asChild>
 				<Button variant='outline' size='sm' className='h-8 border-dashed'>
+					<PlusCircleIcon className='mr-2 h-4 w-4' />
 					{title}
 					{selectedValues?.size > 0 && (
-						<React.Fragment>
+						<>
 							<Badge variant='secondary' className='rounded-sm px-1 font-normal lg:hidden'>
 								{selectedValues.size}
 							</Badge>
@@ -47,7 +49,7 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 										))
 								)}
 							</div>
-						</React.Fragment>
+						</>
 					)}
 				</Button>
 			</PopoverTrigger>
@@ -56,16 +58,6 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 					<CommandInput placeholder={title} />
 					<CommandList>
 						<CommandEmpty>No results found.</CommandEmpty>
-						{selectedValues.size > 0 && (
-							<React.Fragment>
-								<CommandSeparator />
-								<CommandGroup>
-									<CommandItem onSelect={() => column?.setFilterValue(undefined)} className='justify-center text-center'>
-										Clear filters
-									</CommandItem>
-								</CommandGroup>
-							</React.Fragment>
-						)}
 						<CommandGroup>
 							{options.map((option) => {
 								const isSelected = selectedValues.has(option.value);
@@ -100,6 +92,16 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, options }
 								);
 							})}
 						</CommandGroup>
+						{selectedValues.size > 0 && (
+							<>
+								<CommandSeparator />
+								<CommandGroup>
+									<CommandItem onSelect={() => column?.setFilterValue(undefined)} className='justify-center text-center'>
+										Clear filters
+									</CommandItem>
+								</CommandGroup>
+							</>
+						)}
 					</CommandList>
 				</Command>
 			</PopoverContent>

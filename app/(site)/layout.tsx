@@ -14,7 +14,7 @@ export default async function DashboardLayout({
 	const user = await getCurrentUser();
 
 	return (
-		<div className='h-screen'>
+		<div className='h-screen dark:bg-slat-900'>
 			<PlanLayout>
 				<Navbar />
 				<div className='pt-14'>

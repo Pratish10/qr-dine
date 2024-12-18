@@ -40,6 +40,19 @@ export const TableColumn: Array<ColumnDef<Table>> = [
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title='Table ID' />;
 		},
+		cell: ({ row }) => {
+			const { onOpen } = useTableSheetController();
+			return (
+				<p
+					className='hover:underline cursor-pointer'
+					onClick={() => {
+						onOpen(row.original);
+					}}
+				>
+					{row.original.tableId}
+				</p>
+			);
+		},
 	},
 	{
 		accessorKey: 'tableNumber',

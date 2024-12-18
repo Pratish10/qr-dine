@@ -3,7 +3,7 @@
 import { type ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { Carrot, Drumstick, Group, MoreHorizontal, Sandwich } from 'lucide-react';
+import { Carrot, CheckCircle2, Drumstick, Edit, Group, MoreHorizontal, XCircle } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { DataTableColumnHeader } from '@/components/SharedComponent/DataTable/data-table-column-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -59,6 +59,19 @@ export const MenuColumn: Array<ColumnDef<Menu>> = [
 		accessorKey: 'menuId',
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title='Menu Id' />;
+		},
+		cell: ({ row }) => {
+			const { onOpen: onSheetOpen } = useMenuSheetController();
+			return (
+				<p
+					className='hover:underline cursor-pointer'
+					onClick={() => {
+						onSheetOpen(row.original);
+					}}
+				>
+					{row.original.menuId}
+				</p>
+			);
 		},
 	},
 	{
@@ -119,12 +132,19 @@ export const MenuColumn: Array<ColumnDef<Menu>> = [
 		cell: ({ row }) => {
 			const Availability = row.original.availability;
 			return (
-				<Badge
-					variant='outline'
-					className={`rounded-full font-thin text-xs ${Availability === 'Available' ? 'dark:bg-green-600 bg-green-400' : 'dark:bg-red-600 bg-red-400'}`}
-				>
-					{Availability}
-				</Badge>
+				<>
+					{Availability === 'Available' ? (
+						<Badge className='text-xs text-green-600 bg-green-100 dark:text-green-600 dark:bg-green-300 hover:text-green-600 hover:bg-green-100 rounded-full p-1'>
+							<CheckCircle2 className='w-3 h-3 mr-1' />
+							Available
+						</Badge>
+					) : (
+						<Badge className='text-xs text-red-600 bg-red-100 dark:text-red-600 dark:bg-red-300 hover:text-red-600 hover:bg-red-100 rounded-full p-1'>
+							<XCircle className='w-3 h-3 mr-1' />
+							Not Available
+						</Badge>
+					)}
+				</>
 			);
 		},
 	},
@@ -185,7 +205,7 @@ export const MenuColumn: Array<ColumnDef<Menu>> = [
 								onSheetOpen(row.original);
 							}}
 						>
-							<Sandwich size={20} className='mr-3' />
+							<Edit size={20} className='mr-3' />
 							Edit Menu
 						</DropdownMenuItem>
 						<DropdownMenuItem

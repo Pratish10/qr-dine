@@ -9,7 +9,7 @@ import { useDeleteTables } from '@/hooks/tables/use-delete-tables';
 import { motion } from 'framer-motion';
 import { TableLoader } from '@/components/table-loader';
 import { tableList, tableStatus } from '@/recoil/tables/atom';
-import { TableHeader } from '@/components/ui/table';
+import { TableHeader } from '@/components/Tables/TableHeader';
 
 const options = [
 	{ label: TableStatus.Vacant, value: TableStatus.Vacant },
