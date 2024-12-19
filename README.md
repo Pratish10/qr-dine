@@ -106,7 +106,15 @@ yarn install
 npx prisma migrate dev
 ```
 
-6. Start the development server:
+6. Set up the backend (Admin Application):
+
+Since the client application fetches menu and table data from the admin backend, you need to run the admin application locally.
+
+Follow the instructions from the [Admin Application README](https://github.com/Pratish10/qr-dine?tab=readme-ov-file#readme) to run the admin
+application locally. Ensure the admin application is running at http://localhost:3000 (or update the .env file in the client app if it's running on a
+different port).
+
+7. Start the development server:
 
 ```bash
 yarn dev
