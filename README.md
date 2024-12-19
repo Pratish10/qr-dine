@@ -1,39 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QR Dine
 
-## Getting Started
+## Overview
 
-First, run the development server:
+**QR Dine** is a SaaS-based platform that revolutionizes the restaurant dining experience by allowing customers to scan a unique QR code placed on
+each table to view the menu, place orders, and interact with the restaurant directly from their mobile devices. Restaurant owners can manage multiple
+branches, tables, menus, and categories through the admin portal, while customers can seamlessly place orders via the client portal.
+
+This platform provides a digital solution to streamline ordering and reduce waiting times, enhancing the overall customer dining experience.
+
+## Features
+
+### For Restaurant Owners
+
+- **Multi-Branch Support**: Register and manage multiple restaurant branches.
+- **Menu Management**: Add and manage menus, food categories, and items.
+- **Table Management**: Create and manage tables with unique QR codes.
+- **Order Management**: View incoming orders and manage them from the admin portal.
+- **Subscription Plans**: Choose between Free (default), Starter, and Pro versions for more features.
+
+### For Customers
+
+- **QR Code Scanning**: Scan a unique QR code at the table to access the restaurant’s menu.
+- **Easy Ordering**: Browse the menu and place orders directly from the customer’s device.
+- **No Wait Staff Needed**: Order without needing to call a waiter, enhancing convenience and reducing wait times.
+
+## Subscription Plans
+
+### 1. **Free (Default) Version**:
+
+- Basic features for restaurants with limited menus and tables.
+- One branch per restaurant.
+- Limited order management features.
+
+### 2. **Starter Version**:
+
+- Unlock additional features such as more branches and basic analytics.
+- Support for more menus and tables.
+- Monthly subscription.
+
+### 3. **Pro Version**:
+
+- Full access to all features including advanced order management, reporting, and analytics.
+- Multiple branches per restaurant.
+- Priority customer support.
+- Monthly subscription.
+
+## How It Works
+
+### For Customers:
+
+1. **Scan the QR Code**: Scan the unique QR code placed on the table.
+2. **View the Menu**: Browse through the restaurant’s menu and select the items you want to order.
+3. **Place Your Order**: Add items to the cart and submit your order directly from your device.
+4. **Order Confirmation**: The restaurant receives the order in real-time via the admin portal.
+
+### For Restaurant Owners:
+
+1. **Register Your Restaurant**: Create an account and register your restaurant(s).
+2. **Add Branches**: Register and manage multiple restaurant branches.
+3. **Create Menus**: Set up menus with categories (e.g., appetizers, main courses, desserts).
+4. **Assign Tables and QR Codes**: Manage tables and generate unique QR codes for each.
+5. **Receive Orders**: View and manage orders as they come in from customers.
+
+## Installation
+
+### Prerequisites
+
+- **Node.js** (for Next.js application)
+- **Prisma** (for database management)
+- **Stripe** (for handling payments)
+- **Google/Facebook Authentication** (optional for login)
+
+## Running Locally
+
+> [!NOTE]  
+> This project uses [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) only as a package manager.
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Pratish10/qr-dine.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navigate to the project directory:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd qr-dine
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load
-[Geist](https://vercel.com/font), a new font family for Vercel.
+3. Create a .env file:
 
-## Learn More
+```bash
+Copy `.env.example` and rename it to `.env`.
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Install dependencies:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+yarn install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. Set up Prisma and run the database migrations:
 
-## Deploy on Vercel
+```bash
+npx prisma migrate dev
+```
 
-The easiest way to deploy your Next.js app is to use the
-[Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
-from the creators of Next.js.
+6. Start the development server:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+yarn dev
+```
