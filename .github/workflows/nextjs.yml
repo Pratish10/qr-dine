@@ -18,9 +18,6 @@ jobs:
                   echo "Setting up Node.js"
                   npm i -g yarn
 
-            - name: Clean up dependencies
-              run: rm -rf node_modules yarn.lock
-
             - name: Install dependencies
               run: yarn install
 
