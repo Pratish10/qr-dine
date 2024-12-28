@@ -39,7 +39,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 				tableId: session?.metadata?.tableId,
 			},
 			data: {
-				tableStatus: 'Vacant',
+				tableStatus: 'Occupied',
 			},
 		});
 	}
