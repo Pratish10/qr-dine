@@ -10,7 +10,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import type Stripe from 'stripe';
 
 const corsHeaders = {
-	'Access-Control-Allow-Origin': 'http://localhost:3001',
+	'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_CLIENT_URL ?? '',
 	'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
 	'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
