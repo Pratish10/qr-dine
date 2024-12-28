@@ -15,7 +15,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 
 	let event;
 	try {
-		event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_KEY ?? '');
+		event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_KEY_SUBSCRIPTION ?? '');
 	} catch (err: any) {
 		throw new ErrorHandler(`Webhook Error: ${err.message as string}`, 'INTERNAL_SERVER_ERROR');
 	}

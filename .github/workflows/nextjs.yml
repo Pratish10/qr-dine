@@ -39,7 +39,8 @@ jobs:
                   echo "EDGE_STORE_SECRET_KEY=${{ secrets.EDGE_STORE_SECRET_KEY }}" >> $GITHUB_ENV
                   echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}" >> $GITHUB_ENV
                   echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> $GITHUB_ENV
-                  echo "STRIPE_WEBHOOK_KEY=${{ secrets.STRIPE_WEBHOOK_KEY }}" >> $GITHUB_ENV
+                  echo "STRIPE_WEBHOOK_KEY_PRODUCT=${{ secrets.STRIPE_WEBHOOK_KEY_PRODUCT }}" >> $GITHUB_ENV
+                  echo "STRIPE_WEBHOOK_KEY_SUBSCRIPTION=${{ secrets.STRIPE_WEBHOOK_KEY_SUBSCRIPTION }}" >> $GITHUB_ENV
                   echo "SRTIPE_STARTER_SUBCRIPTION=${{ secrets.SRTIPE_STARTER_SUBCRIPTION }}" >> $GITHUB_ENV
                   echo "SRTIPE_PRO_SUBCRIPTION=${{ secrets.SRTIPE_PRO_SUBCRIPTION }}" >> $GITHUB_ENV
 

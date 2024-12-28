@@ -11,7 +11,7 @@ interface DataTableToolbarProps<TData> {
 	table: Table<TData>;
 	searchKey: string;
 	facedFilterKey: string;
-	options: Array<{ label: string; value: string }>;
+	options?: Array<{ label: string; value: string }>;
 }
 
 export function DataTableToolbar<TData>({ table, searchKey, facedFilterKey, options }: DataTableToolbarProps<TData>): JSX.Element {
@@ -25,7 +25,10 @@ export function DataTableToolbar<TData>({ table, searchKey, facedFilterKey, opti
 				onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
 				className='max-w-sm'
 			/>
-			<DataTableFacetedFilter column={table.getColumn(facedFilterKey)} options={options} title={_.capitalize(facedFilterKey)} />
+			{Array.isArray(options) && (
+				<DataTableFacetedFilter column={table.getColumn(facedFilterKey)} options={options} title={_.capitalize(facedFilterKey)} />
+			)}
+
 			{isFiltered && (
 				<Button
 					variant='ghost'

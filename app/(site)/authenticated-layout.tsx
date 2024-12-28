@@ -3,6 +3,7 @@
 import APP_PATHS from '@/config/path.config';
 import { useGetCategories } from '@/hooks/categories/use-get-category';
 import { useGetMenus } from '@/hooks/menus/use-get-menus';
+import { useGetOrders } from '@/hooks/orders/use-get-orders';
 import { useGetRestaurants } from '@/hooks/restaurants/use-get-restaurants';
 import { useGetTables } from '@/hooks/tables/use-get-table';
 import { restaurant, restaurantList } from '@/recoil/restaurant/atom';
@@ -33,6 +34,7 @@ const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps): JSX.Elemen
 	useGetMenus(id ?? '');
 	useGetCategories(id ?? '');
 	useGetTables(id ?? '');
+	useGetOrders(id ?? '');
 
 	useEffect(() => {
 		if (isRestaurantsSuccess && restaurantData?.length === 0) {

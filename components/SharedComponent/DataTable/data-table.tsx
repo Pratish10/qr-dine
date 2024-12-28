@@ -30,10 +30,10 @@ interface DataTableProps<TData, TValue> {
 	columns: Array<ColumnDef<TData, TValue>>;
 	data: TData[];
 	searchKey: string;
-	facedFilterKey: string;
+	facedFilterKey?: string;
 	disabled?: boolean;
-	onDelete: (rows: Array<Row<TData>>) => void;
-	options: Array<{ label: string; value: string }>;
+	onDelete?: (rows: Array<Row<TData>>) => void;
+	options?: Array<{ label: string; value: string }>;
 }
 
 export function DataTable<TData, TValue>({
@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
 		>
 			<ConfirmationDialog />
 			<div className='flex flex-col sm:flex-row items-center justify-between gap-4'>
-				<DataTableToolbar table={table} searchKey={searchKey} facedFilterKey={facedFilterKey} options={options} />
+				<DataTableToolbar table={table} searchKey={searchKey} facedFilterKey={facedFilterKey ?? ''} options={options} />
 				<AnimatePresence>
 					{table.getFilteredSelectedRowModel().rows.length > 0 && (
 						<motion.div
@@ -94,7 +94,7 @@ export function DataTable<TData, TValue>({
 								// eslint-disable-next-line @typescript-eslint/no-misused-promises
 								onClick={async () => {
 									const ok = await confirm();
-									if (ok) {
+									if (ok && onDelete) {
 										onDelete(table.getSelectedRowModel().rows);
 										table.resetRowSelection();
 									}

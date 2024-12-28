@@ -223,4 +223,36 @@ model Customer {
   email     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Order {
+  id           String    @id @default(cuid())
+  restaurantId String
+  isPaid       Boolean   @default(false)
+  orderNumber  String    @unique
+  orderDate    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  tableId      String?
+  customer     Customer? @relation(fields: [customerId], references: [id])
+  customerId   String?
+
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id         String @id @default(cuid())
+  orderId    String
+  menuId     String
+  quantity   Int
+  unitPrice  Float
+  totalPrice Float
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model OrderCount {
+  id    String @id @default(cuid())
+  date  String @unique
+  count Int
 }
