@@ -63,6 +63,7 @@
 		"tailwindcss-animate": "^1.0.7",
 		"uuid": "^10.0.0",
 		"vaul": "^1.0.0",
+		"ws": "^8.18.0",
 		"zod": "^3.23.8",
 		"zod-error": "^1.5.0",
 		"zustand": "^5.0.0"
@@ -76,6 +77,7 @@
 		"@types/react": "^18.3.11",
 		"@types/react-dom": "^18.3.0",
 		"@types/uuid": "^10.0.0",
+		"@types/ws": "^8.5.13",
 		"@typescript-eslint/eslint-plugin": "^6.4.0",
 		"eslint": "^8.57.1",
 		"eslint-config-next": "14.2.14",

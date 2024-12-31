@@ -9,8 +9,8 @@ const es = initEdgeStore.create();
 const edgeStoreRouter = es.router({
 	publicFiles: es
 		.fileBucket({
-			maxSize: 1024 * 1024,
-			accept: ['image/jpeg', 'image/png'],
+			maxSize: 5 * 1024 * 1024,
+			accept: ['image/jpeg', 'image/png', 'image/webp'],
 		})
 		.beforeDelete(() => {
 			return true;

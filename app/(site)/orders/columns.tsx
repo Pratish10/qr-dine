@@ -16,6 +16,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ExtendedOrder } from '@/types/data.types';
 import { ExpandedOrderItems } from './ExpandedOrderItems';
 import { AnimatePresence, motion } from 'framer-motion';
+import { DataTableColumnHeader } from '@/components/SharedComponent/DataTable/data-table-column-header';
 
 export const OrderColumn: ColumnDef<ExtendedOrder>[] = [
 	{
@@ -73,18 +74,15 @@ export const OrderColumn: ColumnDef<ExtendedOrder>[] = [
 	},
 	{
 		accessorKey: 'orderNumber',
-		header: 'Order Number',
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title='Order Number' />;
+		},
 		cell: ({ row }) => <div className='font-medium'>{row.getValue('orderNumber')}</div>,
 	},
 	{
 		accessorKey: 'orderDate',
 		header: ({ column }) => {
-			return (
-				<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-					Order Date
-					<ArrowUpDown className='ml-2 h-4 w-4' />
-				</Button>
-			);
+			return <DataTableColumnHeader column={column} title='Order Date' />;
 		},
 		cell: ({ row }) => {
 			const updatedAt: Date | undefined = row.original.updatedAt;
@@ -107,12 +105,7 @@ export const OrderColumn: ColumnDef<ExtendedOrder>[] = [
 	{
 		accessorKey: 'name',
 		header: ({ column }) => {
-			return (
-				<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-					Customer
-					<ArrowUpDown className='ml-2 h-4 w-4' />
-				</Button>
-			);
+			return <DataTableColumnHeader column={column} title='Customer Name' />;
 		},
 		cell: ({ row }) => {
 			return <div className='md:text-sm text-xs'>{row.original.customer?.name}</div>;
@@ -120,18 +113,15 @@ export const OrderColumn: ColumnDef<ExtendedOrder>[] = [
 	},
 	{
 		accessorKey: 'tableId',
-		header: 'Table',
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title='Table Id' />;
+		},
 		cell: ({ row }) => <div>{row.getValue('tableId') || 'Takeaway'}</div>,
 	},
 	{
 		accessorKey: 'totalAmount',
 		header: ({ column }) => {
-			return (
-				<Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-					Total Amount
-					<ArrowUpDown className='ml-2 h-4 w-4' />
-				</Button>
-			);
+			return <DataTableColumnHeader column={column} title='Total Amount' />;
 		},
 		cell: ({ row }) => {
 			const totalAmount = row.original.orderItems?.reduce((sum, item) => sum + item.totalPrice, 0) ?? 0;
@@ -142,6 +132,17 @@ export const OrderColumn: ColumnDef<ExtendedOrder>[] = [
 			}).format(totalAmount / 100);
 
 			return <div className='font-medium'>{formatted}</div>;
+		},
+	},
+	{
+		accessorKey: 'Paid',
+		header: () => {
+			return <Button variant='ghost'>Paid</Button>;
+		},
+		cell: ({ row }) => {
+			const paid = row.original.isPaid;
+
+			return <div className='font-medium'>{paid ? 'Yes' : 'No'}</div>;
 		},
 	},
 	{
