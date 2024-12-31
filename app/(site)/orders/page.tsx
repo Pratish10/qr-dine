@@ -29,8 +29,8 @@ const Orders = () => {
 				<CardHeader>
 					<div className='flex flex-col sm:flex-row sm:justify-between sm:items-center'>
 						<div>
-							<CardTitle>Menus</CardTitle>
-							<CardDescription>Manage your menus</CardDescription>
+							<CardTitle>Orders</CardTitle>
+							<CardDescription>Manage your orders</CardDescription>
 						</div>
 						<div className='flec items-center space-x-3'>
 							<Button variant='green' className='mt-2 sm:mt-0 sm:ml-auto' size='sm' onClick={() => refetch()}>

@@ -7,6 +7,7 @@ import { getTwoFactorConfirmationByUserId } from './lib/auth/two-factor-confirma
 import { type planTypes } from '@prisma/client';
 import APP_PATHS from './config/path.config';
 import { PrismaAdapter } from '@auth/prisma-adapter';
+import { type Adapter } from 'next-auth/adapters';
 
 export const {
 	handlers: { GET, POST },
@@ -14,7 +15,7 @@ export const {
 	signIn,
 	signOut,
 } = NextAuth({
-	adapter: PrismaAdapter(prisma),
+	adapter: PrismaAdapter(prisma) as Adapter,
 	pages: {
 		signIn: APP_PATHS.LOGIN,
 	},
