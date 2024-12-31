@@ -2,7 +2,7 @@
 import { RestaurantSchema } from '@/schemas/schema';
 import { type RestaurantSchemaType } from '@/schemas/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useTransition } from 'react';
+import React, { useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
@@ -35,10 +35,16 @@ export const RestaurantForm = (): JSX.Element => {
 			country: '',
 			state: '',
 			userId: data?.user?.id ?? undefined,
-			upiID: '',
 			clientName: '',
 		},
 	});
+
+	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+		if (data?.user?.id) {
+			form.setValue('userId', data.user.id);
+		}
+	}, [data?.user?.id, form]);
 
 	const submitHandler = (values: RestaurantSchemaType): void => {
 		startTransition(() => {
@@ -110,24 +116,14 @@ export const RestaurantForm = (): JSX.Element => {
 						</FormItem>
 					)}
 				/>
-				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-					<FormInputField<RestaurantSchemaType>
-						name='clientName'
-						label='Name'
-						placeholder='Enter your name'
-						control={form.control}
-						disabled={isPending}
-						type='text'
-					/>
-					<FormInputField<RestaurantSchemaType>
-						name='upiID'
-						label='UPI ID'
-						placeholder='Enter your upi id'
-						control={form.control}
-						disabled={isPending}
-						type='text'
-					/>
-				</div>
+				<FormInputField<RestaurantSchemaType>
+					name='clientName'
+					label='Name'
+					placeholder='Enter your name'
+					control={form.control}
+					disabled={isPending}
+					type='text'
+				/>
 				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
 					<FormInputField<RestaurantSchemaType>
 						name='pinCode'

@@ -18,7 +18,7 @@ const Restaurant = (): JSX.Element => {
 			>
 				<Image src='/restaurant.jpg' sizes='100vw' fill alt='Restaurant' className='absolute inset-0 w-full h-full object-cover z-10' />
 
-				<div className='relative z-20 flex flex-col justify-end h-full p-6 lg:p-10 bg-gradient-to-t from-black to-transparent'>
+				<div className='relative z-20 flex flex-col justify-end h-full p-6 lg:p-10 bg-gradient-to-t from-black to-transparent mb-14'>
 					<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.5 }}>
 						<blockquote className='space-y-2'>
 							<p className='text-sm lg:text-lg text-white dark:text-slate-400 font-semibold italic'>&ldquo;{quote.quote}&rdquo;</p>

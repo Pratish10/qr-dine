@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowRight, Smartphone } from 'lucide-react';
+import { ArrowRight, QrCode } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import APP_PATHS from '@/config/path.config';
 
@@ -99,9 +99,10 @@ export function HeroSection(): JSX.Element {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.8, ease: 'easeOut', delay: 0.4 }}
 						>
-							<div className='relative mx-auto w-[366px] h-[366px] rounded-full bg-white dark:bg-gray-800 shadow-xl ring-1 ring-gray-900/5 dark:ring-white/10'>
+							<div className='relative mx-auto w-[350px] h-[350px] rounded-full bg-white dark:bg-gray-800 shadow-xl ring-1 ring-gray-900/5 dark:ring-white/10'>
 								<div className='absolute inset-0 flex items-center justify-center'>
-									<Smartphone className='h-32 w-32 text-green-600 dark:text-green-400' />
+									{/* <Image src='/public/qr-dine 2.webp' alt='qr-dine' width={500} height={500} /> */}
+									<QrCode className='h-32 w-32 text-green-600 dark:text-green-400' />
 								</div>
 							</div>
 						</motion.div>

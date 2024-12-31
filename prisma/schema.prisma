@@ -99,7 +99,6 @@ model Restaurant {
   city    String
   state   String
   country String
-  upiId   String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

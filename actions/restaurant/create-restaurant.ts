@@ -21,7 +21,7 @@ export const createRestaurant = withServerActionAsyncCatcher<RestaurantSchemaTyp
 		throw new ErrorHandler('Invalid Fields!', 'BAD_REQUEST');
 	}
 
-	const { fullName, branchName, userId, address, city, country, pinCode, state, clientName, upiID } = validatedFields.data;
+	const { fullName, branchName, userId, address, city, country, pinCode, state, clientName } = validatedFields.data;
 
 	const existingUser = await getUserById(userId);
 
@@ -73,7 +73,6 @@ export const createRestaurant = withServerActionAsyncCatcher<RestaurantSchemaTyp
 				country,
 				pinCode,
 				ClientName: clientName,
-				upiId: upiID,
 				user: {
 					connect: { id: userId },
 				},

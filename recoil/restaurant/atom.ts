@@ -20,7 +20,7 @@ export const restaurant = atom<RestaurantType>({
 
 export const restaurantList = atom<RestaurantType[] | null>({
 	key: 'restaurantList',
-	default: null,
+	default: [],
 });
 
 export const restaurantStatus = atom<RequestStatus>({
