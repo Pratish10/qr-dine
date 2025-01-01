@@ -5,7 +5,7 @@ interface MenuPopularityChartProps {
 	data: Array<{ name: string; popularity: number; averagePrice: number }>;
 }
 
-export function MenuPopularityChart({ data }: MenuPopularityChartProps) {
+export function MenuPopularityChart({ data }: MenuPopularityChartProps): JSX.Element {
 	return (
 		<Card>
 			<CardHeader>

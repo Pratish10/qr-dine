@@ -6,7 +6,7 @@ interface RestaurantListProps {
 	data: Array<{ id: number; name: string; location: string; rating: number }>;
 }
 
-export function RestaurantList({ data }: RestaurantListProps) {
+export function RestaurantList({ data }: RestaurantListProps): JSX.Element {
 	return (
 		<Card>
 			<CardHeader>
