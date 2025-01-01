@@ -2,6 +2,8 @@
 
 import APP_PATHS from '@/config/path.config';
 import { useGetCategories } from '@/hooks/categories/use-get-category';
+import { useGetDailyEarning } from '@/hooks/dailyEarning/use-get-dailyEarning';
+import { useGetEarnings } from '@/hooks/earnings/use-get-earnings';
 import { useGetMenus } from '@/hooks/menus/use-get-menus';
 import { useGetOrders } from '@/hooks/orders/use-get-orders';
 import { useGetRestaurants } from '@/hooks/restaurants/use-get-restaurants';
@@ -31,10 +33,12 @@ const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps): JSX.Elemen
 		}
 	}, [isRestaurantsSuccess, restaurantData, router]);
 
+	useGetEarnings(id ?? '');
 	useGetMenus(id ?? '');
 	useGetCategories(id ?? '');
 	useGetTables(id ?? '');
 	useGetOrders(id ?? '');
+	useGetDailyEarning(id ?? '');
 
 	useEffect(() => {
 		if (isRestaurantsSuccess && restaurantData?.length === 0) {

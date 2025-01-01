@@ -21,3 +21,9 @@ export interface ExtendedOrder extends Order {
 	customer?: Customer;
 	orderItems?: OrderItem[];
 }
+
+export interface EarningsData {
+	daily: Array<{ day: string; amount: number }>;
+	weekly: Array<{ day: string; amount: number }>;
+	monthly: Array<{ month: string; amount: number }>;
+}

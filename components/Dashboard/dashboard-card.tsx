@@ -1,12 +1,14 @@
 'use client';
 
+import { type RequestStatus } from '@/types/api.types';
 import { motion } from 'framer-motion';
-import { School, SquareMenu, Sofa, Boxes } from 'lucide-react';
+import { DollarSign, School, Boxes, SquareMenu, Sofa, Loader2 } from 'lucide-react';
 
 interface DashboardCardProps {
 	title: string;
 	content: string | number;
-	icon: 'restaurant' | 'menu' | 'table' | 'category';
+	icon: 'dollar' | 'table' | 'category' | 'menu' | 'restaurant';
+	loader?: RequestStatus;
 }
 
 const cardVariants = {
@@ -14,15 +16,16 @@ const cardVariants = {
 	visible: { opacity: 1, y: 0 },
 };
 
-const iconComponents = {
-	restaurant: School,
-	menu: SquareMenu,
+const iconMap = {
+	dollar: DollarSign,
 	table: Sofa,
 	category: Boxes,
+	menu: SquareMenu,
+	restaurant: School,
 };
 
-export function DashboardCard({ title, content, icon }: DashboardCardProps): JSX.Element {
-	const IconComponent = iconComponents[icon];
+export function DashboardCard({ title, content, icon, loader }: DashboardCardProps): JSX.Element {
+	const IconComponent = iconMap[icon];
 
 	return (
 		<motion.div
@@ -37,7 +40,11 @@ export function DashboardCard({ title, content, icon }: DashboardCardProps): JSX
 			</div>
 			<div className='flex-1'>
 				<h2 className='text-sm font-medium text-gray-500 dark:text-gray-400'>{title}</h2>
-				<p className='text-2xl font-bold text-gray-900 dark:text-white'>{content}</p>
+				{loader === 'loading' ? (
+					<Loader2 className='h-6 w-6 animate-spin' />
+				) : (
+					<p className='text-2xl font-bold text-gray-900 dark:text-white'>{content}</p>
+				)}
 			</div>
 		</motion.div>
 	);
