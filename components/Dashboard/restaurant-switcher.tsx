@@ -9,13 +9,27 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { defaultRestaurant, restaurant, restaurantList } from '@/recoil/restaurant/atom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type RestaurantType } from '@/app/api/restaurant/route';
+import { useGetEarnings } from '@/hooks/earnings/use-get-earnings';
+import { useGetMenus } from '@/hooks/menus/use-get-menus';
+import { useGetCategories } from '@/hooks/categories/use-get-category';
+import { useGetTables } from '@/hooks/tables/use-get-table';
+import { useGetOrders } from '@/hooks/orders/use-get-orders';
+import { useGetDailyEarning } from '@/hooks/dailyEarning/use-get-dailyEarning';
 
 export function RestaurantSwitcher(): JSX.Element {
 	const restaurantData = useRecoilValue(restaurantList) ?? [];
 	const [open, setOpen] = useState(false);
 	const [res, setRes] = useRecoilState(restaurant);
+	const { id } = useRecoilValue(restaurant);
+
+	const { refetch: refetchEarnings } = useGetEarnings(id ?? '');
+	const { refetch: refetchMenus } = useGetMenus(id ?? '');
+	const { refetch: refetchCategories } = useGetCategories(id ?? '');
+	const { refetch: refetchTables } = useGetTables(id ?? '');
+	const { refetch: refetchOrders } = useGetOrders(id ?? '');
+	const { refetch: refetchDailyEarning } = useGetDailyEarning(id ?? '');
 
 	const onSelectRestaurant = (branchName: string): void => {
 		const restaurant = restaurantData.find((item: RestaurantType) => item.branchName === branchName);
@@ -25,9 +39,19 @@ export function RestaurantSwitcher(): JSX.Element {
 		} else {
 			setRes(defaultRestaurant);
 		}
-
 		setOpen(false);
 	};
+
+	useEffect(() => {
+		if (id) {
+			void refetchEarnings();
+			void refetchMenus();
+			void refetchCategories();
+			void refetchTables();
+			void refetchOrders();
+			void refetchDailyEarning();
+		}
+	}, [id]);
 
 	const restaurants = restaurantData?.map((item: RestaurantType) => ({ label: item.fullName, value: item.branchName })) ?? [];
 
