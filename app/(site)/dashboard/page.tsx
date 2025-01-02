@@ -74,11 +74,21 @@ const Dashboard = (): JSX.Element => {
 				<DashboardHeader greeting={greeting} userName={data?.user?.name ?? ''} />
 				{isLoading ? (
 					<>
-						<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+						<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6'>
 							<Skeleton className='h-20' />
 							<Skeleton className='h-20' />
 							<Skeleton className='h-20' />
 							<Skeleton className='h-20' />
+							<Skeleton className='h-20' />
+						</div>
+						<Skeleton className='h-80' />
+						<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+							<div className='w-full'>
+								<Skeleton className='h-72' />
+							</div>
+							<div className='w-full'>
+								<Skeleton className='h-72' />
+							</div>
 						</div>
 					</>
 				) : (
