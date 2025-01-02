@@ -111,3 +111,8 @@ npx prisma migrate dev
 ```bash
 yarn dev
 ```
+
+## UML Diagram
+Below is the UML Diagram of the project
+
+![prisma-uml](https://github.com/user-attachments/assets/68353458-dc16-4bfe-87db-d5e20a1f25eb)
