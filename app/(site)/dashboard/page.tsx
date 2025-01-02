@@ -94,7 +94,7 @@ const Dashboard = (): JSX.Element => {
 				) : (
 					<>
 						<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6'>
-							<DashboardCard title='Daily Earnings' content={dailyEarnings} icon='dollar' loader={dailyEarningsStat} />
+							<DashboardCard title="Today's Earning" content={dailyEarnings} icon='dollar' loader={dailyEarningsStat} />
 							<DashboardCard title='Total Tables' content={tables.length ?? 0} icon='table' loader={tabStatus} />
 							<DashboardCard title='Total Categories' content={categoryList.length ?? 0} icon='category' loader={catStatus} />
 							<DashboardCard title='Total Menus' content={menus.length ?? 0} icon='menu' loader={menStatus} />
