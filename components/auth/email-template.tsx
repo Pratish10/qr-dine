@@ -87,9 +87,9 @@ export const SendTwoFactorMailTemplate = ({ token }: { token: string }): string 
     </div>`;
 
 export const SendOrderReceipt = (order: CustomOrder): string => {
-	const { orderNumber, orderDate, customer, orderItems = [] } = order;
+	const { orderNumber, orderDate, orderItems = [] } = order;
 
-	const customerName = customer?.name != null || 'Guest';
+	const customerName = order.customer.name ?? 'Guest';
 	const totalAmount = orderItems.reduce((sum, item) => sum + item.totalPrice, 0);
 	const paymentStatus = order.isPaid;
 
