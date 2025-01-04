@@ -73,9 +73,6 @@ This platform provides a digital solution to streamline ordering and reduce wait
 
 ## Running Locally
 
-> [!NOTE]  
-> This project uses [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) only as a package manager.
-
 1. Clone the repository:
 
 ```bash
