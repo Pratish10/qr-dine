@@ -27,3 +27,33 @@ export interface EarningsData {
 	weekly: Array<{ day: string; amount: number }>;
 	monthly: Array<{ month: string; amount: number }>;
 }
+
+export interface CustomOrderItem {
+	id: string;
+	orderId: string;
+	menuId: string;
+	quantity: number;
+	unitPrice: number;
+	totalPrice: number;
+}
+
+export interface CustomCustomer {
+	id: string;
+	name: string;
+	email: string;
+	createdAt: Date;
+	updatedAt: Date;
+}
+
+export interface CustomOrder {
+	id: string;
+	restaurantId: string;
+	isPaid: boolean;
+	orderNumber: string;
+	orderDate: Date;
+	updatedAt: Date;
+	tableId: string;
+	customerId: string;
+	orderItems: OrderItem[];
+	customer: Customer;
+}

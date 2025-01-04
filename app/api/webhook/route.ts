@@ -1,5 +1,6 @@
 import prisma from '@/db';
 import { ErrorHandler } from '@/lib/error';
+import { sendOrdeReceipt } from '@/lib/mail';
 import { stripe } from '@/lib/stripe/stripe';
 import { SuccessResponse } from '@/lib/success';
 import { type ServerActionReturnType } from '@/types/api.types';
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 	const session = event.data.object as Stripe.Checkout.Session;
 
 	if (event.type === 'checkout.session.completed') {
-		await prisma.order.update({
+		const order = await prisma.order.update({
 			where: {
 				id: session?.metadata?.orderId,
 			},
@@ -31,6 +32,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 			},
 			include: {
 				orderItems: true,
+				customer: true,
 			},
 		});
 
@@ -42,6 +44,8 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 				tableStatus: 'Occupied',
 			},
 		});
+		// @ts-expect-error ignoring ts error
+		await sendOrdeReceipt(order.customer?.email ?? '', order);
 	}
 
 	return NextResponse.json(new SuccessResponse('Order Placed successfully', 200).serialize());

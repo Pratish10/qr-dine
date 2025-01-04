@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+
+import { type CustomOrder } from '@/types/data.types';
+
 interface EmailTemplateProps {
 	confirmLink: string;
 }
@@ -81,3 +85,70 @@ export const SendTwoFactorMailTemplate = ({ token }: { token: string }): string 
         <strong>The QR Dine Team</strong>
       </p>
     </div>`;
+
+export const SendOrderReceipt = (order: CustomOrder): string => {
+	const { orderNumber, orderDate, customer, orderItems = [] } = order;
+
+	const customerName = customer?.name != null || 'Guest';
+	const totalAmount = orderItems.reduce((sum, item) => sum + item.totalPrice, 0);
+	const paymentStatus = order.isPaid;
+
+	return `
+        <div style="font-family: 'Arial', sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+          <h2 style="color: #1a73e8; text-align: center;">Order Receipt</h2>
+          
+          <p style="font-size: 16px; text-align: center; font-weight: bold;">Thank you for your order!</p>
+          
+          <div style="background-color: #f4f4f4; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <p style="font-size: 16px;">
+              <strong>Customer Name:</strong> ${customerName}<br />
+              <strong>Order Number:</strong> ${orderNumber}<br />
+              <strong>Order Date:</strong> ${orderDate}<br />
+            </p>
+          </div>
+        
+          <h3 style="color: #1a73e8;">Order Details</h3>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+              <tr>
+                <th style="border-bottom: 2px solid #e0e0e0; padding: 8px; text-align: left;">Item</th>
+                <th style="border-bottom: 2px solid #e0e0e0; padding: 8px; text-align: left;">Quantity</th>
+                <th style="border-bottom: 2px solid #e0e0e0; padding: 8px; text-align: right;">Price</th>
+                <th style="border-bottom: 2px solid #e0e0e0; padding: 8px; text-align: right;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${orderItems
+					.map(
+						(item) => `
+                <tr>
+                  <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${item.menuId}</td>
+                  <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; text-align: center;">${item.quantity}</td>
+                  <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; text-align: right;">₹${item.unitPrice.toFixed(2)}</td>
+                  <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; text-align: right;">₹${item.totalPrice.toFixed(2)}</td>
+                </tr>
+              `
+					)
+					.join('')}
+            </tbody>
+          </table>
+        
+          <div style="text-align: right; font-size: 16px;">
+            <strong>Total Amount:</strong> ₹${totalAmount.toFixed(2)}
+          </div>
+        
+          <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;" />
+          
+          <div style="text-align: center; font-size: 16px;">
+            <strong>Payment Status:</strong> ${paymentStatus ? 'Paid' : 'Pending'}
+          </div>
+          
+          <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;" />
+          
+          <p style="font-size: 16px; text-align: center;">
+            If you have any questions about your order, feel free to contact us.<br />
+            Stay safe and enjoy your meal!
+          </p>
+        </div>
+      `;
+};

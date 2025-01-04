@@ -10,7 +10,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import type Stripe from 'stripe';
 
 const corsHeaders = {
-	'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_CLIENT_URL ?? '',
+	'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_CLIENT_URL ?? 'http://localhost:3001',
 	'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
 	'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<ServerActionR
 			},
 			customer_email: customer?.email,
 			success_url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/order/${order.id}`,
-			cancel_url: process.env.NEXT_PUBLIC_CLIENT_URL,
+			cancel_url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/order`,
 			metadata: {
 				orderId: order.id,
 				tableId: tableId ?? '',

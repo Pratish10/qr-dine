@@ -16,7 +16,6 @@ const Orders = () => {
 	const { refetch, isRefetching } = useGetOrders(id ?? '');
 	const orderStat = useRecoilValue(orderStatus);
 	const ordersData = useRecoilValue(ordersList);
-	console.log('order', { orderStat, ordersData });
 	return (
 		<motion.div
 			className='my-9 pb-24'

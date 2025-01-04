@@ -1,8 +1,9 @@
 import nodemailer from 'nodemailer';
-import { EmailTemplate, PasswordResetEmail, SendTwoFactorMailTemplate } from '@/components/auth/email-template';
+import { EmailTemplate, PasswordResetEmail, SendOrderReceipt, SendTwoFactorMailTemplate } from '@/components/auth/email-template';
 import { EMAIL_VERIFICATION, PASSWORD_RESET, TWO_FA_CODE } from '@/config/auth.config';
 import { ErrorHandler } from './error';
 import { getDomain } from './utils';
+import { type CustomOrder } from '@/types/data.types';
 
 const domain = getDomain();
 
@@ -60,6 +61,16 @@ export const sendTwoFactorTokenEmail = async (email: string, token: string): Pro
 		const emailContent = SendTwoFactorMailTemplate({ token });
 
 		await sendEmail(email, TWO_FA_CODE, emailContent);
+	} catch {
+		throw new ErrorHandler(`Could not send email`, 'BAD_REQUEST');
+	}
+};
+
+export const sendOrdeReceipt = async (customerEmail: string, order: CustomOrder): Promise<void> => {
+	try {
+		const emailContent = SendOrderReceipt(order);
+		const ORDER_RECEIPT_SUBJECT = `Thank You for Your Order! Receipt #${order.orderNumber}`;
+		await sendEmail(customerEmail, ORDER_RECEIPT_SUBJECT, emailContent);
 	} catch {
 		throw new ErrorHandler(`Could not send email`, 'BAD_REQUEST');
 	}
