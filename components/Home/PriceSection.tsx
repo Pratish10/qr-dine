@@ -8,7 +8,7 @@ import { Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { plans } from '@/recoil/plans/atom';
 import { useRecoilValue } from 'recoil';
-import { planTypes } from '@prisma/client';
+import { type planTypes } from '@prisma/client';
 import { createSubscription } from '@/actions/stripe/createSubscription';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -32,8 +32,6 @@ export function PricingSection(): JSX.Element {
 		}
 	};
 
-	const filteredPlanData = planData.filter((item) => item.type !== planTypes.free);
-
 	return (
 		<section id='pricing' className='py-20 sm:py-32 bg-white dark:bg-gray-900'>
 			<div className='container px-4 md:px-6'>
@@ -52,7 +50,7 @@ export function PricingSection(): JSX.Element {
 					</p>
 				</motion.div>
 				<motion.div
-					className='mx-auto mt-16 max-w-5xl sm:mt-20 lg:mt-24 grid grid-cols-1 gap-8 lg:grid-cols-2'
+					className='mx-auto mt-16 max-w-5xl sm:mt-20 lg:mt-24 grid grid-cols-1 gap-8 lg:grid-cols-3'
 					initial='hidden'
 					whileInView='visible'
 					viewport={{ once: true }}
@@ -67,7 +65,7 @@ export function PricingSection(): JSX.Element {
 						},
 					}}
 				>
-					{filteredPlanData.map((plan) => (
+					{planData.map((plan) => (
 						<motion.div
 							key={plan.id}
 							variants={{
@@ -84,7 +82,7 @@ export function PricingSection(): JSX.Element {
 										₹{plan.price}
 										<span className='text-base font-normal text-gray-600 dark:text-gray-400'>/month</span>
 									</p>
-									<ul className='space-y-2'>
+									<ul className='space-y-6'>
 										{plan.description.map((item, index) => (
 											<motion.li
 												key={index}
