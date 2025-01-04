@@ -124,8 +124,8 @@ export const SendOrderReceipt = (order: CustomOrder): string => {
                 <tr>
                   <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${item.menuId}</td>
                   <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; text-align: center;">${item.quantity}</td>
-                  <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; text-align: right;">₹${item.unitPrice.toFixed(2)}</td>
-                  <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; text-align: right;">₹${item.totalPrice.toFixed(2)}</td>
+                  <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; text-align: right;">₹${(item.unitPrice / 100).toFixed(2)}</td>
+                  <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; text-align: right;">₹${(item.totalPrice / 100).toFixed(2)}</td>
                 </tr>
               `
 					)
@@ -134,7 +134,7 @@ export const SendOrderReceipt = (order: CustomOrder): string => {
           </table>
         
           <div style="text-align: right; font-size: 16px;">
-            <strong>Total Amount:</strong> ₹${totalAmount.toFixed(2)}
+            <strong>Total Amount:</strong> ₹${(totalAmount / 100).toFixed(2)}
           </div>
         
           <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;" />
