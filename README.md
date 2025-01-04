@@ -80,7 +80,7 @@ https://github.com/user-attachments/assets/12723104-2cff-41d4-bb5b-ea7173918e35
 - **Node.js** (for Next.js application)
 - **Prisma** (for database management)
 - **Stripe** (for handling payments)
-- **Google/Github
+- **Google/Github**
 
 Uploading QR Dine Demo.mp4…
 

@@ -158,6 +158,18 @@ export const LoginForm = (): JSX.Element => {
 							'Login'
 						)}
 					</Button>
+					<Button
+						size='sm'
+						variant='green'
+						className='w-full'
+						disabled={isPending}
+						onClick={() => {
+							form.setValue('email', 'jacklmyntrix16@gmail.com');
+							form.setValue('password', 'admin123456');
+						}}
+					>
+						Fill Dummy Credentials
+					</Button>
 				</form>
 			</Form>
 		</AuthCard>
