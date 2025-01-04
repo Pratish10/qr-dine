@@ -159,11 +159,7 @@ export const OrderColumn: ColumnDef<ExtendedOrder>[] = [
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align='end'>
-						<DropdownMenuLabel>Actions</DropdownMenuLabel>
 						<DropdownMenuItem onClick={() => navigator.clipboard.writeText(order.orderNumber)}>Copy order number</DropdownMenuItem>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem>View details</DropdownMenuItem>
-						<DropdownMenuItem>Update status</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			);
