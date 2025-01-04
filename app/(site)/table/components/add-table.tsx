@@ -5,7 +5,7 @@ import { AddTableSchema } from '@/schemas/schema';
 import { type AddTableSchemaType } from '@/schemas/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TableStatus } from '@prisma/client';
-import { Loader2 } from 'lucide-react';
+import { Link, Loader2 } from 'lucide-react';
 import React, { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { type DefaultTableType } from './new-table-sheet';
@@ -17,6 +17,7 @@ import Image from 'next/image';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { usePatchTable } from '@/hooks/tables/use-patch-table';
+import { extractTextFromUrl } from '@/lib/utils';
 
 interface AddTableProps extends DefaultTableType {
 	isEdit: boolean;
@@ -107,10 +108,30 @@ export const AddTable = ({ restaurantId, tableNumber, tableQrCode, tableSize, ta
 				)}
 
 				{isEdit && (
-					<div>
-						<Image id='table-qr-code' src={tableQrCode ?? ''} alt='TableQr' width={400} height={400} />
-						<div className='mt-2 text-center'>
-							<p className='text-sm text-gray-500'>Scan the qr code in order to see the menus</p>
+					<div className='p-4 bg-white shadow-md rounded-lg'>
+						<div className='mb-4 text-center'>
+							<p className='text-sm text-gray-500'>
+								Click the{' '}
+								<a
+									href={extractTextFromUrl(tableQrCode) ?? ''}
+									target='_blank'
+									rel='noopener noreferrer'
+									className='text-blue-500 hover:underline'
+								>
+									link
+								</a>{' '}
+								or scan the QR code below to see the menu.
+							</p>
+						</div>
+						<div className='flex justify-center'>
+							<Image
+								id='table-qr-code'
+								src={tableQrCode ?? ''}
+								alt='Table QR Code'
+								width={400}
+								height={400}
+								className='rounded-lg shadow-md'
+							/>
 						</div>
 					</div>
 				)}

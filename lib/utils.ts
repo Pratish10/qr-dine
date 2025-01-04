@@ -16,3 +16,8 @@ export function getDomain(): string | undefined {
 export function encodeToUrl(str: string): string {
 	return encodeURIComponent(str).replace(/[!'()*]/g, (c) => `%${c.charCodeAt(0).toString(16)}`);
 }
+
+export function extractTextFromUrl(url: string): string | null {
+	const parsedUrl = new URL(url);
+	return parsedUrl.searchParams.get('text');
+}
