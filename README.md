@@ -62,6 +62,17 @@ This platform provides a digital solution to streamline ordering and reduce wait
 4. **Assign Tables and QR Codes**: Manage tables and generate unique QR codes for each.
 5. **Receive Orders**: View and manage orders as they come in from customers.
 
+
+
+
+## Demo Video
+
+### Authentication
+https://github.com/user-attachments/assets/5961c314-be30-4464-a0a2-398fde0ddd24
+
+### QR Dine Demo
+https://github.com/user-attachments/assets/12723104-2cff-41d4-bb5b-ea7173918e35
+
 ## Installation
 
 ### Prerequisites
@@ -69,7 +80,11 @@ This platform provides a digital solution to streamline ordering and reduce wait
 - **Node.js** (for Next.js application)
 - **Prisma** (for database management)
 - **Stripe** (for handling payments)
-- **Google/Facebook Authentication** (optional for login)
+- **Google/Github
+
+Uploading QR Dine Demo.mp4…
+
+ Authentication** (optional for login)
 
 ## Running Locally
 
