@@ -1,0 +1,65 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    container_name: qr-dine-db
+    restart: always
+    volumes:
+      - qr-dine-volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+      - qr-dine-network
+  
+  app:
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_URL=${NEXT_PUBLIC_URL}
+        - NEXT_PUBLIC_CLIENT_URL=${NEXT_PUBLIC_CLIENT_URL}
+        - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
+        - AUTH_URL=${AUTH_URL}
+    restart: always
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+
+      - AUTH_SECRET=${AUTH_SECRET}
+
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+
+      - EDGE_STORE_ACCESS_KEY=${EDGE_STORE_ACCESS_KEY}
+      - EDGE_STORE_SECRET_KEY=${EDGE_STORE_SECRET_KEY}
+
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_KEY_SUBSCRIPTION=${STRIPE_WEBHOOK_KEY_SUBSCRIPTION}
+      - STRIPE_WEBHOOK_KEY_PRODUCT=${STRIPE_WEBHOOK_KEY_PRODUCT}
+
+      - SRTIPE_STARTER_SUBCRIPTION=${SRTIPE_STARTER_SUBCRIPTION}
+      - SRTIPE_PRO_SUBCRIPTION=${SRTIPE_PRO_SUBCRIPTION}
+    ports:
+      - "3000:3000"
+    networks:
+      - qr-dine-network
+    depends_on:
+      - db
+
+volumes:
+  qr-dine-volume:
+
+networks:
+  qr-dine-network:
+    driver: bridge
